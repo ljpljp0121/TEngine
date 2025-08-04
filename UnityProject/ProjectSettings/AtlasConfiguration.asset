@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outputAtlasDir: Assets/AssetArt/Atlas
-  sourceAtlasRoot: Assets/AssetRaw/UIRaw/Atlas
-  excludeFolder: Assets/AssetRaw/UIRaw/Raw
+  sourceAtlasRoot: Assets/Bundle/UIRaw/Atlas
+  excludeFolder: Assets/Bundle/UIRaw/Raw
   androidFormat: 50
   iosFormat: 49
   webglFormat: 50

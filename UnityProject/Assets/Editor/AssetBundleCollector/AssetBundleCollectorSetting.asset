@@ -21,15 +21,15 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: Actor
       GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Actor
+      - CollectPath: Assets/Bundle/Actor
         CollectorGUID: 9c67ce0c9edfd4e4aa1006ee39846d66
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -42,7 +42,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Audios
+      - CollectPath: Assets/Bundle/Audios
         CollectorGUID: 8ef7a411b66e70f4cb65c2233c9a0868
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -55,7 +55,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Configs
+      - CollectPath: Assets/Bundle/Configs
         CollectorGUID: dd2928019aef34248af368b99bc53bea
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -68,7 +68,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/DLL
+      - CollectPath: Assets/Bundle/DLL
         CollectorGUID: 3aad79ec1ea08c24c891bd3c669d4125
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -81,7 +81,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Effects
+      - CollectPath: Assets/Bundle/Effects
         CollectorGUID: 0fe175e1e1bd49a4ca71e66b6a9b7237
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -94,7 +94,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Fonts
+      - CollectPath: Assets/Bundle/Fonts
         CollectorGUID: 2473375c9ee163a4b861278b38091455
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -107,7 +107,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Materials
+      - CollectPath: Assets/Bundle/Materials
         CollectorGUID: 228b1547e7065d546ad0bf215fd6a276
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -120,7 +120,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/Scenes
+      - CollectPath: Assets/Bundle/Scenes
         CollectorGUID: cace6ee6539f661419b5e5f8ae1c0146
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -133,7 +133,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/UI
+      - CollectPath: Assets/Bundle/UI
         CollectorGUID: 27e87d83814156648b58f380b834e046
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -146,7 +146,7 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/AssetRaw/UIRaw/Atlas
+      - CollectPath: Assets/Bundle/UIRaw/Atlas
         CollectorGUID: 6d11fa91acc253840a648b58f23db139
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -154,7 +154,7 @@ MonoBehaviour:
         FilterRuleName: CollectAll
         AssetTags: 
         UserData: 
-      - CollectPath: Assets/AssetRaw/UIRaw/Raw
+      - CollectPath: Assets/Bundle/UIRaw/Raw
         CollectorGUID: 6bc134b912ac6bb4399ea1bec4c11636
         CollectorType: 0
         AddressRuleName: AddressByFileName
@@ -167,8 +167,8 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: ModelGroup
       GroupDesc: 
@@ -185,8 +185,8 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: ModelGroup
       GroupDesc: 
@@ -203,8 +203,8 @@ MonoBehaviour:
     EnableAddressable: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
-    IgnoreDefaultType: 1
     AutoCollectShaders: 1
+    IgnoreRuleName: NormalIgnoreRule
     Groups:
     - GroupName: ModelGroup
       GroupDesc: 

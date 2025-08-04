@@ -18,7 +18,7 @@ namespace TEngine
         private static List<(string sceneName, string scenePath)> m_OtherScenes;
 
         private static string initScenePath = "Assets/Scenes";
-        private static string defaultScenePath = "Assets/AssetRaw/Scenes";
+        private static string defaultScenePath = "Assets/Bundle/Scenes";
         
         static void UpdateScenes()
         {
