@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\WorkSpace\\ZGame\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {}
+    "E:\\Unity\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {}
   },
   "projects": {
-    "E:\\WorkSpace\\ZGame\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {
+    "E:\\Unity\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\WorkSpace\\ZGame\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
+        "projectUniqueName": "E:\\Unity\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
         "projectName": "SourceGenerator",
-        "projectPath": "E:\\WorkSpace\\ZGame\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "E:\\WorkSpace\\ZGame\\Tools\\GameEventSourceGenerator\\SourceGenerator\\obj\\",
+        "projectPath": "E:\\Unity\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
+        "packagesPath": "C:\\Users\\25402\\.nuget\\packages\\",
+        "outputPath": "E:\\Unity\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\25402\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +22,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
