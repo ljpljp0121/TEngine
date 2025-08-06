@@ -1,7 +1,7 @@
 using TEngine;
 using UnityEngine;
 
-public class GameEntry : MonoBehaviour
+internal class GameEntry : MonoBehaviour
 {
     void Awake()
     {

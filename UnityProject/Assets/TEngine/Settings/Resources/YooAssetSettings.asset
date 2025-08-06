@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: YooAssetSettings
   m_EditorClassIdentifier: 
   DefaultYooFolderName: package
-  PackageManifestPrefix: 
+  PackageManifestPrefix: yoo

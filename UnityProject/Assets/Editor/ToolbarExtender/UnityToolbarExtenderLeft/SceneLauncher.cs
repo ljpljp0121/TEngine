@@ -11,7 +11,7 @@ namespace TEngine
         private const string PreviousSceneKey = "TEngine_PreviousScenePath"; // 用于存储之前场景路径的键
         private const string IsLauncherBtn = "TEngine_IsLauncher"; // 用于存储之前是否按下launcher
 
-        private static readonly string SceneMain = "main";
+        private static readonly string SceneMain = "LaunchScene";
 
         private static readonly string ButtonStyleName = "Tab middle";
         private static GUIStyle _buttonGuiStyle;
