@@ -14,8 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectName: Demo
   HotUpdateAssemblies:
-  - GameProto.dll
-  - GameLogic.dll
+  - Client_Config.dll
+  - Client_Data.dll
+  - Client_Logic.dll
+  - Client_Gameplay.dll
+  - Client_UI.dll
   AOTMetaAssemblies:
   - mscorlib.dll
   - System.dll
@@ -24,7 +27,7 @@ MonoBehaviour:
   - UniTask.dll
   - YooAsset.dll
   - UnityEngine.CoreModule.dll
-  LogicMainDllName: GameLogic.dll
+  LogicMainDllName: Client_UI.dll
   AssemblyTextAssetExtension: .bytes
   AssemblyTextAssetPath: Bundle/DLL
   UpdateStyle: 1

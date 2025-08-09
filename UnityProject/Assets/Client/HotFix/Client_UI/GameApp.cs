@@ -25,15 +25,15 @@ public partial class GameApp
     /// <param name="objects"></param>
     public static void Entrance(object[] objects)
     {
-        GameEventHelper.Init();
+        // GameEventHelper.Init();
         _hotfixAssembly = (List<Assembly>)objects[0];
-        Log.Warning("======= 看到此条日志代表你成功运行了热更新代码 =======");
-        Log.Warning("======= Entrance GameApp =======");
+        Log.Info("======= EnterHotFix =======");
+        InitOnLoad();
         Utility.Unity.AddDestroyListener(Release);
-        Log.Warning("======= StartGameLogic =======");
+        Log.Info("======= StartGame =======");
         StartGameLogic();
     }
-
+    
     private static void StartGameLogic()
     {
         // GameModule.UI.Active();
@@ -45,6 +45,16 @@ public partial class GameApp
         GameModule.UI.ShowUIAsync<LoginUI>();
         // GameModule.UI.ShowUIAsync<BattleMainUI>();
     }
+    
+    private static void InitOnLoad()
+    {
+        InitOnLoadConfig.Init();
+        InitOnLoadData.Init();
+        InitOnLoadLogic.Init();
+        InitOnLoadGameplay.Init();
+        InitOnLoadUI.Init();
+    }
+
 
     private static void Release()
     {

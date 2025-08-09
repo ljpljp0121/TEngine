@@ -69,7 +69,7 @@ namespace TEngine
         }
 
         [Header("Auto sync with [HybridCLRGlobalSettings]")]
-        public List<string> HotUpdateAssemblies = new List<string>() {"GameProto.dll", "GameLogic.dll" };
+        public List<string> HotUpdateAssemblies = new List<string>() {"Client_Config.dll","Client_Data.dll","Client_Logic.dll","Client_Gameplay.dll", "Client_UI.dll" };
 
         [Header("Need manual setting!")]
         public List<string> AOTMetaAssemblies = new List<string>() { "mscorlib.dll", "System.dll", "System.Core.dll", "TEngine.Runtime.dll" ,"UniTask.dll", "YooAsset.dll"};
@@ -77,7 +77,7 @@ namespace TEngine
         /// <summary>
         /// Dll of main business logic assembly
         /// </summary>
-        public string LogicMainDllName = "GameLogic.dll";
+        public string LogicMainDllName = "Client_UI.dll";
 
         /// <summary>
         /// 程序集文本资产打包Asset后缀名
@@ -87,7 +87,7 @@ namespace TEngine
         /// <summary>
         /// 程序集文本资产资源目录
         /// </summary>
-        public string AssemblyTextAssetPath = "AssetRaw/DLL";
+        public string AssemblyTextAssetPath = "Bundle/DLL";
 
         [Header("更新设置")]
         public UpdateStyle UpdateStyle = UpdateStyle.Force;
