@@ -1691,6 +1691,12 @@
     </type>
   </assembly>
   <assembly name="Obfuz.Runtime">
+    <type fullName="&lt;PrivateImplementationDetails&gt;" newFullName="$d" status="Renamed">
+      <field signature="[Obfuz.Runtime]&lt;PrivateImplementationDetails&gt;/__StaticArrayInitTypeSize=427 0AFDC9569611C078ECAA884967CCF9ABAF9885CA694E3FD877EFE1F05D0FC158" newName="$c" />
+      <field signature="[Obfuz.Runtime]&lt;PrivateImplementationDetails&gt;/__StaticArrayInitTypeSize=1121 333060CB2C9520535B5A21241CBC3A1CF1825D229028D2732FAC5F02B3FED356" newName="$C" />
+    </type>
+    <type fullName="&lt;PrivateImplementationDetails&gt;/__StaticArrayInitTypeSize=1121" newFullName="$d/$h" status="Renamed" />
+    <type fullName="&lt;PrivateImplementationDetails&gt;/__StaticArrayInitTypeSize=427" newFullName="$d/$G" status="Renamed" />
     <type fullName="Obfuz.AssetUtility" newFullName="$a.$a" status="Renamed">
       <method signature="void Obfuz.AssetUtility::@VerifySecretKey(int, int)" newName="$a" oldStackTraceSignature="Obfuz.AssetUtility:VerifySecretKey(Int32, Int32)" newStackTraceSignature="$a.$a:$a(Int32, Int32)" />
     </type>

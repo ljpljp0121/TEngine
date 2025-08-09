@@ -5,6 +5,7 @@ using GameLogic;
 using Obfuz;
 #endif
 using TEngine;
+
 #pragma warning disable CS0436
 
 
@@ -32,13 +33,19 @@ public partial class GameApp
         Log.Warning("======= StartGameLogic =======");
         StartGameLogic();
     }
-    
+
     private static void StartGameLogic()
     {
+        // GameModule.UI.Active();
+        // GameEvent.AddEventListener(ILoginUI_Event.ShowLoginUI, () =>
+        // {
+        //     GameModule.UI.ShowUIAsync<LoginUI>();
+        // });
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        GameModule.UI.ShowUIAsync<BattleMainUI>();
+        GameModule.UI.ShowUIAsync<LoginUI>();
+        // GameModule.UI.ShowUIAsync<BattleMainUI>();
     }
-    
+
     private static void Release()
     {
         SingletonSystem.Release();
