@@ -5,10 +5,10 @@ set WORKSPACE=../..
 set LUBAN_DLL=%WORKSPACE%\Tools\Luban\Luban.dll
 set CONF_ROOT=.
 set DATA_OUTPATH=%WORKSPACE%/UnityProject/Assets/Bundle/Configs/bytes/
-set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/Client/HotFix/GameProto/GameConfig/
+set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/Client/HotFix/Client_Config/GameConfig/
 
-xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ConfigSystem.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Proto\ConfigSystem.cs"
-xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ExternalTypeUtil.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Proto\ExternalTypeUtil.cs"
+xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ConfigSystem.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Config\ConfigSystem.cs"
+xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ExternalTypeUtil.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Config\ExternalTypeUtil.cs"
 
 dotnet %LUBAN_DLL% ^
     -t client ^
