@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Reflection;
+using GameConfig.UI;
 using GameLogic;
 #if ENABLE_OBFUZ
 using Obfuz;
 #endif
 using TEngine;
+using UnityEngine;
 
 #pragma warning disable CS0436
 
@@ -44,6 +46,7 @@ public partial class GameApp
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
         // GameModule.UI.ShowUIAsync<LoginUI>();
         // GameModule.UI.ShowUIAsync<BattleMainUI>();
+        Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
     }
     
     private static void InitOnLoad()

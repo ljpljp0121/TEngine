@@ -52,7 +52,7 @@ public partial class TbUIWnd : ITable
     /// <returns>ByteBuf</returns>
     private ByteBuf LoadByteBuf(string fileName)
     {
-        TextAsset textAsset = GameModule.Resource.LoadAsset<TextAsset>($"Config/bytes/{fileName}");
+        TextAsset textAsset = GameModule.Resource.LoadAsset<TextAsset>($"{fileName}");
         byte[] bytes = textAsset.bytes;
         return new ByteBuf(bytes);
     }
