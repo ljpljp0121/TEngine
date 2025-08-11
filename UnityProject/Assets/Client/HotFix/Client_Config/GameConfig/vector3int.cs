@@ -31,7 +31,7 @@ public partial struct vector3int
     public readonly int Z;
    
 
-    public  void ResolveRef(Tables tables)
+    public  void ResolveRef()
     {
     }
 

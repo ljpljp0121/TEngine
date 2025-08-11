@@ -7,17 +7,15 @@ set CONF_ROOT=.
 set DATA_OUTPATH=%WORKSPACE%/UnityProject/Assets/Bundle/Configs/bytes/
 set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/Client/HotFix/Client_Config/GameConfig/
 
-xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ConfigSystem.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Config\ConfigSystem.cs"
+xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ConfigSystem.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Config\TableSystem.cs"
 xcopy /s /e /i /y "%CONF_ROOT%\CustomTemplate\ExternalTypeUtil.cs" "%WORKSPACE%\UnityProject\Assets\Client\HotFix\Client_Config\ExternalTypeUtil.cs"
 
 dotnet %LUBAN_DLL% ^
     -t client ^
-    -c cs-bin ^
-    -d bin^
+    -c cs-simple-json ^
+    -d json ^
     --conf %CONF_ROOT%\luban.conf ^
-    --customTemplateDir %CONF_ROOT%\CustomTemplate\CustomTemplate_Client_LazyLoad ^
-    -x code.lineEnding=crlf ^
     -x outputCodeDir=%CODE_OUTPATH% ^
-    -x outputDataDir=%DATA_OUTPATH% 
-pause
+    -x outputDataDir=%DATA_OUTPATH%
 
+pause

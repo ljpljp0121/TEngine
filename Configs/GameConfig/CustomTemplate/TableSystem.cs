@@ -6,19 +6,6 @@ using GameConfig;
 /// </summary>
 public class TableSystem
 {
-    private static TableSystem instance;
-    public static TableSystem Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = new TableSystem();
-            }
-            return instance;
-        }
-    }
-    
     private static Dictionary<string, ITable> tables = new Dictionary<string, ITable>();
 
     public static T GetTable<T>() where T : ITable, new()

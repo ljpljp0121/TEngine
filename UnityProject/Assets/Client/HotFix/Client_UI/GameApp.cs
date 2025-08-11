@@ -42,7 +42,7 @@ public partial class GameApp
         //     GameModule.UI.ShowUIAsync<LoginUI>();
         // });
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        GameModule.UI.ShowUIAsync<LoginUI>();
+        // GameModule.UI.ShowUIAsync<LoginUI>();
         // GameModule.UI.ShowUIAsync<BattleMainUI>();
     }
     

@@ -29,7 +29,7 @@ public partial struct vector2int
     public readonly int Y;
    
 
-    public  void ResolveRef(Tables tables)
+    public  void ResolveRef()
     {
     }
 

@@ -7,21 +7,24 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using Luban;
 
 namespace GameConfig
 {
+
+public interface ITable
+{
+    void _LoadData();
+}
+
 public partial class Tables
 {
+    public UI.TbUIWnd TbUIWnd {get; }
 
-    public Tables(System.Func<string, ByteBuf> loader)
-    {
-        ResolveRef();
-    }
+    public Tables()
+    {}
     
     private void ResolveRef()
-    {
-    }
+    {}
 }
 
 }
