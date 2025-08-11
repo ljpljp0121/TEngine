@@ -35,7 +35,7 @@ public partial class GameApp
         Log.Info("======= StartGame =======");
         StartGameLogic();
     }
-    
+
     private static void StartGameLogic()
     {
         // GameModule.UI.Active();
@@ -45,10 +45,10 @@ public partial class GameApp
         // });
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
         // GameModule.UI.ShowUIAsync<LoginUI>();
-        // GameModule.UI.ShowUIAsync<BattleMainUI>();
+        UIModule.Instance.ShowUIAsync<BattleMainUI>();
         Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
     }
-    
+
     private static void InitOnLoad()
     {
         InitOnLoadConfig.Init();

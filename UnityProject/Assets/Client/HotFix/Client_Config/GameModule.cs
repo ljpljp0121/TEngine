@@ -55,13 +55,6 @@ public class GameModule
     private static IAudioModule _audio;
 
     /// <summary>
-    /// 获取UI模块。
-    /// </summary>
-    // public static UIModule UI => _ui ??= UIModule.Instance;
-    //
-    // private static UIModule _ui;
-
-    /// <summary>
     /// 获取场景模块。
     /// </summary>
     public static ISceneModule Scene => _scene ??= Get<ISceneModule>();
