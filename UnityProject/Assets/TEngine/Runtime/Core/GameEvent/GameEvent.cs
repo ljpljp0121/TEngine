@@ -5,7 +5,7 @@ namespace TEngine
     /// <summary>
     /// 游戏全局事件类。
     /// </summary>
-    public class GameEvent
+    public partial class GameEvent
     {
         /// <summary>
         /// 全局事件管理器。

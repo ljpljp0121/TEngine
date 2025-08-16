@@ -41,12 +41,12 @@ public partial class GameApp
         // GameModule.UI.Active();
         // GameEvent.AddEventListener(ILoginUI_Event.ShowLoginUI, () =>
         // {
-        //     GameModule.UI.ShowUIAsync<LoginUI>();
+        //     Debug.Log("1111111111111111");
+        //     // UIModule.Instance.ShowUIAsync<LoginUI>();
         // });
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        // GameModule.UI.ShowUIAsync<LoginUI>();
         UIModule.Instance.ShowUIAsync<BattleMainUI>();
-        Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
+        // Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
     }
 
     private static void InitOnLoad()
