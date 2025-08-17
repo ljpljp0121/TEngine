@@ -23,8 +23,6 @@ public class TableSystem : Singleton<TableSystem>
         }
     }
 
-    protected TableSystem() { }
-
     protected override void OnRelease()
     {
         tables.Clear();

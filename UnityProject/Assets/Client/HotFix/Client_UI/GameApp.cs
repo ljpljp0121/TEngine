@@ -47,7 +47,7 @@ public partial class GameApp
         });
         GameEvent.Get<ILoginUI>().ShowLoginUI();
         // UIModule.Instance.ShowUIAsync<BattleMainUI>();
-        // Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
+        Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
     }
 
     private static void InitOnLoad()

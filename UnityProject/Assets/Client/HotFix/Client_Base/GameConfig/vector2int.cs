@@ -8,19 +8,21 @@
 //------------------------------------------------------------------------------
 
 using Luban;
+using TEngine.Localization.SimpleJSON;
+
 
 
 namespace GameConfig
 {
 public partial struct vector2int
 {
-    public vector2int(ByteBuf _buf) 
+    public vector2int(JSONNode _buf) 
     {
-        X = _buf.ReadInt();
-        Y = _buf.ReadInt();
+        { if(!_buf["x"].IsNumber) { throw new SerializationException(); }  X = _buf["x"]; }
+        { if(!_buf["y"].IsNumber) { throw new SerializationException(); }  Y = _buf["y"]; }
     }
 
-    public static vector2int Deserializevector2int(ByteBuf _buf)
+    public static vector2int Deserializevector2int(JSONNode _buf)
     {
         return new vector2int(_buf);
     }

@@ -20,11 +20,12 @@ public partial class Tables
 {
     public UI.TbUIWnd TbUIWnd {get; }
 
-    public Tables()
-    {}
+    public Tables(){}
     
     private void ResolveRef()
-    {}
+    {
+        
+    }
 }
 
 }

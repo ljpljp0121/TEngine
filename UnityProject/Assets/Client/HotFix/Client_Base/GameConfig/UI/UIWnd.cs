@@ -8,21 +8,23 @@
 //------------------------------------------------------------------------------
 
 using Luban;
+using TEngine.Localization.SimpleJSON;
+
 
 
 namespace GameConfig.UI
 {
 public sealed partial class UIWnd : Luban.BeanBase
 {
-    public UIWnd(ByteBuf _buf) 
+    public UIWnd(JSONNode _buf) 
     {
-        Name = _buf.ReadString();
-        Path = _buf.ReadString();
-        Layer = _buf.ReadInt();
-        DestroyOnHide = _buf.ReadBool();
+        { if(!_buf["Name"].IsString) { throw new SerializationException(); }  Name = _buf["Name"]; }
+        { if(!_buf["Path"].IsString) { throw new SerializationException(); }  Path = _buf["Path"]; }
+        { if(!_buf["Layer"].IsNumber) { throw new SerializationException(); }  Layer = _buf["Layer"]; }
+        { if(!_buf["DestroyOnHide"].IsBoolean) { throw new SerializationException(); }  DestroyOnHide = _buf["DestroyOnHide"]; }
     }
 
-    public static UIWnd DeserializeUIWnd(ByteBuf _buf)
+    public static UIWnd DeserializeUIWnd(JSONNode _buf)
     {
         return new UI.UIWnd(_buf);
     }

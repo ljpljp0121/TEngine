@@ -9,6 +9,7 @@
 
 using Luban;
 using UnityEngine;
+using TEngine.Localization.SimpleJSON;
 
 
 namespace GameConfig.UI
@@ -34,27 +35,22 @@ public partial class TbUIWnd : ITable
 
     public void _LoadData()
     {
-        ByteBuf _buf = LoadByteBuf("ui_tbuiwnd");
-        for(int n = _buf.ReadSize() ; n > 0 ; --n)
+        
+        JSONNode _buf = JSON.Parse(GetJson("ui_tbuiwnd"));
+        foreach(JSONNode _ele in _buf.Children)
         {
             UI.UIWnd _v;
-            _v = UI.UIWnd.DeserializeUIWnd(_buf);
+            { if(!_ele.IsObject) { throw new SerializationException(); }  _v = UI.UIWnd.DeserializeUIWnd(_ele);  }
             _dataList.Add(_v);
             _dataMap.Add(_v.Name, _v);
             _v.ResolveRef();
         }
     }
 
-    /// <summary>
-    /// 加载二进制配置。
-    /// </summary>
-    /// <param name="file">FileName</param>
-    /// <returns>ByteBuf</returns>
-    private ByteBuf LoadByteBuf(string fileName)
+    private string GetJson(string fileName)
     {
-        TextAsset textAsset = GameModule.Resource.LoadAsset<TextAsset>($"{fileName}");
-        byte[] bytes = textAsset.bytes;
-        return new ByteBuf(bytes);
+        var textAsset = GameModule.Resource.LoadAsset<TextAsset>(fileName);
+        return textAsset.text;
     }
 }
 
