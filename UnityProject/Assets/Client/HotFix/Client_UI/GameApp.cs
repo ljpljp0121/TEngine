@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Client_Event;
 using GameConfig.UI;
 using GameLogic;
 #if ENABLE_OBFUZ
@@ -27,7 +28,7 @@ public partial class GameApp
     /// <param name="objects"></param>
     public static void Entrance(object[] objects)
     {
-        // GameEventHelper.Init();
+        GameEventHelper.Init();
         _hotfixAssembly = (List<Assembly>)objects[0];
         Log.Info("======= EnterHotFix =======");
         InitOnLoad();
@@ -39,13 +40,13 @@ public partial class GameApp
     private static void StartGameLogic()
     {
         // GameModule.UI.Active();
-        // GameEvent.AddEventListener(ILoginUI_Event.ShowLoginUI, () =>
-        // {
-        //     Debug.Log("1111111111111111");
-        //     // UIModule.Instance.ShowUIAsync<LoginUI>();
-        // });
-        // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        UIModule.Instance.ShowUIAsync<BattleMainUI>();
+        GameEvent.AddEventListener(ILoginUI_Event.ShowLoginUI, () =>
+        {
+            Debug.Log("1111111111111111");
+            UIModule.Instance.ShowUIAsync<LoginUI>();
+        });
+        GameEvent.Get<ILoginUI>().ShowLoginUI();
+        // UIModule.Instance.ShowUIAsync<BattleMainUI>();
         // Debug.Log(GameModule.Table.GetTable<TbUIWnd>().Get("StartPanel").Path);
     }
 
@@ -63,5 +64,10 @@ public partial class GameApp
     {
         SingletonSystem.Release();
         Log.Warning("======= Release GameApp =======");
+    }
+
+    public class TestEvent : GameEventArgs
+    {
+        public override void Clear() { }
     }
 }

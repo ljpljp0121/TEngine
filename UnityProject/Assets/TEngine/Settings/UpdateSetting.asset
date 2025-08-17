@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectName: Demo
   HotUpdateAssemblies:
-  - Client_Config.dll
+  - Client_Base.dll
   - Client_Data.dll
   - Client_Logic.dll
   - Client_Gameplay.dll

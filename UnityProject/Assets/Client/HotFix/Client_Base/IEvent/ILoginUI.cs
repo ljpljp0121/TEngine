@@ -1,6 +1,6 @@
 ﻿using TEngine;
 
-namespace GameLogic
+namespace Client_Event
 {
     [EventInterface(EEventGroup.GroupUI)]
     public interface ILoginUI

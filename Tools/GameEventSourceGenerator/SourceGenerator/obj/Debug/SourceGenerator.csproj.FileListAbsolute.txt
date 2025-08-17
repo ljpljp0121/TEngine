@@ -30,3 +30,14 @@ E:\WorkSpace\ZGame\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\Sour
 E:\WorkSpace\ZGame\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.sourcelink.json
 E:\WorkSpace\ZGame\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.dll
 E:\WorkSpace\ZGame\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.pdb
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\bin\Debug\SourceGenerator.deps.json
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\bin\Debug\SourceGenerator.dll
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\bin\Debug\SourceGenerator.pdb
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.csproj.AssemblyReference.cache
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.GeneratedMSBuildEditorConfig.editorconfig
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.AssemblyInfoInputs.cache
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.AssemblyInfo.cs
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.csproj.CoreCompileInputs.cache
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.sourcelink.json
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.dll
+E:\Unity\TEngine\Tools\GameEventSourceGenerator\SourceGenerator\obj\Debug\SourceGenerator.pdb

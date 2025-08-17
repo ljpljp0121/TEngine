@@ -15,7 +15,12 @@ public class EventInterfaceGenerator : ISourceGenerator
     }  
 
     public void Execute(GeneratorExecutionContext context)  
-    {  
+    {
+        //限制在指定程序集生效
+        if (!Definition.AllowedAssemblies.Contains(context.Compilation.AssemblyName))
+        {
+            return;
+        }
         // 获取当前语法树  
         var syntaxTrees = context.Compilation.SyntaxTrees;  
         
@@ -69,8 +74,8 @@ public class EventInterfaceGenerator : ISourceGenerator
         sb.AppendLine($"//  </auto-generated>");
         sb.AppendLine($"//------------------------------------------------------------------------------");
         sb.AppendLine();
-        sb.AppendLine($"using UnityEngine;");
-        sb.AppendLine($"using UnityEngine.UI;");
+        // sb.AppendLine($"using UnityEngine;");
+        // sb.AppendLine($"using UnityEngine.UI;");
         sb.AppendLine($"using {Definition.FrameworkNameSpace};");
         sb.AppendLine();
         sb.AppendLine($"namespace {Definition.NameSpace}");
@@ -140,8 +145,8 @@ public class EventInterfaceGenerator : ISourceGenerator
         sb.AppendLine($"//	</auto-generated>");  
         sb.AppendLine($"//------------------------------------------------------------------------------");  
         sb.AppendLine();  
-        sb.AppendLine($"using UnityEngine;");  
-        sb.AppendLine($"using UnityEngine.UI;");  
+        // sb.AppendLine($"using UnityEngine;");  
+        // sb.AppendLine($"using UnityEngine.UI;");  
         sb.AppendLine($"using {Definition.FrameworkNameSpace};");  
         sb.AppendLine();  
         sb.AppendLine($"namespace {Definition.NameSpace}");  
