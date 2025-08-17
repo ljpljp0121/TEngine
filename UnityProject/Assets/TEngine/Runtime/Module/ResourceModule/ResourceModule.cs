@@ -25,7 +25,7 @@ namespace TEngine
         /// 资源系统运行模式。
         /// </summary>
         public EPlayMode PlayMode { get; set; } = EPlayMode.OfflinePlayMode;
-        
+
         public EncryptionType EncryptionType { get; set; } = EncryptionType.None;
 
         /// <summary>
@@ -39,13 +39,9 @@ namespace TEngine
         /// <remarks>优先级较高的模块会优先轮询，并且关闭操作会后进行。</remarks>
         public override int Priority => 4;
 
-        public override void OnInit()
-        {
-        }
+        public override void OnInit() { }
 
-        public override void Shutdown()
-        {
-        }
+        public override void Shutdown() { }
 
         /// <summary>
         /// 资源服务器地址。
@@ -53,7 +49,7 @@ namespace TEngine
         public string HostServerURL { get; set; }
 
         public string FallbackHostServerURL { get; set; }
-        
+
         /// <summary>
         /// WebGL：加载资源方式
         /// </summary>
@@ -174,9 +170,9 @@ namespace TEngine
                 createParameters.EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(packageRoot);
                 initializationOperation = package.InitializeAsync(createParameters);
             }
-            
+
             IDecryptionServices decryptionServices = CreateDecryptionServices();
-            
+
             // 单机运行模式
             if (playMode == EPlayMode.OfflinePlayMode)
             {
@@ -212,7 +208,7 @@ namespace TEngine
                 createParameters.WebServerFileSystemParameters = WechatFileSystemCreater.CreateFileSystemParameters(packageRoot, remoteServices, webDecryptionServices);
 #else
                 Log.Info("=======================UNITY_WEBGL=======================");
-                if (LoadResWayWebGL==LoadResWayWebGL.Remote)
+                if (LoadResWayWebGL == LoadResWayWebGL.Remote)
                 {
                     createParameters.WebRemoteFileSystemParameters = FileSystemParameters.CreateDefaultWebRemoteFileSystemParameters(remoteServices, webDecryptionServices);
                 }
@@ -690,6 +686,12 @@ namespace TEngine
                 throw new GameFrameworkException("Asset name is invalid.");
             }
 
+            if (!CheckLocationValid(location, packageName))
+            {
+                Log.Error($"Could not found location [{location}].");
+                return null;
+            }
+
             string assetObjectKey = GetCacheKey(location, packageName);
             AssetObject assetObject = _assetPool.Spawn(assetObjectKey);
             if (assetObject != null)
@@ -712,6 +714,12 @@ namespace TEngine
             if (string.IsNullOrEmpty(location))
             {
                 throw new GameFrameworkException("Asset name is invalid.");
+            }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                Log.Error($"Could not found location [{location}].");
+                return null;
             }
 
             string assetObjectKey = GetCacheKey(location, packageName);
@@ -749,6 +757,13 @@ namespace TEngine
             if (string.IsNullOrEmpty(location))
             {
                 throw new GameFrameworkException("Asset name is invalid.");
+            }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                Log.Error($"Could not found location [{location}].");
+                callback?.Invoke(null);
+                return;
             }
 
             string assetObjectKey = GetCacheKey(location, packageName);
@@ -791,6 +806,12 @@ namespace TEngine
             {
                 throw new GameFrameworkException("Asset name is invalid.");
             }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                Log.Error($"Could not found location [{location}].");
+                return null;
+            }
 
             string assetObjectKey = GetCacheKey(location, packageName);
 
@@ -828,6 +849,12 @@ namespace TEngine
             if (string.IsNullOrEmpty(location))
             {
                 throw new GameFrameworkException("Asset name is invalid.");
+            }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                Log.Error($"Could not found location [{location}].");
+                return null;
             }
 
             string assetObjectKey = GetCacheKey(location, packageName);
@@ -884,6 +911,17 @@ namespace TEngine
             if (loadAssetCallbacks == null)
             {
                 throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                string errorMessage = Utility.Text.Format("Could not found location [{0}].", location);
+                Log.Error(errorMessage);
+                if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback(location, LoadResourceStatus.NotExist, errorMessage, userData);
+                }
+                return;
             }
 
             string assetObjectKey = GetCacheKey(location, packageName);
@@ -974,6 +1012,17 @@ namespace TEngine
             if (loadAssetCallbacks == null)
             {
                 throw new GameFrameworkException("Load asset callbacks is invalid.");
+            }
+            
+            if (!CheckLocationValid(location, packageName))
+            {
+                string errorMessage = Utility.Text.Format("Could not found location [{0}].", location);
+                Log.Error(errorMessage);
+                if (loadAssetCallbacks.LoadAssetFailureCallback != null)
+                {
+                    loadAssetCallbacks.LoadAssetFailureCallback(location, LoadResourceStatus.NotExist, errorMessage, userData);
+                }
+                return;
             }
 
             string assetObjectKey = GetCacheKey(location, packageName);
