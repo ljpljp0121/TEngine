@@ -1,6 +1,6 @@
 ﻿using TEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     public static class EntityExtension
     {

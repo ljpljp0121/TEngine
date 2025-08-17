@@ -1,4 +1,4 @@
-﻿namespace GameLogic
+﻿namespace Client_Base
 {
     /// <summary>
     /// 实体辅助器接口。

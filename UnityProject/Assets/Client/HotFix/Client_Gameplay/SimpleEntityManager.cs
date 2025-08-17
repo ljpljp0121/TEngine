@@ -1,5 +1,5 @@
+using Client_Base;
 using Client_Gameplay;
-using GameLogic;
 using TEngine;
 using UnityEngine;
 
@@ -13,9 +13,9 @@ public class SimpleEntityManager : MonoBehaviour
     void Start()
     {
         // 添加实体组
-        if (!EntityModule.Instance.HasEntityGroup("Player"))
+        if (!GameModule.Entity.HasEntityGroup("Character"))
         {
-            EntityModule.Instance.AddEntityGroup("Player", 60f, 10, 60f, 0);
+            GameModule.Entity.AddEntityGroup("Character", 60f, 10, 60f, 0);
         }
     }
 
@@ -37,10 +37,10 @@ public class SimpleEntityManager : MonoBehaviour
         int entityId = _nextEntityId++;
 
         // 显示实体
-        EntityModule.Instance.ShowEntity<SimplePlayerLogic>(
+        GameModule.Entity.ShowEntity<SimplePlayerLogic>(
             entityId,
             "Player", // 实体资源名称 
-            "Player", // 实体组名称
+            "Character", // 实体组名称
             null // 用户数据
         );
 
@@ -49,10 +49,10 @@ public class SimpleEntityManager : MonoBehaviour
 
     private void HideAllPlayers()
     {
-        var players = EntityModule.Instance.GetEntities("Player");
+        var players = GameModule.Entity.GetEntities("Player");
         foreach (var player in players)
         {
-            EntityModule.Instance.HideEntity(player);
+            GameModule.Entity.HideEntity(player);
         }
 
         Log.Info("隐藏所有玩家实体");

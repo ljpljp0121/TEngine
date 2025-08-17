@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     [Serializable]
     public class ComponentDebugKeyInfo

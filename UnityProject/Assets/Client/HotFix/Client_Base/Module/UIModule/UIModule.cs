@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using GameLogic;
+using Client_Base;
 using TEngine;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// UI管理模块。

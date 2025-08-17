@@ -2,7 +2,7 @@
 using TEngine;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     public abstract class UIWidget : UIBase
     {

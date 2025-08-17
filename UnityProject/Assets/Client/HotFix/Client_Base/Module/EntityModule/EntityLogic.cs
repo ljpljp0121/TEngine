@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TEngine;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// 实体逻辑基类。

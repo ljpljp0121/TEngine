@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace GameLogic
+namespace Client_Base
 {
     public abstract class UIWindow : UIBase
     {

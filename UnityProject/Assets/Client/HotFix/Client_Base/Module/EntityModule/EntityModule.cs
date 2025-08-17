@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using GameLogic;
 using TEngine;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// 实体组件。
     /// </summary>
-
-    public sealed partial class EntityModule :SingletonBehaviour<EntityModule>
+    public sealed partial class EntityModule : SingletonBehaviour<EntityModule>
     {
         public const int DefaultPriority = 0;
 
@@ -22,17 +20,17 @@ namespace GameLogic
         [SerializeField]
         private Transform m_InstanceRoot = null;
 
-        [SerializeField]
-        private string m_EntityHelperTypeName = "TEngine.DefaultEntityHelper";
-
-        [SerializeField]
-        private EntityHelperBase m_CustomEntityHelper = null;
-
-        [SerializeField]
-        private string m_EntityGroupHelperTypeName = "TEngine.DefaultEntityGroupHelper";
-
-        [SerializeField]
-        private EntityGroupHelperBase m_CustomEntityGroupHelper = null;
+        // [SerializeField]
+        // private string m_EntityHelperTypeName = "TEngine.DefaultEntityHelper";
+        //
+        // [SerializeField]
+        // private EntityHelperBase m_CustomEntityHelper = null;
+        //
+        // [SerializeField]
+        // private string m_EntityGroupHelperTypeName = "TEngine.DefaultEntityGroupHelper";
+        //
+        // [SerializeField]
+        // private EntityGroupHelperBase m_CustomEntityGroupHelper = null;
 
         [SerializeField]
         private EntityGroup[] m_EntityGroups = null;
@@ -46,7 +44,7 @@ namespace GameLogic
         /// 获取实体组数量。
         /// </summary>
         public int EntityGroupCount => m_EntityManager.EntityGroupCount;
-
+        
         /// <summary>
         /// 游戏框架组件初始化。
         /// </summary>
@@ -60,7 +58,6 @@ namespace GameLogic
                 Log.Fatal("Entity manager is invalid.");
                 return;
             }
-
             m_EntityManager.ShowEntitySuccess += OnShowEntitySuccess;
             m_EntityManager.ShowEntityFailure += OnShowEntityFailure;
             m_EntityManager.HideEntityComplete += OnHideEntityComplete;
@@ -75,7 +72,7 @@ namespace GameLogic
 
             GameObject defaultEntityHelper = new GameObject("Default Entity Helper");
             defaultEntityHelper.transform.SetParent(this.transform);
-            EntityHelperBase entityHelper =  defaultEntityHelper.AddComponent<DefaultEntityHelper>();
+            EntityHelperBase entityHelper = defaultEntityHelper.AddComponent<DefaultEntityHelper>();
             if (entityHelper == null)
             {
                 Log.Error("Can not create entity helper.");
@@ -88,6 +85,18 @@ namespace GameLogic
             entityHelperTransform.localScale = Vector3.one;
 
             m_EntityManager.SetEntityHelper(entityHelper);
+            
+            if (m_EntityGroups != null && m_EntityGroups.Length > 0)
+            {
+                foreach (var group in m_EntityGroups)
+                {
+                    if (group == null) continue;
+                    if (!AddEntityGroup(group.Name, group.InstanceAutoReleaseInterval, group.InstanceCapacity, group.InstanceExpireTime, group.InstancePriority))
+                    {
+                        Log.Error($"Can not add entity group. Name : {group.Name}");
+                    }
+                }
+            }
 
             if (m_InstanceRoot == null)
             {
@@ -154,7 +163,10 @@ namespace GameLogic
             GameObject defaultEntityGroupHelper = new GameObject("Default Entity GroupHelper");
             defaultEntityGroupHelper.transform.SetParent(this.transform);
 
-            EntityGroupHelperBase entityGroupHelper = defaultEntityGroupHelper.AddComponent<DefaultEntityGroupHelper>();//Helper.CreateHelper(m_EntityGroupHelperTypeName, m_CustomEntityGroupHelper, EntityGroupCount);
+            EntityGroupHelperBase
+                entityGroupHelper =
+                    defaultEntityGroupHelper
+                        .AddComponent<DefaultEntityGroupHelper>(); //Helper.CreateHelper(m_EntityGroupHelperTypeName, m_CustomEntityGroupHelper, EntityGroupCount);
             if (entityGroupHelper == null)
             {
                 Log.Error("Can not create entity group helper.");
@@ -443,7 +455,7 @@ namespace GameLogic
         {
             return m_EntityManager.ShowEntitySync<T>(entityId, entityAssetName, entityGroupName, priority, ShowEntityInfo.Create(typeof(T), userData));
         }
-        
+
         /// <summary>
         /// 异步显示实体。
         /// </summary>
@@ -1091,7 +1103,8 @@ namespace GameLogic
 
         private void OnShowEntityFailure(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, string errorMessage, object userData)
         {
-            Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", entityId, entityAssetName, entityGroupName, errorMessage);
+            Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", entityId, entityAssetName, entityGroupName,
+                errorMessage);
             GameEvent.Send(EntityModule.OnShowEntityFailureEvent, entityId, entityLogicType, entityAssetName, entityGroupName, errorMessage, userData);
         }
 
@@ -1099,6 +1112,5 @@ namespace GameLogic
         {
             GameEvent.Send(EntityModule.OnHideEntityCompleteEvent, entityId, entityAssetName, entityGroupName, userData);
         }
-        
     }
 }

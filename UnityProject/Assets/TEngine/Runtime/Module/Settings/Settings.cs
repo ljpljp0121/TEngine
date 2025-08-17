@@ -32,6 +32,7 @@ namespace TEngine
 
         [SerializeField]
         private UpdateSetting updateSetting;
+        
 
         public static AudioSetting AudioSetting => Instance.audioSetting;
 

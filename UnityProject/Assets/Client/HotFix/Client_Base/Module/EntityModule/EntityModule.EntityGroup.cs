@@ -1,12 +1,12 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     public sealed partial class EntityModule
     {
         [Serializable]
-        private sealed class EntityGroup
+        public sealed class EntityGroup
         {
             [SerializeField]
             private string m_Name = null;

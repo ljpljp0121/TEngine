@@ -1,4 +1,5 @@
-﻿using TEngine;
+﻿using Client_Base;
+using TEngine;
 using Object = UnityEngine.Object;
 
 public class GameModule
@@ -20,6 +21,16 @@ public class GameModule
     /// </summary>
     public static TableSystem Table => TableSystem.Instance;
 
+    /// <summary>
+    /// 获取实体模块。
+    /// </summary>
+    public static EntityModule Entity =>  EntityModule.Instance;
+
+    /// <summary>
+    /// 获取UI模块
+    /// </summary>
+    public static UIModule UI => UIModule.Instance;
+    
     /// <summary>
     /// 获取调试模块。
     /// </summary>

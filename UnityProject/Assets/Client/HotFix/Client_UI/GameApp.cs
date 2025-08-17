@@ -1,13 +1,11 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Client_Event;
-using GameConfig.UI;
-using GameLogic;
+using Client_UI;
 #if ENABLE_OBFUZ
 using Obfuz;
 #endif
 using TEngine;
-using UnityEngine;
 
 #pragma warning disable CS0436
 
@@ -39,6 +37,7 @@ public partial class GameApp
 
     private static void StartGameLogic()
     {
+        GameModule.UI.ShowUIAsync<BattleMainUI>();
     }
 
     private static void InitOnLoad()

@@ -1,6 +1,6 @@
 ﻿using TEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     internal sealed partial class EntityManager 
     {

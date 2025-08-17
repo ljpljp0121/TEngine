@@ -1,7 +1,7 @@
 ﻿using System;
 using TEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     internal sealed class ShowEntityInfo : IMemory
     {

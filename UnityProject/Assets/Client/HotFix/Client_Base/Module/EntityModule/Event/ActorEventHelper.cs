@@ -1,4 +1,4 @@
-﻿namespace GameLogic
+﻿namespace Client_Base
 {
     public static partial class ActorEventHelper
     {

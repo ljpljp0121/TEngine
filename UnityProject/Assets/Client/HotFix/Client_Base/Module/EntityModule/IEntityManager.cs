@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using TEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// 实体管理器接口。

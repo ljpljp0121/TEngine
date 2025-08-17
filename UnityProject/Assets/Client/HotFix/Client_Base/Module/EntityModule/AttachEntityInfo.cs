@@ -1,7 +1,7 @@
 ﻿using TEngine;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     internal sealed class AttachEntityInfo : IMemory
     {

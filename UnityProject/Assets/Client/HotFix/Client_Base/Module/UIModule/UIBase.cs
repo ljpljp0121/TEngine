@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using TEngine;
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// UI基类。

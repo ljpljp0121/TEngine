@@ -6,7 +6,7 @@ using TEngine;
 using UnityEngine;
 
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// 实体管理器。
@@ -1244,7 +1244,7 @@ namespace GameLogic
 
                 if (_showEntitySuccessEventHandler != null)
                 {
-                   GameLogic.ShowEntityInfo showEntityInfo = (GameLogic.ShowEntityInfo)userData;
+                   Client_Base.ShowEntityInfo showEntityInfo = (Client_Base.ShowEntityInfo)userData;
                     Type entityLogicType = showEntityInfo.EntityLogicType;
                     _showEntitySuccessEventHandler.Invoke(entityLogicType, entity, duration, userData);
                 }
@@ -1254,7 +1254,7 @@ namespace GameLogic
             {
                 if (_showEntityFailureEventHandler != null)
                 {
-                    GameLogic.ShowEntityInfo showEntityInfo = (GameLogic.ShowEntityInfo)userData;
+                    Client_Base.ShowEntityInfo showEntityInfo = (Client_Base.ShowEntityInfo)userData;
                     Type entityLogicType = showEntityInfo.EntityLogicType;
                     _showEntityFailureEventHandler.Invoke(entityId,entityLogicType,entityAssetName, entityGroup.Name, exception.ToString(), userData);
                     return null;
@@ -1347,7 +1347,7 @@ namespace GameLogic
             string appendErrorMessage = Utility.Text.Format("Load entity failure, asset name '{0}', error message '{1}'.", entityAssetName, errorMessage);
             if (_showEntityFailureEventHandler != null)
             {
-                GameLogic.ShowEntityInfo info = (GameLogic.ShowEntityInfo)showEntityInfo.UserData;
+                Client_Base.ShowEntityInfo info = (Client_Base.ShowEntityInfo)showEntityInfo.UserData;
                 Type entityLogicType = info.EntityLogicType;
                 _showEntityFailureEventHandler.Invoke(showEntityInfo.EntityId, entityLogicType, entityAssetName, showEntityInfo.EntityGroup.Name, appendErrorMessage, showEntityInfo.UserData);
                 return;

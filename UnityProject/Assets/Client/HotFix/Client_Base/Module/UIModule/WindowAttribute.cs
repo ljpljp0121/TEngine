@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// UI层级枚举。

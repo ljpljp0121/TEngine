@@ -1,7 +1,7 @@
 ﻿using TEngine;
 using YooAsset;
 
-namespace GameLogic
+namespace Client_Base
 {
     internal sealed partial class EntityManager
     {

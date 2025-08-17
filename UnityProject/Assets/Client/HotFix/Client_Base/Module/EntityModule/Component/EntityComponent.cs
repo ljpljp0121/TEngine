@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using TEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     /// <summary>
     /// 实体组件基类。

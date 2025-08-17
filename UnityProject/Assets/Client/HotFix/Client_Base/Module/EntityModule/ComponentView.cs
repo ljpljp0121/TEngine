@@ -1,7 +1,7 @@
 ﻿#if UNITY_EDITOR
 using UnityEngine;
 
-namespace GameLogic
+namespace Client_Base
 {
     public class ComponentView: MonoBehaviour
     {

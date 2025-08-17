@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Client_Base;
+using UnityEngine;
 using UnityEngine.UI;
 using TEngine;
 
-namespace GameLogic
+namespace Client_UI
 {
     [Window(UILayer.UI,location:"BattleMainUI")]
     class BattleMainUI : UIWindow
