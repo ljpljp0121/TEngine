@@ -70,8 +70,6 @@ internal class WechatFileSystem : IFileSystem
     /// </summary>
     public string PackageName { private set; get; }
 
-    private readonly string _packageRoot = YooAssetSettingsData.Setting.DefaultYooFolderName;
-
     /// <summary>
     /// 文件根目录
     /// </summary>
@@ -108,7 +106,7 @@ internal class WechatFileSystem : IFileSystem
     /// <summary>
     /// 自定义参数：资源清单服务类
     /// </summary>
-    public IManifestServices ManifestServices { private set; get; }
+    public IManifestRestoreServices ManifestServices { private set; get; }
     #endregion
 
 
@@ -151,8 +149,9 @@ internal class WechatFileSystem : IFileSystem
     }
     public virtual FSDownloadFileOperation DownloadFileAsync(PackageBundle bundle, DownloadFileOptions options)
     {
-        options.MainURL = RemoteServices.GetRemoteMainURL(bundle.FileName);
-        options.FallbackURL = RemoteServices.GetRemoteFallbackURL(bundle.FileName);
+        string mainURL = RemoteServices.GetRemoteMainURL(bundle.FileName);
+        string fallbackURL = RemoteServices.GetRemoteFallbackURL(bundle.FileName);
+        options.SetURL(mainURL, fallbackURL);
         var operation = new WXFSDownloadFileOperation(this, bundle, options);
         return operation;
     }
@@ -183,7 +182,7 @@ internal class WechatFileSystem : IFileSystem
         }
         else if (name == FileSystemParametersDefine.MANIFEST_SERVICES)
         {
-            ManifestServices = (IManifestServices)value;
+            ManifestServices = (IManifestRestoreServices)value;
         }
         else
         {
