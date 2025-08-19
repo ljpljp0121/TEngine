@@ -33,10 +33,14 @@ namespace TEngine
         [SerializeField]
         private UpdateSetting updateSetting;
         
+        [SerializeField]
+        private SaveSetting saveSetting;
 
         public static AudioSetting AudioSetting => Instance.audioSetting;
 
         public static ProcedureSetting ProcedureSetting => Instance.procedureSetting;
+
+        public static SaveSetting SaveSetting => Instance.saveSetting;
 
         public static UpdateSetting UpdateSetting
         {
