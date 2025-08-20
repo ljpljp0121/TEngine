@@ -14,6 +14,7 @@ namespace TEngine
         {
             public int SaveID;
             private DateTime lastSaveTime;
+            private DateTime createDateTime;
             public DateTime LastSaveTime
             {
                 get
@@ -25,13 +26,30 @@ namespace TEngine
                     return lastSaveTime;
                 }
             }
-            [SerializeField] private string LastSaveTimeString; // Json不支持DateTime，用来持久化的
+            public DateTime CreateDateTime
+            {
+                get
+                {
+                    if (createDateTime == default(DateTime))
+                    {
+                        DateTime.TryParse(CreateDateTimeString, out createDateTime);
+                    }
+                    return createDateTime;
+                }
+            }
 
-            public SaveItem(int saveID, DateTime lastSaveTime)
+            [SerializeField]
+            private string LastSaveTimeString; // Json不支持DateTime，用来持久化的
+            [SerializeField]
+            private string CreateDateTimeString;
+
+            public SaveItem(int saveID, DateTime createTime)
             {
                 this.SaveID = saveID;
-                this.lastSaveTime = lastSaveTime;
-                LastSaveTimeString = lastSaveTime.ToString(CultureInfo.InvariantCulture);
+                this.lastSaveTime = createTime;
+                this.createDateTime = createTime;
+                LastSaveTimeString = createTime.ToString(CultureInfo.InvariantCulture);
+                CreateDateTimeString = createTime.ToString(CultureInfo.InvariantCulture);
             }
 
             public void UpdateTime(DateTime lastSaveTime)

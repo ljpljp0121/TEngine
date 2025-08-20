@@ -25,8 +25,11 @@ public class GameModule
     /// 获取实体模块。
     /// </summary>
     public static EntityModule Entity =>  EntityModule.Instance;
+    
+    public static ISaveModule Save => _save??= Get<ISaveModule>();
+    private static ISaveModule _save;
 
-    /// <summary>
+    /// <summary>   
     /// 获取UI模块
     /// </summary>
     public static UIModule UI => UIModule.Instance;
