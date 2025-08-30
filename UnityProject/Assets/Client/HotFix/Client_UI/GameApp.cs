@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Client_Base;
 using Client_Event;
 using Client_UI;
 #if ENABLE_OBFUZ
@@ -37,7 +38,6 @@ public partial class GameApp
 
     private static void StartGameLogic()
     {
-        GameModule.UI.ShowUIAsync<BattleMainUI>();
     }
 
     private static void InitOnLoad()
