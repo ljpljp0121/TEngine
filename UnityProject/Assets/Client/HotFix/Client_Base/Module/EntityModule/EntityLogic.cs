@@ -64,7 +64,7 @@ namespace Client_Base
         /// 获取已缓存的 Transform。
         /// </summary>
         public Transform CachedTransform => _cachedTransform;
-        
+
         private ActorEventDispatcher _event;
 
         /// <summary>
@@ -91,9 +91,7 @@ namespace Client_Base
         /// <summary>
         /// 实体回收。
         /// </summary>
-        protected internal virtual void OnRecycle()
-        {
-        }
+        protected internal virtual void OnRecycle() { }
 
         /// <summary>
         /// 实体显示。
@@ -148,18 +146,14 @@ namespace Client_Base
         /// <param name="childEntity">附加的子实体。</param>
         /// <param name="parentTransform">被附加父实体的位置。</param>
         /// <param name="userData">用户自定义数据。</param>
-        protected internal virtual void OnAttached(EntityLogic childEntity, Transform parentTransform, object userData)
-        {
-        }
+        protected internal virtual void OnAttached(EntityLogic childEntity, Transform parentTransform, object userData) { }
 
         /// <summary>
         /// 实体解除子实体。
         /// </summary>
         /// <param name="childEntity">解除的子实体。</param>
         /// <param name="userData">用户自定义数据。</param>
-        protected internal virtual void OnDetached(EntityLogic childEntity, object userData)
-        {
-        }
+        protected internal virtual void OnDetached(EntityLogic childEntity, object userData) { }
 
         /// <summary>
         /// 实体附加子实体。
@@ -187,9 +181,7 @@ namespace Client_Base
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        protected virtual void OnUpdate(float elapseSeconds, float realElapseSeconds)
-        {
-        }
+        protected virtual void OnUpdate(float elapseSeconds, float realElapseSeconds) { }
 
         /// <summary>
         /// 实体轮询。
@@ -220,8 +212,8 @@ namespace Client_Base
             gameObject.SetActive(visible);
         }
 
-        private readonly Dictionary<Type,EntityComponent> _componentMap = new Dictionary<Type,EntityComponent>();
-        private static readonly GameFrameworkLinkedList<EntityComponent> _updateComponents = new GameFrameworkLinkedList<EntityComponent>();
+        private readonly Dictionary<Type, EntityComponent> _componentMap = new Dictionary<Type, EntityComponent>();
+        private readonly GameFrameworkLinkedList<EntityComponent> _updateComponents = new GameFrameworkLinkedList<EntityComponent>();
 
         /// <summary>
         /// 添加实体组件。
@@ -237,8 +229,8 @@ namespace Client_Base
                 Log.Fatal($"add entityComponent failed");
                 return null;
             }
-            
-            _componentMap.Add(typeof(T),ret);
+
+            _componentMap.Add(typeof(T), ret);
 
             if (ret.NeedUpdate)
             {
@@ -262,9 +254,9 @@ namespace Client_Base
                     _updateComponents.AddLast(ret);
                 }
             }
-            
+
             ret?.OnAwake(this);
-            
+
             return ret;
         }
 
@@ -278,7 +270,7 @@ namespace Client_Base
             _componentMap.TryGetValue(typeof(T), out EntityComponent component);
             return component as T;
         }
-        
+
         /// <summary>
         /// 获取或者添加实体组件。
         /// </summary>
@@ -289,7 +281,7 @@ namespace Client_Base
             T ret = GetEntityComponent<T>() ?? AddEntityComponent<T>();
             return ret;
         }
-        
+
         /// <summary>
         /// 移除实体组件。
         /// </summary>
@@ -300,7 +292,7 @@ namespace Client_Base
             Type key = typeof(T);
             RemoveEntityComponentImp(key);
         }
-        
+
         /// <summary>
         /// 移除实体组件。
         /// </summary>

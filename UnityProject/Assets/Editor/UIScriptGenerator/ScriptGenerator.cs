@@ -58,6 +58,7 @@ namespace TEngine.Editor.UI
                     strFile.Append("using UnityEngine;\n");
                     strFile.Append("using UnityEngine.UI;\n");
                     strFile.Append("using TEngine;\n\n");
+                    strFile.Append("using Client_Base;\n\n");
                     strFile.Append($"namespace {ScriptGeneratorSetting.GetUINameSpace()}\n");
                     strFile.Append("{\n");
                     
