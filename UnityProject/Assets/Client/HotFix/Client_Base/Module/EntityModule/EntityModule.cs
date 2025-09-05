@@ -1098,19 +1098,19 @@ namespace Client_Base
 
         private void OnShowEntitySuccess(Type entityLogicType, IEntity entity, float duration, object userData)
         {
-            GameEvent.Send(EntityModule.OnShowEntitySuccessEvent, entityLogicType, entity, duration, userData);
+            GameEvent.Dispatch(EntityModule.OnShowEntitySuccessEvent, entityLogicType, entity, duration, userData);
         }
 
         private void OnShowEntityFailure(int entityId, Type entityLogicType, string entityAssetName, string entityGroupName, string errorMessage, object userData)
         {
             Log.Warning("Show entity failure, entity id '{0}', asset name '{1}', entity group name '{2}', error message '{3}'.", entityId, entityAssetName, entityGroupName,
                 errorMessage);
-            GameEvent.Send(EntityModule.OnShowEntityFailureEvent, entityId, entityLogicType, entityAssetName, entityGroupName, errorMessage, userData);
+            GameEvent.Dispatch(EntityModule.OnShowEntityFailureEvent, entityId, entityLogicType, entityAssetName, entityGroupName, errorMessage, userData);
         }
 
         private void OnHideEntityComplete(int entityId, string entityAssetName, string entityGroupName, object userData)
         {
-            GameEvent.Send(EntityModule.OnHideEntityCompleteEvent, entityId, entityAssetName, entityGroupName, userData);
+            GameEvent.Dispatch(EntityModule.OnHideEntityCompleteEvent, entityId, entityAssetName, entityGroupName, userData);
         }
     }
 }

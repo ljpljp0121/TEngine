@@ -12,10 +12,10 @@ namespace TEngine
         /// </summary>
         /// <typeparam name="T">事件类型。</typeparam>
         /// <param name="eventArgs">事件参数。</param>
-        public static void Send<T>(T eventArgs) where T : GameEventArgs
+        public static void Dispatch<T>(T eventArgs) where T : GameEventArgs
         {
             int eventId = GameEventArgs.GetEventId<T>();
-            _eventMgr.Dispatcher.Send(eventId, eventArgs);
+            _eventMgr.Dispatcher.Dispatch(eventId, eventArgs);
             MemoryPool.Release(eventArgs);
         }
         
@@ -24,10 +24,10 @@ namespace TEngine
         /// </summary>
         /// <typeparam name="T">事件类型。</typeparam>
         /// <param name="handler">事件处理回调。</param>
-        public static bool AddEventListener<T>(Action<T> handler) where T : GameEventArgs
+        public static bool RegisterEvent<T>(Action<T> handler) where T : GameEventArgs
         {
             int eventId = GameEventArgs.GetEventId<T>();
-            return _eventMgr.Dispatcher.AddEventListener(eventId, handler);
+            return _eventMgr.Dispatcher.RegisterEvent(eventId, handler);
         }
         
         /// <summary>
@@ -35,10 +35,10 @@ namespace TEngine
         /// </summary>
         /// <typeparam name="T">事件类型。</typeparam>
         /// <param name="handler">事件处理回调。</param>
-        public static void RemoveEventListener<T>(Action<T> handler) where T : GameEventArgs
+        public static void UnRegisterEvent<T>(Action<T> handler) where T : GameEventArgs
         {
             int eventId = GameEventArgs.GetEventId<T>();
-            _eventMgr.Dispatcher.RemoveEventListener(eventId, handler);
+            _eventMgr.Dispatcher.UnRegisterEvent(eventId, handler);
         }
     }
 }

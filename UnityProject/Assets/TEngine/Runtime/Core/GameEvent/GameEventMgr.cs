@@ -41,7 +41,7 @@ namespace TEngine
             {
                 var eventType = _listEventTypes[i];
                 var handle = _listHandles[i];
-                GameEvent.RemoveEventListener(eventType, handle);
+                GameEvent.UnRegisterEvent(eventType, handle);
             }
 
             _listEventTypes.Clear();
@@ -58,7 +58,7 @@ namespace TEngine
 
         public void AddEvent(int eventType, Action handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }
@@ -66,7 +66,7 @@ namespace TEngine
 
         public void AddEvent<T>(int eventType, Action<T> handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }
@@ -74,7 +74,7 @@ namespace TEngine
 
         public void AddEvent<T1, T2>(int eventType, Action<T1, T2> handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }
@@ -82,7 +82,7 @@ namespace TEngine
 
         public void AddEvent<T1, T2, T3>(int eventType, Action<T1, T2, T3> handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }
@@ -90,7 +90,7 @@ namespace TEngine
 
         public void AddEvent<T1, T2, T3, T4>(int eventType, Action<T1, T2, T3, T4> handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }
@@ -98,7 +98,7 @@ namespace TEngine
 
         public void AddEvent<T1, T2, T3, T4, T5>(int eventType, Action<T1, T2, T3, T4, T5> handler)
         {
-            if (GameEvent.AddEventListener(eventType, handler))
+            if (GameEvent.RegisterEvent(eventType, handler))
             {
                 AddEventImp(eventType, handler);
             }

@@ -27,12 +27,12 @@ public class SafeAreaAdapter : MonoBehaviour
     void Start()
     {
         ApplySafeArea();
-        GameEvent.AddEventListener<E_UpdateScreenWidthOrHeight>(OnScreenSizeChanged);
+        GameEvent.RegisterEvent<E_UpdateScreenWidthOrHeight>(OnScreenSizeChanged);
     }
     
     void OnDestroy()
     {
-        GameEvent.RemoveEventListener<E_UpdateScreenWidthOrHeight>(OnScreenSizeChanged);
+        GameEvent.UnRegisterEvent<E_UpdateScreenWidthOrHeight>(OnScreenSizeChanged);
     }
     
     void OnScreenSizeChanged(E_UpdateScreenWidthOrHeight e)

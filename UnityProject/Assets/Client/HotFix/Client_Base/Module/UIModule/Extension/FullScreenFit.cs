@@ -10,11 +10,11 @@ public class FullScreenFit : MonoBehaviour
     void Start()
     {
         OnUpdateResultion();
-        GameEvent.AddEventListener<E_UpdateScreenWidthOrHeight>(E_Updata_ScreenWidthOrHeight);
+        GameEvent.RegisterEvent<E_UpdateScreenWidthOrHeight>(E_Updata_ScreenWidthOrHeight);
     }
     void OnDestroy()
     {
-        GameEvent.RemoveEventListener<E_UpdateScreenWidthOrHeight>(E_Updata_ScreenWidthOrHeight);
+        GameEvent.UnRegisterEvent<E_UpdateScreenWidthOrHeight>(E_Updata_ScreenWidthOrHeight);
     }
 
     public void E_Updata_ScreenWidthOrHeight(E_UpdateScreenWidthOrHeight e)

@@ -46,7 +46,7 @@ namespace Procedure
 
             LauncherMgr.Show(UIDefine.UILoadUpdate, Utility.Text.Format(LoadText.Instance.Label_Load_Load_Progress, 0));
 
-            GameEvent.Send("UILoadUpdate.RefreshVersion");
+            GameEvent.Dispatch("UILoadUpdate.RefreshVersion");
 
             PreloadResources();
         }

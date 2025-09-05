@@ -23,13 +23,13 @@ public class SuperScrollRect : ScrollRect, IPointerExitHandler
             isRestrainDrag = true;
         isOneTouchDrag = true;
         base.OnBeginDrag(eventData);
-        GameEvent.Send(E_OnSuperListBeginDrag.Create(this.gameObject));
+        GameEvent.Dispatch(E_OnSuperListBeginDrag.Create(this.gameObject));
     }
 
     public override void OnEndDrag(PointerEventData eventData)
     {
         base.OnEndDrag(eventData);
-        GameEvent.Send(E_OnSuperListEndDrag.Create(this.gameObject));
+        GameEvent.Dispatch(E_OnSuperListEndDrag.Create(this.gameObject));
     }
 
     public override void OnDrag(PointerEventData eventData)
