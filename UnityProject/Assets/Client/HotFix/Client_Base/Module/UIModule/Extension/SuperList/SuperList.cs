@@ -136,239 +136,325 @@ public class SuperList : MonoBehaviour
     /// <param name="isInit">是否为初始化阶段（跳过部分限制条件）</param>
     private void ResetPos(int nowIndex, bool dataHasChange, bool insertHasChange, bool isInit = false)
     {
-        if (IsVertical) //垂直滚动布局处理
+        if (IsVertical)
         {
-            // 非初始化阶段，当数据量不足以填满一屏时直接返回（防止滚动抖动）
-            if (!isInit && showPool.Count > 0 && dataList.Count <= rowNum) { return; }
-            //向下滚动整列（优化处理）
-            if (nowIndex - showIndex == colNum)
-            {
-                // 遍历需要新增的列数（通常为1列）
-                for (int i = 0; i < nowIndex - showIndex; i++)
-                {
-                    int newIndex = showIndex + rowNum * colNum + i;
-                    SuperListCell unit = showPool[0];
-                    showPool.RemoveAt(0);
-                    if (newIndex < dataList.Count)// 有效数据范围
-                    {
-                        showPool.Add(unit);
-                        SetCellIndex(unit, newIndex);
-                        SetCellData(unit, newIndex);
-                    }
-                    else// 超出数据范围，回收到对象池
-                    {
-                        hidePool.Add(unit);
-                        unit.transform.SetParent(pool.transform, false);
-                    }
-                }
-            }
-            //向上滚动整列（优化处理）
-            else if (nowIndex - showIndex == -colNum)
-            {
-                for (int i = 0; i < showIndex - nowIndex; i++)
-                {
-                    int newIndex = showIndex - colNum + i;
-                    SuperListCell unit;
-                    // 优先从对象池获取，不足时复用显示池末尾单元格
-                    if (showPool.Count == rowNum * colNum)
-                    {
-                        unit = showPool[showPool.Count - 1];
-                        showPool.RemoveAt(showPool.Count - 1);
-                    }
-                    else
-                    {
-                        unit = hidePool[0];
-                        hidePool.RemoveAt(0);
-                        unit.transform.SetParent(container.transform, false);
-                    }
-                    showPool.Insert(0, unit);
-                    SetCellIndex(unit, newIndex);
-                    SetCellData(unit, newIndex);
-                }
-            }
-            //非整列滚动（通用处理）
-            else
-            {
-                //计算当前应显示的索引范围（可视区域+缓冲区域）
-                List<int> tmpList = new List<int>();
-                for (int i = 0; i < rowNum * colNum; i++)
-                {
-                    if (nowIndex + i < dataList.Count)
-                    {
-                        tmpList.Add(nowIndex + i);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                SuperListCell[] newShowPool = new SuperListCell[tmpList.Count];
-                List<SuperListCell> replacePool = new List<SuperListCell>();
-                for (int i = 0; i < showPool.Count; i++)
-                {
-                    SuperListCell unit = showPool[i];
-                    int tmpIndex = unit.index;
-                    if (tmpList.Contains(tmpIndex))
-                    {
-                        newShowPool[tmpList.IndexOf(tmpIndex)] = unit;
-                        if (dataHasChange)
-                        {
-                            SetCellData(unit, tmpIndex);
-                        }
-                        if (insertHasChange)
-                        {
-                            SetCellIndex(unit, tmpIndex);
-                        }
-                    }
-                    else
-                    {
-                        replacePool.Add(unit);
-                    }
-                }
-                showPool.Clear();
-                for (int i = 0; i < newShowPool.Length; i++)
-                {
-                    if (newShowPool[i] == null)
-                    {
-                        SuperListCell unit;
-                        if (replacePool.Count > 0)
-                        {
-                            unit = replacePool[0];
-                            replacePool.RemoveAt(0);
-                        }
-                        else
-                        {
-                            unit = hidePool[0];
-                            hidePool.RemoveAt(0);
-                            unit.transform.SetParent(container.transform, false);
-                        }
-                        newShowPool[i] = unit;
-                        SetCellData(unit, tmpList[i]);
-                        SetCellIndex(unit, tmpList[i]);
-                    }
-                    showPool.Add(newShowPool[i]);
-                }
-                foreach (var unit in replacePool)
-                {
-                    unit.transform.SetParent(pool.transform, false);
-                    hidePool.Add(unit);
-                }
-            }
+            UpdateVerticalLayout(nowIndex, dataHasChange, insertHasChange, isInit);
         }
-        else //水平布局
+        else
         {
-            if (!isInit && showPool.Count > 0 && dataList.Count <= colNum) { return; }
-            if (nowIndex - showIndex == rowNum)
-            {
-                for (int i = 0; i < nowIndex - showIndex; i++)
-                {
-                    int newIndex = showIndex + rowNum * colNum + i;
-                    SuperListCell unit = showPool[0];
-                    showPool.RemoveAt(0);
-                    if (newIndex < dataList.Count)
-                    {
-                        showPool.Add(unit);
-                        SetCellData(unit, newIndex);
-                        SetCellIndex(unit, newIndex);
-                    }
-                    else
-                    {
-                        hidePool.Add(unit);
-                        unit.transform.SetParent(pool.transform, false);
-                    }
-                }
-            }
-            else if (nowIndex - showIndex == -rowNum)
-            {
-                for (int i = 0; i < showIndex - nowIndex; i++)
-                {
-                    int newIndex = showIndex - rowNum + i;
-                    SuperListCell unit;
-                    if (showPool.Count == rowNum * colNum)
-                    {
-                        unit = showPool[showPool.Count - 1];
-                        showPool.RemoveAt(showPool.Count - 1);
-                    }
-                    else
-                    {
-                        unit = hidePool[0];
-                        hidePool.RemoveAt(0);
-                        unit.transform.SetParent(container.transform, false);
-                    }
-                    showPool.Insert(0, unit);
-                    SetCellData(unit, newIndex);
-                    SetCellIndex(unit, newIndex);
-                }
-            }
-            else
-            {
-                List<int> tmpList = new List<int>();
-                for (int i = 0; i < rowNum * colNum; i++)
-                {
-                    if (nowIndex + i < dataList.Count)
-                    {
-                        tmpList.Add(nowIndex + i);
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                SuperListCell[] newShowPool = new SuperListCell[tmpList.Count];
-                List<SuperListCell> replacePool = new List<SuperListCell>();
-                for (int i = 0; i < showPool.Count; i++)
-                {
-                    SuperListCell unit = showPool[i];
-                    int tmpIndex = unit.index;
-                    if (tmpList.Contains(tmpIndex))
-                    {
-                        newShowPool[tmpList.IndexOf(tmpIndex)] = unit;
-                        if (dataHasChange)
-                        {
-                            SetCellData(unit, tmpIndex);
-                        }
-                        if (insertHasChange)
-                        {
-                            SetCellIndex(unit, tmpIndex);
-                        }
-                    }
-                    else
-                    {
-                        replacePool.Add(unit);
-                    }
-                }
-                showPool.Clear();
-                for (int i = 0; i < newShowPool.Length; i++)
-                {
-                    if (newShowPool[i] == null)
-                    {
-                        SuperListCell unit;
-                        if (replacePool.Count > 0)
-                        {
-                            unit = replacePool[0];
-                            replacePool.RemoveAt(0);
-                        }
-                        else
-                        {
-                            unit = hidePool[0];
-                            hidePool.RemoveAt(0);
-                            unit.transform.SetParent(container.transform, false);
-                        }
-                        newShowPool[i] = unit;
-                        SetCellData(unit, tmpList[i]);
-                        SetCellIndex(unit, tmpList[i]);
-                    }
-                    showPool.Add(newShowPool[i]);
-                }
-                foreach (var unit in replacePool)
-                {
-                    unit.transform.SetParent(pool.transform, false);
-                    hidePool.Add(unit);
-                }
-            }
+            UpdateHorizontalLayout(nowIndex, dataHasChange, insertHasChange, isInit);
         }
 
         showIndex = nowIndex;
+        HandleEmptyCells();
+    }
+
+    /// <summary>
+    /// 更新垂直布局的单元格显示
+    /// </summary>
+    private void UpdateVerticalLayout(int nowIndex, bool dataHasChange, bool insertHasChange, bool isInit)
+    {
+        // 非初始化阶段，当数据量不足以填满一屏时直接返回（防止滚动抖动）
+        if (!isInit && showPool.Count > 0 && dataList.Count <= rowNum) 
+            return;
+
+        int scrollDelta = nowIndex - showIndex;
+        
+        // 向下滚动整列（优化处理）
+        if (scrollDelta == colNum)
+        {
+            HandleVerticalDownScroll(nowIndex);
+        }
+        // 向上滚动整列（优化处理）
+        else if (scrollDelta == -colNum)
+        {
+            HandleVerticalUpScroll(nowIndex);
+        }
+        // 非整列滚动（通用处理）
+        else
+        {
+            HandleGeneralVerticalScroll(nowIndex, dataHasChange, insertHasChange);
+        }
+    }
+
+    /// <summary>
+    /// 处理垂直向下整列滚动
+    /// </summary>
+    private void HandleVerticalDownScroll(int nowIndex)
+    {
+        int scrollStep = nowIndex - showIndex;
+        for (int i = 0; i < scrollStep; i++)
+        {
+            int newIndex = showIndex + rowNum * colNum + i;
+            SuperListCell unit = showPool[0];
+            showPool.RemoveAt(0);
+            
+            if (newIndex < dataList.Count)
+            {
+                showPool.Add(unit);
+                SetCellIndex(unit, newIndex);
+                SetCellData(unit, newIndex);
+            }
+            else
+            {
+                hidePool.Add(unit);
+                unit.transform.SetParent(pool.transform, false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 处理垂直向上整列滚动
+    /// </summary>
+    private void HandleVerticalUpScroll(int nowIndex)
+    {
+        int scrollStep = showIndex - nowIndex;
+        for (int i = 0; i < scrollStep; i++)
+        {
+            int newIndex = showIndex - colNum + i;
+            SuperListCell unit = GetCellForUpScroll();
+            
+            showPool.Insert(0, unit);
+            SetCellIndex(unit, newIndex);
+            SetCellData(unit, newIndex);
+        }
+    }
+
+    /// <summary>
+    /// 获取向上滚动需要的Cell单元
+    /// </summary>
+    private SuperListCell GetCellForUpScroll()
+    {
+        SuperListCell unit;
+        if (showPool.Count == rowNum * colNum)
+        {
+            unit = showPool[showPool.Count - 1];
+            showPool.RemoveAt(showPool.Count - 1);
+        }
+        else
+        {
+            unit = hidePool[0];
+            hidePool.RemoveAt(0);
+            unit.transform.SetParent(container.transform, false);
+        }
+        return unit;
+    }
+
+    /// <summary>
+    /// 处理垂直通用滚动（非整列滚动）
+    /// </summary>
+    private void HandleGeneralVerticalScroll(int nowIndex, bool dataHasChange, bool insertHasChange)
+    {
+        List<int> requiredIndices = CalculateRequiredIndices(nowIndex);
+        var (newShowPool, replacePool) = RearrangeCells(requiredIndices, dataHasChange, insertHasChange);
+        FillMissingCells(newShowPool, replacePool, requiredIndices);
+        RecycleCells(replacePool);
+    }
+
+    /// <summary>
+    /// 计算当前应显示的索引范围
+    /// </summary>
+    private List<int> CalculateRequiredIndices(int startIndex)
+    {
+        List<int> indices = new List<int>();
+        for (int i = 0; i < rowNum * colNum; i++)
+        {
+            if (startIndex + i < dataList.Count)
+            {
+                indices.Add(startIndex + i);
+            }
+            else
+            {
+                break;
+            }
+        }
+        return indices;
+    }
+
+    /// <summary>
+    /// 重新排列现有Cell，分离可复用和需替换的Cell
+    /// </summary>
+    private (SuperListCell[], List<SuperListCell>) RearrangeCells(List<int> requiredIndices, bool dataHasChange, bool insertHasChange)
+    {
+        SuperListCell[] newShowPool = new SuperListCell[requiredIndices.Count];
+        List<SuperListCell> replacePool = new List<SuperListCell>();
+        
+        foreach (SuperListCell unit in showPool)
+        {
+            int cellIndex = unit.index;
+            if (requiredIndices.Contains(cellIndex))
+            {
+                newShowPool[requiredIndices.IndexOf(cellIndex)] = unit;
+                if (dataHasChange)
+                    SetCellData(unit, cellIndex);
+                if (insertHasChange)
+                    SetCellIndex(unit, cellIndex);
+            }
+            else
+            {
+                replacePool.Add(unit);
+            }
+        }
+        
+        return (newShowPool, replacePool);
+    }
+
+    /// <summary>
+    /// 填充缺失的Cell位置
+    /// </summary>
+    private void FillMissingCells(SuperListCell[] newShowPool, List<SuperListCell> replacePool, List<int> requiredIndices)
+    {
+        showPool.Clear();
+        for (int i = 0; i < newShowPool.Length; i++)
+        {
+            if (newShowPool[i] == null)
+            {
+                SuperListCell unit = GetAvailableCell(replacePool);
+                newShowPool[i] = unit;
+                SetCellData(unit, requiredIndices[i]);
+                SetCellIndex(unit, requiredIndices[i]);
+            }
+            showPool.Add(newShowPool[i]);
+        }
+    }
+
+    /// <summary>
+    /// 获取可用的Cell（优先从replacePool，不足时从hidePool）
+    /// </summary>
+    private SuperListCell GetAvailableCell(List<SuperListCell> replacePool)
+    {
+        SuperListCell unit;
+        if (replacePool.Count > 0)
+        {
+            unit = replacePool[0];
+            replacePool.RemoveAt(0);
+        }
+        else
+        {
+            unit = hidePool[0];
+            hidePool.RemoveAt(0);
+            unit.transform.SetParent(container.transform, false);
+        }
+        return unit;
+    }
+
+    /// <summary>
+    /// 回收不需要的Cell到对象池
+    /// </summary>
+    private void RecycleCells(List<SuperListCell> cellsToRecycle)
+    {
+        foreach (var unit in cellsToRecycle)
+        {
+            unit.transform.SetParent(pool.transform, false);
+            hidePool.Add(unit);
+        }
+    }
+
+    /// <summary>
+    /// 更新水平布局的单元格显示
+    /// </summary>
+    private void UpdateHorizontalLayout(int nowIndex, bool dataHasChange, bool insertHasChange, bool isInit)
+    {
+        // 非初始化阶段，当数据量不足以填满一屏时直接返回（防止滚动抖动）
+        if (!isInit && showPool.Count > 0 && dataList.Count <= colNum) 
+            return;
+
+        int scrollDelta = nowIndex - showIndex;
+        
+        // 向右滚动整行（优化处理）
+        if (scrollDelta == rowNum)
+        {
+            HandleHorizontalRightScroll(nowIndex);
+        }
+        // 向左滚动整行（优化处理）
+        else if (scrollDelta == -rowNum)
+        {
+            HandleHorizontalLeftScroll(nowIndex);
+        }
+        // 非整行滚动（通用处理）
+        else
+        {
+            HandleGeneralHorizontalScroll(nowIndex, dataHasChange, insertHasChange);
+        }
+    }
+
+    /// <summary>
+    /// 处理水平向右整行滚动
+    /// </summary>
+    private void HandleHorizontalRightScroll(int nowIndex)
+    {
+        int scrollStep = nowIndex - showIndex;
+        for (int i = 0; i < scrollStep; i++)
+        {
+            int newIndex = showIndex + rowNum * colNum + i;
+            SuperListCell unit = showPool[0];
+            showPool.RemoveAt(0);
+            
+            if (newIndex < dataList.Count)
+            {
+                showPool.Add(unit);
+                SetCellData(unit, newIndex);
+                SetCellIndex(unit, newIndex);
+            }
+            else
+            {
+                hidePool.Add(unit);
+                unit.transform.SetParent(pool.transform, false);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 处理水平向左整行滚动
+    /// </summary>
+    private void HandleHorizontalLeftScroll(int nowIndex)
+    {
+        int scrollStep = showIndex - nowIndex;
+        for (int i = 0; i < scrollStep; i++)
+        {
+            int newIndex = showIndex - rowNum + i;
+            SuperListCell unit = GetCellForLeftScroll();
+            
+            showPool.Insert(0, unit);
+            SetCellData(unit, newIndex);
+            SetCellIndex(unit, newIndex);
+        }
+    }
+
+    /// <summary>
+    /// 获取向左滚动需要的Cell单元
+    /// </summary>
+    private SuperListCell GetCellForLeftScroll()
+    {
+        SuperListCell unit;
+        if (showPool.Count == rowNum * colNum)
+        {
+            unit = showPool[showPool.Count - 1];
+            showPool.RemoveAt(showPool.Count - 1);
+        }
+        else
+        {
+            unit = hidePool[0];
+            hidePool.RemoveAt(0);
+            unit.transform.SetParent(container.transform, false);
+        }
+        return unit;
+    }
+
+    /// <summary>
+    /// 处理水平通用滚动（非整行滚动）
+    /// </summary>
+    private void HandleGeneralHorizontalScroll(int nowIndex, bool dataHasChange, bool insertHasChange)
+    {
+        // 复用垂直滚动的通用逻辑
+        HandleGeneralVerticalScroll(nowIndex, dataHasChange, insertHasChange);
+    }
+
+    /// <summary>
+    /// 处理空单元格填充
+    /// </summary>
+    private void HandleEmptyCells()
+    {
         if (ShowEmptyCell)
         {
             for (int i = showPool.Count; i < minNum; i++)
@@ -445,70 +531,107 @@ public class SuperList : MonoBehaviour
     /// </summary>
     private void SetCellData(SuperListCell cell, int index)
     {
-        //空单元格处理
+        // 空单元格处理
         if (index == -1)
+        {
             cell.TrySetData(null);
+            return;
+        }
+        
         // 不需要淡入效果的直接设置数据
-        else if (!IsAlphaIn)
+        if (!IsAlphaIn)
+        {
             cell.TrySetData(dataList[index]);
-        //需要淡入效果的处理逻辑
+            return;
+        }
+        
+        // 需要淡入效果的处理逻辑
+        bool dataSetSuccessfully = cell.TrySetData(dataList[index]);
+        HandleFadeInAnimation(cell, dataSetSuccessfully);
+    }
+
+    /// <summary>
+    /// 处理淡入动画逻辑
+    /// </summary>
+    private void HandleFadeInAnimation(SuperListCell cell, bool dataSetSuccessfully)
+    {
+        if (dataSetSuccessfully)
+        {
+            HandleSuccessfulDataSet(cell);
+        }
         else
         {
-            bool result = cell.TrySetData(dataList[index]);
-            if (result)
-            {
-                cell.canvasGroup.alpha = 0;
-                int _index = alphaInList.IndexOf(cell);
-                bool needStart = false;
-                if (_index != -1)
-                {
-                    if (_index == 0)
-                    {
-                        cell.ReturnInit();
-                        needStart = true;
-                    }
-                    alphaInList.RemoveAt(_index);
-                }
-                alphaInList.Add(cell);
-                if (alphaInList.Count == 1 || needStart)
-                {
-                    var _cell = alphaInList[0];
-                    if (hasAlphaInDic.ContainsKey(_cell.gameObject.GetInstanceID()))
-                    {
-                        _cell.ReturnInit();
-                        OneAlphaInOver();
-                        return;
-                    }
-                    hasAlphaInDic[_cell.AlphaIn(OneAlphaInOver)] = true;
-                }
-            }
-            else
-            {
-                cell.canvasGroup.alpha = 1;
-                int _index = alphaInList.IndexOf(cell);
-                bool needStart = false;
-                if (_index != -1)
-                {
-                    if (_index == 0)
-                    {
-                        cell.ReturnInit();
-                        needStart = true;
-                    }
-                    alphaInList.RemoveAt(_index);
-                }
-                if (needStart && alphaInList.Count > 0)
-                {
-                    var _cell = alphaInList[0];
-                    if (hasAlphaInDic.ContainsKey(_cell.gameObject.GetInstanceID()))
-                    {
-                        _cell.ReturnInit();
-                        OneAlphaInOver();
-                        return;
-                    }
-                    hasAlphaInDic[_cell.AlphaIn(OneAlphaInOver)] = true;
-                }
-            }
+            HandleFailedDataSet(cell);
         }
+    }
+
+    /// <summary>
+    /// 处理数据设置成功后的淡入动画
+    /// </summary>
+    private void HandleSuccessfulDataSet(SuperListCell cell)
+    {
+        cell.canvasGroup.alpha = 0;
+        bool needStart = RemoveCellFromAnimationQueue(cell);
+        alphaInList.Add(cell);
+        
+        if (alphaInList.Count == 1 || needStart)
+        {
+            StartNextFadeInAnimation();
+        }
+    }
+
+    /// <summary>
+    /// 处理数据设置失败后的逻辑
+    /// </summary>
+    private void HandleFailedDataSet(SuperListCell cell)
+    {
+        cell.canvasGroup.alpha = 1;
+        bool needStart = RemoveCellFromAnimationQueue(cell);
+        
+        if (needStart && alphaInList.Count > 0)
+        {
+            StartNextFadeInAnimation();
+        }
+    }
+
+    /// <summary>
+    /// 从动画队列中移除指定Cell
+    /// </summary>
+    /// <returns>是否需要开始下一个动画</returns>
+    private bool RemoveCellFromAnimationQueue(SuperListCell cell)
+    {
+        int cellIndex = alphaInList.IndexOf(cell);
+        bool needStart = false;
+        
+        if (cellIndex != -1)
+        {
+            if (cellIndex == 0)
+            {
+                cell.ReturnInit();
+                needStart = true;
+            }
+            alphaInList.RemoveAt(cellIndex);
+        }
+        
+        return needStart;
+    }
+
+    /// <summary>
+    /// 开始下一个淡入动画
+    /// </summary>
+    private void StartNextFadeInAnimation()
+    {
+        if (alphaInList.Count == 0) return;
+        
+        var nextCell = alphaInList[0];
+        if (hasAlphaInDic.ContainsKey(nextCell.gameObject.GetInstanceID()))
+        {
+            nextCell.ReturnInit();
+            OneAlphaInOver();
+            return;
+        }
+        
+        hasAlphaInDic[nextCell.AlphaIn(OneAlphaInOver)] = true;
     }
 
     /// <summary>

@@ -170,11 +170,11 @@ public class EventInterfaceGenerator : ISourceGenerator
             if (method.ParameterList.Parameters.Count > 0)  
             {  
                 var paramNames = string.Join(", ", method.ParameterList.Parameters.Select(p => p.Identifier.ToString()));  
-                sb.AppendLine($"            _dispatcher.Send({interfaceName}_Event.{methodName}, {paramNames});");  
+                sb.AppendLine($"            _dispatcher.Dispatch({interfaceName}_Event.{methodName}, {paramNames});");  
             }  
             else  
             {  
-                sb.AppendLine($"            _dispatcher.Send({interfaceName}_Event.{methodName});");  
+                sb.AppendLine($"            _dispatcher.Dispatch({interfaceName}_Event.{methodName});");  
             }  
             sb.AppendLine("        }");  
         }  
