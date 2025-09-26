@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ScriptGeneratorSetting
   m_EditorClassIdentifier: 
   _codePath: 
-  _namespace: GameLogic
+  _namespace: Client_UI
   _widgetName: item
   CodeStyle: 0
   scriptGenerateRule:
