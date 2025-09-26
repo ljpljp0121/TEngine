@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   folderDatas_byGuid:
     keys:
-    - 0433f6d2285e24446bc3a29621e86f7d
+    - 0c910d769a821874b8d108c9a09062ad
     values:
-    - iconNameOrGuid: 
-      colorIndex: 1
+    - iconNameOrGuid: Settings Icon
+      colorIndex: 0
       isIconRecursive: 0
       isColorRecursive: 1
   bookmarks:
@@ -26,3 +26,4 @@ MonoBehaviour:
   - guid: 0fe175e1e1bd49a4ca71e66b6a9b7237
   - guid: 27e87d83814156648b58f380b834e046
   - guid: 30ac6ece1d52a824986d28eb79ec7e51
+  - guid: 7cc0dc9c73b236e499395263b0395824
