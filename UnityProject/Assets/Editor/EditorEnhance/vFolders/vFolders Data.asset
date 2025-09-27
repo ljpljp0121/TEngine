@@ -22,8 +22,5 @@ MonoBehaviour:
       isColorRecursive: 1
   bookmarks:
   - guid: 0433f6d2285e24446bc3a29621e86f7d
-  - guid: 9c67ce0c9edfd4e4aa1006ee39846d66
-  - guid: 0fe175e1e1bd49a4ca71e66b6a9b7237
-  - guid: 27e87d83814156648b58f380b834e046
-  - guid: 30ac6ece1d52a824986d28eb79ec7e51
-  - guid: 7cc0dc9c73b236e499395263b0395824
+  - guid: 9db5607359854c348ad549dfe09fdb87
+  - guid: 7c3a047ecd3df324f8173b18e341b00c

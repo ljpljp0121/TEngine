@@ -510,6 +510,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 2425705316150093152, guid: 4f5fbbbb040049d41a5f897d5a956bf6, type: 3}
+      propertyPath: m_BlockingMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
     - target: {fileID: 2425705316150093153, guid: 4f5fbbbb040049d41a5f897d5a956bf6, type: 3}
       propertyPath: m_ReferenceResolution.x
       value: 1920
@@ -521,6 +525,10 @@ PrefabInstance:
     - target: {fileID: 2425705316150093154, guid: 4f5fbbbb040049d41a5f897d5a956bf6, type: 3}
       propertyPath: m_PlaneDistance
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2425705316150093182, guid: 4f5fbbbb040049d41a5f897d5a956bf6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2425705316310227429, guid: 4f5fbbbb040049d41a5f897d5a956bf6, type: 3}
       propertyPath: m_IsActive
