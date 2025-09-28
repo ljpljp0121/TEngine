@@ -27,7 +27,7 @@
       "dependencies": {}
     },
     "com.needle.compilation-visualizer": {
-      "version": "file:compilation-visualizer-master",
+      "version": "file:compilation-visualizer",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}
@@ -61,6 +61,12 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.cn"
+    },
+    "com.unity.editoriterationprofiler": {
+      "version": "file:com.unity.editoriterationprofiler",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.unity.ext.nunit": {
       "version": "1.0.6",
