@@ -23,7 +23,6 @@ namespace AssetKits.ParticleImage.Editor
                     // Create a custom game object
                     GameObject go = new GameObject("Particle Image");
                     ParticleImage pi = go.AddComponent<ParticleImage>();
-                    pi.texture = AssetDatabase.GetBuiltinExtraResource<Texture2D>("Default-Particle.psd");
                     pi.canvasRect = canvas.GetComponent<RectTransform>();
                     if (menuCommand.context)
                     {
@@ -48,7 +47,6 @@ namespace AssetKits.ParticleImage.Editor
                     // Create a custom game object
                     GameObject go = new GameObject("Particle Image");
                     ParticleImage pi = go.AddComponent<ParticleImage>();
-                    pi.texture = AssetDatabase.GetBuiltinExtraResource<Texture2D>("Default-Particle.psd");
                     pi.canvasRect = newCanvas.GetComponent<RectTransform>();
                     GameObjectUtility.SetParentAndAlign(go, newCanvas);
                     

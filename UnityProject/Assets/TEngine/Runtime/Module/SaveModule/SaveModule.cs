@@ -132,13 +132,13 @@ namespace TEngine
         /// 添加一个存档
         /// </summary>
         /// <returns></returns>
-        public SaveItem CreateSaveItem()
+        public SaveItem CreateSaveItem(int saveID = 0)
         {
-            SaveItem saveItem = new SaveItem(_saveModuleData.currID, DateTime.Now);
+            SaveItem saveItem = new SaveItem(saveID, DateTime.Now);
             _saveModuleData.saveItemList.Add(saveItem);
-            _saveModuleData.currID += 1;
+            _saveModuleData.saveNum = _saveModuleData.saveItemList.Count;
             // 更新SaveSystemData 写入磁盘
-            UpdateSaveSystemData();
+            UpdateSaveSystemData(); 
             return saveItem;
         }
 
@@ -179,6 +179,7 @@ namespace TEngine
 
                 // 从列表中移除（现在saveItem已经验证不为null）
                 _saveModuleData.saveItemList.Remove(saveItem);
+                _saveModuleData.saveNum = _saveModuleData.saveItemList.Count;
                 // 移除缓存
                 RemoveCache(saveID);
                 // 更新SaveSystemData 写入磁盘

@@ -38,6 +38,7 @@ public partial class GameApp
 
     private static void StartGameLogic()
     {
+        GameModule.UI.ShowUI<BattleMainUI>();
     }
 
     private static void InitOnLoad()

@@ -47,10 +47,10 @@ namespace TEngine
         /// 添加一个存档
         /// </summary>
         /// <returns></returns>
-        public SaveModule.SaveItem CreateSaveItem();
+        public SaveModule.SaveItem CreateSaveItem(int saveID = 0);
 
         /// <summary>
-        /// 删除存档
+        /// 删除存档    
         /// </summary>
         /// <param name="saveID">存档的ID</param>
         public void DeleteSaveItem(int saveID);

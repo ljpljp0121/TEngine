@@ -26,6 +26,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.needle.compilation-visualizer": {
+      "version": "file:compilation-visualizer-master",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.tuyoogame.yooasset": {
       "version": "file:YooAsset",
       "depth": 0,

@@ -2599,28 +2599,6 @@ namespace AssetKits.ParticleImage
             }
         }
 
-        [SerializeField][Obsolete("Use sprite instead")]
-        private Texture m_Texture;
-
-        [Obsolete("Use sprite instead")]
-        public Texture texture
-        {
-            get
-            {
-                return m_Texture;
-            }
-            set
-            {
-                if (m_Texture == value)
-                {
-                    return;
-                }
-
-                m_Texture = value;
-                SetMaterialDirty();
-            }
-        }
-
         protected override void OnRectTransformDimensionsChange()
         {
             base.OnRectTransformDimensionsChange();
@@ -2686,7 +2664,7 @@ namespace AssetKits.ParticleImage
                 if(sprite != null)
                     return sprite.texture;
                 
-                return m_Texture == null ? s_WhiteTexture : m_Texture;
+                return s_WhiteTexture;
             }
         }
 

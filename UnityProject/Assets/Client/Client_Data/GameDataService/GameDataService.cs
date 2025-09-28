@@ -59,7 +59,7 @@ public partial class GameDataService : Singleton<GameDataService>
 
         SaveGameData();
     }
-
+    
     public void SaveGameData()
     {
         if (gameData != null)
