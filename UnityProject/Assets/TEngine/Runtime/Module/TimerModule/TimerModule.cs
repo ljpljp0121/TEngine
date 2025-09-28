@@ -5,7 +5,7 @@ namespace TEngine
 {
     public delegate void TimerHandler(object[] args);
 
-    internal class TimerModule : Module, IUpdateModule, ITimerModule
+    internal partial class TimerModule : Module, IUpdateModule, ITimerModule
     {
         [Serializable]
         internal class Timer
@@ -467,12 +467,14 @@ namespace TEngine
         {
             RemoveAllTimer();
             DestroySystemTimer();
+            ClearAllRefreshTasks();
         }
 
         public void Update(float elapseSeconds, float realElapseSeconds)
         {
             UpdateTimer(elapseSeconds);
             UpdateUnscaledTimer(realElapseSeconds);
+            UpdateRefreshSystem(realElapseSeconds);
         }
     }
 }
