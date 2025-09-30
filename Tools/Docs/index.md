@@ -1,29 +1,38 @@
 ---
-title: 表格文档
+layout: home
+
+hero:
+  name: TEngine
+  text: Unity 游戏框架
+  tagline: 强大且灵活的 Unity 开发框架
+  actions:
+    - theme: brand
+      text: 配置表
+      link: /static/@Tables
+    - theme: alt
+      text: 教程
+      link: /guides/
+    - theme: alt
+      text: API 文档
+      link: /api/
+
+features:
+  - icon: 📋
+    title: 配置表
+    details: 基于 Luban 的配置表系统，自动生成文档
+    link: /static/@Tables
+  - icon: 📚
+    title: 教程指南
+    details: 全面的教程和最佳实践指导
+    link: /guides/
+  - icon: 🔧
+    title: API 参考
+    details: 详细的框架组件 API 文档
+    link: /api/
 ---
 
-<script setup>
-import { onMounted } from 'vue'
+## 快速导航
 
-onMounted(() => {
-  // 自动重定向到 Tables 页面
-  if (typeof window !== 'undefined') {
-    window.location.replace('static/@Tables.html')
-  }
-})
-</script>
-
-# 正在跳转到表格文档...
-
-如果没有自动跳转，请点击 [这里](static/@Tables.html) 手动访问表格文档。
-
-<style>
-/* 隐藏页面内容，因为会立即重定向 */
-.theme-default-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 50vh;
-  text-align: center;
-}
-</style>
+- **[配置表](/static/@Tables)** - 浏览所有游戏配置表和数据结构
+- **[开发教程](/guides/)** - 学习如何高效使用 TEngine 框架
+- **[API 文档](/api/)** - 探索完整的 API 参考

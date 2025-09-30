@@ -86,8 +86,8 @@ function generateSidebar() {
 }
 
 export default defineConfig({
-  title: '配置表文档',
-  description: '项目文档网站',
+  title: 'TEngine 框架',
+  description: 'TEngine Unity 游戏框架文档',
   base: process.env.PUBLIC_URL || '/', // 使用环境变量设置base路径
   ignoreDeadLinks: true,
 
@@ -100,14 +100,34 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      // { text: '首页', link: '/' },
-      { text: '指南', link: '/static/@Tables.md' }
+      { text: '首页', link: '/' },
+      { text: '配置表', link: '/static/@Tables.md' },
+      { text: '教程', link: '/guides/' },
+      { text: 'API 文档', link: '/api/' }
     ],
 
-    sidebar: generateSidebar(),
+    sidebar: {
+      '/static/': generateSidebar(),
+      '/guides/': [
+        {
+          text: '教程指南',
+          items: [
+            { text: '概览', link: '/guides/' }
+          ]
+        }
+      ],
+      '/api/': [
+        {
+          text: 'API 参考',
+          items: [
+            { text: '概览', link: '/api/' }
+          ]
+        }
+      ]
+    },
 
     socialLinks: [
-      { icon: 'gitlab', link: 'http://10.21.216.120/ac25/doc/doc' }
+      { icon: 'github', link: 'https://github.com/ALEXTANGXIAO/TEngine' }
     ],
 
     // 启用本地搜索功能
