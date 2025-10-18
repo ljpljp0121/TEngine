@@ -40,7 +40,12 @@ namespace PFPackageManager
                     GUILayout.Label(package.displayName, PFPackageStyles.DetailTitleStyle);
 
                     // 作者和版本
-                    GUILayout.Label($"by {package.author}    Version {package.version}", PFPackageStyles.DetailSubtitleStyle);
+                    string versionText = $"by {package.author}    Version {package.version}";
+                    if (package.isInstalled && !string.IsNullOrEmpty(package.localVersion))
+                    {
+                        versionText += $"  (Installed: {package.localVersion})";
+                    }
+                    GUILayout.Label(versionText, PFPackageStyles.DetailSubtitleStyle);
                 }
                 EditorGUILayout.EndVertical();
 
@@ -49,6 +54,16 @@ namespace PFPackageManager
                 // 操作按钮
                 if (package.isInstalled)
                 {
+                    // 如果有更新，先显示 Update to {version} 按钮
+                    if (package.hasUpdate)
+                    {
+                        if (GUILayout.Button($"Update to {package.version}", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.HeaderButtonOptions))
+                        {
+                            OnInstallClicked?.Invoke(package);
+                        }
+                    }
+
+                    // 然后显示 Remove 按钮
                     if (GUILayout.Button("Remove", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.HeaderButtonOptions))
                     {
                         OnRemoveClicked?.Invoke(package);
@@ -206,6 +221,8 @@ namespace PFPackageManager
             }
         }
 
+        public event Action<string> OnDependencyClicked;
+
         private void DrawDependenciesTab(PackageInfo package)
         {
             GUILayout.Label("Dependencies", PFPackageStyles.SectionTitleStyle);
@@ -213,16 +230,38 @@ namespace PFPackageManager
 
             if (package.dependencies == null || package.dependencies.Count == 0)
             {
-                GUILayout.Label("No dependencies");
+                GUILayout.Label("No dependencies", EditorStyles.centeredGreyMiniLabel);
             }
             else
             {
-                GUILayout.Label("Required:", PFPackageStyles.SectionTitleStyle);
                 foreach (var dep in package.dependencies)
                 {
-                    GUILayout.Label($"• {dep.Key}@{dep.Value}");
+                    DrawDependencyItem(dep.Key, dep.Value);
+                    EditorGUILayout.Space(3);
                 }
             }
+        }
+
+        private void DrawDependencyItem(string packageName, string versionRange)
+        {
+            EditorGUILayout.BeginHorizontal("box");
+            {
+                EditorGUILayout.BeginVertical();
+                {
+                    // 包名 (可点击)
+                    if (GUILayout.Button(packageName, PFPackageStyles.LinkStyle))
+                    {
+                        OnDependencyClicked?.Invoke(packageName);
+                    }
+
+                    // 版本要求
+                    GUILayout.Label($"Required: {versionRange}", PFPackageStyles.DetailSubtitleStyle);
+                }
+                EditorGUILayout.EndVertical();
+
+                GUILayout.FlexibleSpace();
+            }
+            EditorGUILayout.EndHorizontal();
         }
 
         public void ResetTab()

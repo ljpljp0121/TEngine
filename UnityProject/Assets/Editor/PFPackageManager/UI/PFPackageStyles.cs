@@ -140,7 +140,6 @@ namespace PFPackageManager
         // 操作按钮布局选项
         public static readonly GUILayoutOption[] HeaderButtonOptions =
         {
-            GUILayout.Width(80),
             GUILayout.Height(30)
         };
 

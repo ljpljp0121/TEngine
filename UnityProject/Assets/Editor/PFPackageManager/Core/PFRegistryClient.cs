@@ -100,22 +100,10 @@ namespace PFPackageManager
                 var pkg = root[key];
                 var latestVersion = pkg["dist-tags"]["latest"];
 
-                // displayName 在 versions 对象里，需要从最新版本获取
-                string displayName = pkg["name"];
-                var versionsNode = pkg["versions"];
-                if (versionsNode != null && latestVersion != null)
-                {
-                    var latestVersionData = versionsNode[latestVersion.Value];
-                    if (latestVersionData != null && latestVersionData["displayName"] != null)
-                    {
-                        displayName = latestVersionData["displayName"];
-                    }
-                }
-
                 packages.Add(new PackageInfo
                 {
                     name = pkg["name"],
-                    displayName = displayName,
+                    displayName = pkg["name"],  
                     description = pkg["description"],
                     author = pkg["author"] != null ? pkg["author"]["name"] : "Unknown",
                     authorUrl = pkg["author"] != null ? pkg["author"]["url"] : "",
@@ -153,7 +141,7 @@ namespace PFPackageManager
                 package.authorUrl = root["author"]["url"];
             }
 
-            // 解析所有版本（同时从最新版本获取 displayName）
+            // 解析所有版本（同时从最新版本获取 displayName 和 dependencies）
             var versionsNode = root["versions"];
             if (versionsNode != null)
             {
@@ -162,10 +150,23 @@ namespace PFPackageManager
                     var versionData = versionsNode[versionKey];
                     var timeNode = root["time"][versionKey];
 
-                    // 从最新版本提取 displayName
-                    if (versionKey == latestVersion && versionData["displayName"] != null)
+                    // 从最新版本提取 displayName 和 dependencies
+                    if (versionKey == latestVersion)
                     {
-                        package.displayName = versionData["displayName"];
+                        if (versionData["displayName"] != null)
+                        {
+                            package.displayName = versionData["displayName"];
+                        }
+
+                        // 解析依赖
+                        var depsNode = versionData["dependencies"];
+                        if (depsNode != null)
+                        {
+                            foreach (var depKey in depsNode.Keys)
+                            {
+                                package.dependencies[depKey] = depsNode[depKey];
+                            }
+                        }
                     }
 
                     package.versions.Add(new VersionInfo
