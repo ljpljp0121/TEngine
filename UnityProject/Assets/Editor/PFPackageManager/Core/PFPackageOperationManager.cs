@@ -44,31 +44,143 @@ namespace PFPackageManager
             {
                 Debug.Log($"检查依赖: {package.displayName} 需要 {package.dependencies.Count} 个依赖");
 
-                var missingDeps = package.dependencies
-                    .Where(dep => !installer.IsPackageInstalled(dep.Key))
-                    .ToList();
+                // 分析依赖状态
+                var dependencyAnalysis = AnalyzeDependencies(package.dependencies);
 
-                if (missingDeps.Count > 0)
+                if (dependencyAnalysis.HasMissingOrIncompatibleDependencies)
                 {
-                    var missingDepsList = missingDeps.Select(dep => $"• {dep.Key}@{dep.Value}");
-
-                    if (EditorUtility.DisplayDialog("缺少依赖",
-                        $"{package.displayName} 需要安装以下依赖：\n\n" +
-                        string.Join("\n", missingDepsList),
-                        "自动安装依赖", "取消"))
-                    {
-                        InstallWithDependencies(package, targetVersion);
-                        return;
-                    }
-                    else
-                    {
-                        return; // 用户取消安装
-                    }
+                    ShowDependencyDialog(package, dependencyAnalysis, targetVersion);
+                    return;
                 }
             }
 
             // 直接安装
             InstallPackageInternal(package.name, targetVersion, package);
+        }
+
+        /// <summary>
+        /// 分析依赖状态
+        /// </summary>
+        private DependencyAnalysis AnalyzeDependencies(Dictionary<string, string> dependencies)
+        {
+            var analysis = new DependencyAnalysis();
+            analysis.MissingUnityPackages = new List<string>();
+            analysis.MissingThirdPartyPackages = new List<string>();
+            analysis.IncompatibleDependencies = new List<string>();
+
+            foreach (var dep in dependencies)
+            {
+                var status = UnityPackageDependencyChecker.CheckDependency(dep.Key, dep.Value);
+
+                if (!status.isAvailable)
+                {
+                    if (status.isUnityPackage)
+                    {
+                        analysis.MissingUnityPackages.Add($"{dep.Key}@{dep.Value}");
+                    }
+                    else
+                    {
+                        analysis.MissingThirdPartyPackages.Add($"{dep.Key}@{dep.Value}");
+                    }
+                }
+                else if (!status.isVersionCompatible)
+                {
+                    analysis.IncompatibleDependencies.Add($"{dep.Key} (需要: {dep.Value}, 已安装: {status.installedVersion})");
+                }
+            }
+
+            analysis.HasMissingOrIncompatibleDependencies =
+                analysis.MissingUnityPackages.Count > 0 ||
+                analysis.MissingThirdPartyPackages.Count > 0 ||
+                analysis.IncompatibleDependencies.Count > 0;
+
+            return analysis;
+        }
+
+        /// <summary>
+        /// 显示依赖对话框
+        /// </summary>
+        private void ShowDependencyDialog(PackageInfo package, DependencyAnalysis analysis, string targetVersion)
+        {
+            string message = $"{package.displayName} 需要以下依赖：\n\n";
+
+            if (analysis.MissingUnityPackages.Count > 0)
+            {
+                message += "【Unity官方包 - 未安装】\n";
+                message += string.Join("\n", analysis.MissingUnityPackages.Select(p => $"  📦 {p}"));
+                message += "\n\n";
+            }
+
+            if (analysis.IncompatibleDependencies.Count > 0)
+            {
+                message += "【版本不匹配】\n";
+                message += string.Join("\n", analysis.IncompatibleDependencies.Select(p => $"  ⚠️ {p}"));
+                message += "\n\n";
+            }
+
+            if (analysis.MissingThirdPartyPackages.Count > 0)
+            {
+                message += "【第三方包 - 将自动安装】\n";
+                message += string.Join("\n", analysis.MissingThirdPartyPackages.Select(p => $"  • {p}"));
+                message += "\n\n";
+            }
+
+            if (analysis.MissingUnityPackages.Count > 0)
+            {
+                message += "Unity官方包需要通过Package Manager安装。\n是否继续？";
+
+                int option = EditorUtility.DisplayDialogComplex(
+                    "缺少依赖",
+                    message,
+                    "继续并安装Unity包", // 0
+                    "取消", // 1
+                    "打开Package Manager" // 2
+                );
+
+                if (option == 0)
+                {
+                    // 继续并安装Unity包
+                    InstallMissingUnityPackages(analysis.MissingUnityPackages);
+                    InstallWithDependencies(package, targetVersion);
+                }
+                else if (option == 2)
+                {
+                    // 打开Package Manager
+                    UnityPackageDependencyChecker.OpenPackageManagerWindow();
+                }
+            }
+            else
+            {
+                message += "是否继续安装？";
+
+                bool confirm = EditorUtility.DisplayDialog(
+                    "依赖检查",
+                    message,
+                    "继续安装",
+                    "取消"
+                );
+
+                if (confirm)
+                {
+                    InstallWithDependencies(package, targetVersion);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 安装缺失的Unity包
+        /// </summary>
+        private void InstallMissingUnityPackages(List<string> unityPackages)
+        {
+            foreach (var package in unityPackages)
+            {
+                // 解析包名和版本
+                var parts = package.Split('@');
+                string packageName = parts[0];
+                string version = parts.Length > 1 ? parts[1] : null;
+
+                UnityPackageDependencyChecker.InstallUnityPackage(packageName, version);
+            }
         }
 
         /// <summary>
@@ -121,7 +233,15 @@ namespace PFPackageManager
         private void InstallWithDependencies(PackageInfo package, string targetVersion)
         {
             var missingDeps = package.dependencies
-                .Where(dep => !installer.IsPackageInstalled(dep.Key))
+                .Where(dep =>
+                {
+                    // 跳过Unity官方包（它们通过PackageManager管理）
+                    if (dep.Key.StartsWith("com.unity."))
+                        return false;
+
+                    // 只处理未安装的第三方包
+                    return !installer.IsPackageInstalled(dep.Key);
+                })
                 .ToList();
 
             if (missingDeps.Count == 0)
@@ -239,19 +359,8 @@ namespace PFPackageManager
         /// </summary>
         public static int CompareVersions(string v1, string v2)
         {
-            var parts1 = v1.Split('.');
-            var parts2 = v2.Split('.');
-
-            for (int i = 0; i < Math.Max(parts1.Length, parts2.Length); i++)
-            {
-                int n1 = i < parts1.Length ? int.Parse(parts1[i]) : 0;
-                int n2 = i < parts2.Length ? int.Parse(parts2[i]) : 0;
-
-                if (n1 != n2)
-                    return n1.CompareTo(n2);
-            }
-
-            return 0;
+            return VersionComparer.CompareVersion(v1, v2);
         }
     }
 }
+

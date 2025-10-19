@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PFPackageManager
 {
     /// <summary>
-    /// 右侧包详情视图
+    /// 右侧包详情视图 - 只负责UI渲染
     /// </summary>
     public class PFPackageDetailView
     {
@@ -13,9 +13,15 @@ namespace PFPackageManager
         private int selectedTab = 0;  // 0=Description, 1=Versions, 2=Dependencies
         private string[] tabNames = { "Description", "Versions", "Dependencies" };
 
-        public event Action<PackageInfo> OnInstallClicked;
-        public event Action<PackageInfo> OnRemoveClicked;
-        public event Action<PackageInfo, string> OnInstallVersionClicked;
+        // 事件处理器
+        private PackageDetailEventHandler eventHandler;
+        private System.Collections.Generic.List<PackageInfo> allPackages;
+
+        public void SetEventHandler(PackageDetailEventHandler handler, System.Collections.Generic.List<PackageInfo> packages)
+        {
+            eventHandler = handler;
+            allPackages = packages;
+        }
 
         public void Draw(PackageInfo package)
         {
@@ -59,21 +65,21 @@ namespace PFPackageManager
                     {
                         if (GUILayout.Button($"Update to {package.version}", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.HeaderButtonOptions))
                         {
-                            OnInstallClicked?.Invoke(package);
+                            eventHandler?.HandleInstallPackage(package);
                         }
                     }
 
                     // 然后显示 Remove 按钮
                     if (GUILayout.Button("Remove", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.HeaderButtonOptions))
                     {
-                        OnRemoveClicked?.Invoke(package);
+                        eventHandler?.HandleUninstallPackage(package);
                     }
                 }
                 else
                 {
                     if (GUILayout.Button("Install", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.HeaderButtonOptions))
                     {
-                        OnInstallClicked?.Invoke(package);
+                        eventHandler?.HandleInstallPackage(package);
                     }
                 }
             }
@@ -122,7 +128,7 @@ namespace PFPackageManager
             {
                 if (GUILayout.Button("View documentation", PFPackageStyles.LinkStyle))
                 {
-                    Application.OpenURL(package.documentationUrl);
+                    eventHandler?.HandleOpenUrl(package.documentationUrl);
                 }
             }
 
@@ -130,7 +136,7 @@ namespace PFPackageManager
             {
                 if (GUILayout.Button("View changelog", PFPackageStyles.LinkStyle))
                 {
-                    Application.OpenURL(package.changelogUrl);
+                    eventHandler?.HandleOpenUrl(package.changelogUrl);
                 }
             }
 
@@ -143,7 +149,7 @@ namespace PFPackageManager
             {
                 if (GUILayout.Button(package.authorUrl, PFPackageStyles.LinkStyle))
                 {
-                    Application.OpenURL(package.authorUrl);
+                    eventHandler?.HandleOpenUrl(package.authorUrl);
                 }
             }
         }
@@ -184,7 +190,7 @@ namespace PFPackageManager
                             // 当前安装的版本显示 Remove
                             if (GUILayout.Button("Remove", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.VersionButtonOptions))
                             {
-                                OnRemoveClicked?.Invoke(package);
+                                eventHandler?.HandleUninstallPackage(package);
                             }
                         }
                         else if (package.isInstalled)
@@ -192,7 +198,7 @@ namespace PFPackageManager
                             // 包已安装但不是这个版本，显示 Update（切换版本）
                             if (GUILayout.Button("Update", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.VersionButtonOptions))
                             {
-                                OnInstallVersionClicked?.Invoke(package, version.version);
+                                eventHandler?.HandleInstallPackageVersion(package, version.version);
                             }
                         }
                         else
@@ -200,7 +206,7 @@ namespace PFPackageManager
                             // 包未安装，显示 Install
                             if (GUILayout.Button("Install", PFPackageStyles.PrimaryButtonStyle, PFPackageStyles.VersionButtonOptions))
                             {
-                                OnInstallVersionClicked?.Invoke(package, version.version);
+                                eventHandler?.HandleInstallPackageVersion(package, version.version);
                             }
                         }
                     }
@@ -221,8 +227,7 @@ namespace PFPackageManager
             }
         }
 
-        public event Action<string> OnDependencyClicked;
-
+        
         private void DrawDependenciesTab(PackageInfo package)
         {
             GUILayout.Label("Dependencies", PFPackageStyles.SectionTitleStyle);
@@ -248,18 +253,66 @@ namespace PFPackageManager
             {
                 EditorGUILayout.BeginVertical();
                 {
-                    // 包名 (可点击)
-                    if (GUILayout.Button(packageName, PFPackageStyles.LinkStyle))
-                    {
-                        OnDependencyClicked?.Invoke(packageName);
-                    }
+                    // 获取依赖状态
+                    var depStatus = UnityPackageDependencyChecker.CheckDependency(packageName, versionRange);
 
-                    // 版本要求
-                    GUILayout.Label($"Required: {versionRange}", PFPackageStyles.DetailSubtitleStyle);
+                    // 第一行：包名和状态
+                    EditorGUILayout.BeginHorizontal();
+                    {
+                        // 包名 (可点击)
+                        if (GUILayout.Button($"{packageName}", PFPackageStyles.LinkStyle))
+                        {
+                            eventHandler?.HandleClickDependency(packageName, allPackages);
+                        }
+
+                        GUILayout.FlexibleSpace();
+
+                        // Unity包的特殊操作按钮
+                        if (depStatus.isUnityPackage && !depStatus.isAvailable)
+                        {
+                            if (GUILayout.Button("安装", GUILayout.Width(60)))
+                            {
+                                UnityPackageDependencyChecker.InstallUnityPackage(packageName, versionRange);
+                            }
+                        }
+                    }
+                    EditorGUILayout.EndHorizontal();
+
+                    // 第二行：版本要求
+                    GUILayout.Label($"需求: {versionRange}", PFPackageStyles.DetailSubtitleStyle);
+
+                    // 第三行：状态信息
+                    if (!string.IsNullOrEmpty(depStatus.installedVersion))
+                    {
+                        Color statusColor;
+                        if (!depStatus.isVersionCompatible)
+                        {
+                            statusColor = Color.yellow;
+                        }
+                        else if (depStatus.source == PackageSource.BuiltIn)
+                        {
+                            statusColor = new Color(0.5f, 0.8f, 1f); // 浅蓝色表示内置
+                        }
+                        else
+                        {
+                            statusColor = Color.green;
+                        }
+
+                        GUILayout.Label($"状态: {depStatus.StatusText}", new GUIStyle(PFPackageStyles.DetailSubtitleStyle)
+                        {
+                            normal = { textColor = statusColor }
+                        });
+                    }
+                    else
+                    {
+                        Color statusColor = depStatus.isUnityPackage ? Color.cyan : Color.red;
+                        GUILayout.Label($"状态: {depStatus.StatusText}", new GUIStyle(PFPackageStyles.DetailSubtitleStyle)
+                        {
+                            normal = { textColor = statusColor }
+                        });
+                    }
                 }
                 EditorGUILayout.EndVertical();
-
-                GUILayout.FlexibleSpace();
             }
             EditorGUILayout.EndHorizontal();
         }

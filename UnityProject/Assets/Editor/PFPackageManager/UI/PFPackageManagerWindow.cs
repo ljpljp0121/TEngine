@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
 namespace PFPackageManager
 {
     /// <summary>
-    /// PF Package Manager 主窗口
+    /// PF Package Manager 主窗口 - 只负责协调UI组件
     /// </summary>
     public class PFPackageManagerWindow : EditorWindow
     {
-        [MenuItem("PF/Package Manager")]
+        [MenuItem("Window/PFPackageManager",false,1500)]
         public static void ShowWindow()
         {
             var window = GetWindow<PFPackageManagerWindow>("PF Packages");
@@ -19,15 +18,14 @@ namespace PFPackageManager
             window.Show();
         }
 
-        // 视图
+        // 视图组件
         private PFPackageListView listView;
         private PFPackageDetailView detailView;
 
-        // 数据
-        private List<PackageInfo> allPackages = new List<PackageInfo>();
-        private PFRegistryClient registryClient;
-        private PFPackageInstaller installer;
+        // 核心组件
+        private PackageDataManager dataManager;
         private PFPackageOperationManager operationManager;
+        private PackageDetailEventHandler detailEventHandler;
 
         // 配置
         private const string REGISTRY_URL = "https://pfpackage.peifengcoding.com";
@@ -35,25 +33,54 @@ namespace PFPackageManager
 
         private void OnEnable()
         {
+            InitializeComponents();
+            SetupEventSubscriptions();
+
+            // 加载数据
+            dataManager.LoadPackagesFromRegistry();
+        }
+
+        /// <summary>
+        /// 初始化所有组件
+        /// </summary>
+        private void InitializeComponents()
+        {
+            // 初始化视图
             listView = new PFPackageListView();
             detailView = new PFPackageDetailView();
-            registryClient = new PFRegistryClient(REGISTRY_URL);
-            installer = new PFPackageInstaller(REGISTRY_URL, INSTALL_PATH);
-            operationManager = new PFPackageOperationManager(installer, allPackages);
 
-            // 订阅 UI 事件
-            detailView.OnInstallClicked += (pkg) => operationManager.InstallPackage(pkg);
-            detailView.OnRemoveClicked += operationManager.UninstallPackage;
-            detailView.OnInstallVersionClicked += (pkg, ver) => operationManager.InstallPackage(pkg, ver);
-            detailView.OnDependencyClicked += NavigateToDependency;
+            // 初始化核心组件
+            var registryClient = new PFRegistryClient(REGISTRY_URL);
+            var installer = new PFPackageInstaller(REGISTRY_URL, INSTALL_PATH);
+            dataManager = new PackageDataManager(registryClient, installer);
+            operationManager = new PFPackageOperationManager(installer, dataManager.GetAllPackages());
+            detailEventHandler = new PackageDetailEventHandler(operationManager, NavigateToDependency);
 
-            // 订阅操作事件
+            // 设置事件处理器
+            detailView.SetEventHandler(detailEventHandler, dataManager.GetAllPackages());
+        }
+
+        /// <summary>
+        /// 设置事件订阅
+        /// </summary>
+        private void SetupEventSubscriptions()
+        {
+            // 数据加载完成
+            dataManager.OnPackagesLoaded += (packages) =>
+            {
+                if (packages.Count > 0)
+                {
+                    listView.SetSelectedPackage(packages[0]);
+                }
+                Repaint();
+            };
+
+            dataManager.OnPackageDetailUpdated += (pkg) => Repaint();
+
+            // 操作状态更新
             operationManager.OnOperationStarted += () => EditorApplication.update += OnEditorUpdate;
             operationManager.OnOperationCompleted += () => EditorApplication.update -= OnEditorUpdate;
             operationManager.OnPackageUpdated += (pkg) => Repaint();
-
-            // 从 Registry 加载包列表
-            LoadPackagesFromRegistry();
         }
 
         private void OnDisable()
@@ -85,7 +112,8 @@ namespace PFPackageManager
             EditorGUILayout.BeginHorizontal();
             {
                 // 左侧列表
-                listView.Draw(allPackages);
+                var packages = dataManager.GetAllPackages();
+                listView.Draw(packages);
 
                 // 检测选中变化
                 if (GUI.changed)
@@ -105,100 +133,16 @@ namespace PFPackageManager
         }
 
         /// <summary>
-        /// 从 Registry 加载包列表
-        /// </summary>
-        private void LoadPackagesFromRegistry()
-        {
-            Debug.Log($"正在从 {REGISTRY_URL} 加载包列表...");
-
-            registryClient.GetAllPackages(
-                onSuccess: (packages) =>
-                {
-                    allPackages = packages;
-                    Debug.Log($"成功加载 {packages.Count} 个包");
-
-                    // 检测本地已安装的包
-                    foreach (var pkg in allPackages)
-                    {
-                        pkg.isInstalled = installer.IsPackageInstalled(pkg.name);
-                        if (pkg.isInstalled)
-                        {
-                            pkg.localVersion = installer.GetInstalledVersion(pkg.name);
-                            pkg.hasUpdate = PFPackageOperationManager.CompareVersions(pkg.version, pkg.localVersion) > 0;
-                        }
-                    }
-
-                    // 为每个包加载详细信息（包含版本列表）
-                    foreach (var pkg in allPackages)
-                    {
-                        LoadPackageDetail(pkg);
-                    }
-
-                    if (allPackages.Count > 0)
-                    {
-                        listView.SetSelectedPackage(allPackages[0]);
-                    }
-
-                    Repaint();
-                },
-                onError: (error) =>
-                {
-                    Debug.LogError($"加载包列表失败: {error}");
-                    allPackages = new List<PackageInfo>();
-                    Repaint();
-                }
-            );
-        }
-
-        /// <summary>
         /// 导航到依赖包
         /// </summary>
-        private void NavigateToDependency(string packageName)
+        private void NavigateToDependency(PackageInfo package)
         {
-            // 查找包
-            var package = allPackages.Find(p => p.name == packageName);
             if (package != null)
             {
                 listView.SetSelectedPackage(package);
                 detailView.ResetTab();
                 Repaint();
             }
-            else
-            {
-                Debug.LogWarning($"依赖包 {packageName} 不在当前包列表中");
-            }
-        }
-
-        /// <summary>
-        /// 加载包详细信息（包含版本历史）
-        /// </summary>
-        private void LoadPackageDetail(PackageInfo package)
-        {
-            registryClient.GetPackageDetail(package.name,
-                onSuccess: (detailedPkg) =>
-                {
-                    // 更新包信息
-                    package.displayName = detailedPkg.displayName;  // 更新 displayName
-                    package.versions = detailedPkg.versions;
-                    package.authorUrl = detailedPkg.authorUrl;
-                    package.dependencies = detailedPkg.dependencies;
-
-                    // 同步版本列表的 isInstalled 状态
-                    if (package.isInstalled && !string.IsNullOrEmpty(package.localVersion))
-                    {
-                        foreach (var ver in package.versions)
-                        {
-                            ver.isInstalled = (ver.version == package.localVersion);
-                        }
-                    }
-
-                    Repaint();
-                },
-                onError: (error) =>
-                {
-                    Debug.LogWarning($"加载 {package.name} 详情失败: {error}");
-                }
-            );
         }
     }
 }
