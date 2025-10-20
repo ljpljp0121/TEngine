@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(dir:*)",
+      "Read(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []
