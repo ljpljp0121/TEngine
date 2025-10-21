@@ -19,7 +19,7 @@ namespace PFPackageManager
             EditorGUILayout.BeginVertical(GUILayout.Width(250));
             {
                 // 搜索框
-                searchText = EditorGUILayout.TextField(searchText, EditorStyles.toolbarSearchField);
+                searchText = EditorGUILayout.TextField(searchText, PFPackageStyles.SearchFieldStyle);
 
                 EditorGUILayout.Space(10);
 
@@ -44,7 +44,7 @@ namespace PFPackageManager
         {
             bool isSelected = SelectedPackage == package;
 
-            GUIStyle itemStyle = isSelected ? "TV Selection" : "TV Line";
+            GUIStyle itemStyle = isSelected ? PFPackageStyles.ListItemSelectedStyle : PFPackageStyles.ListItemNormalStyle;
 
             Rect rect = EditorGUILayout.BeginHorizontal(itemStyle, GUILayout.Height(20));
             {

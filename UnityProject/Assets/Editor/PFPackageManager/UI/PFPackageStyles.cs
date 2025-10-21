@@ -147,5 +147,60 @@ namespace PFPackageManager
         {
             GUILayout.Width(80)
         };
+
+        // 搜索框样式
+        private static GUIStyle _searchFieldStyle;
+        public static GUIStyle SearchFieldStyle
+        {
+            get
+            {
+                _searchFieldStyle ??= EditorStyles.toolbarSearchField;
+                return _searchFieldStyle;
+            }
+        }
+
+        // 居中提示文本样式
+        private static GUIStyle _centeredGreyMiniLabelStyle;
+        public static GUIStyle CenteredGreyMiniLabelStyle
+        {
+            get
+            {
+                _centeredGreyMiniLabelStyle ??= EditorStyles.centeredGreyMiniLabel;
+                return _centeredGreyMiniLabelStyle;
+            }
+        }
+
+        // 列表项样式（选中状态）
+        private static GUIStyle _listItemSelectedStyle;
+        public static GUIStyle ListItemSelectedStyle
+        {
+            get
+            {
+                _listItemSelectedStyle ??= "TV Selection";
+                return _listItemSelectedStyle;
+            }
+        }
+
+        // 列表项样式（普通状态）
+        private static GUIStyle _listItemNormalStyle;
+        public static GUIStyle ListItemNormalStyle
+        {
+            get
+            {
+                _listItemNormalStyle ??= "TV Line";
+                return _listItemNormalStyle;
+            }
+        }
+
+        // 进度条标题样式
+        private static GUIStyle _progressTitleStyle;
+        public static GUIStyle ProgressTitleStyle
+        {
+            get
+            {
+                _progressTitleStyle ??= EditorStyles.boldLabel;
+                return _progressTitleStyle;
+            }
+        }
     }
 }

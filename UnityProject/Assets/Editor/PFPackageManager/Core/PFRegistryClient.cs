@@ -65,6 +65,10 @@ namespace PFPackageManager
         private void FetchJson(string url, Action<string> onSuccess, Action<string> onError)
         {
             UnityWebRequest request = UnityWebRequest.Get(url);
+
+            // 设置超时时间（10秒）
+            request.timeout = 10;
+
             var operation = request.SendWebRequest();
 
             operation.completed += (asyncOp) =>
@@ -75,7 +79,23 @@ namespace PFPackageManager
                 }
                 else
                 {
-                    onError?.Invoke($"请求失败: {request.error}");
+                    string errorMsg;
+                    switch (request.result)
+                    {
+                        case UnityWebRequest.Result.ConnectionError:
+                            errorMsg = $"网络连接错误: {request.error}\nURL: {url}\n请检查网络连接或防火墙设置";
+                            break;
+                        case UnityWebRequest.Result.ProtocolError:
+                            errorMsg = $"HTTP协议错误: {request.error}\n状态码: {request.responseCode}\nURL: {url}";
+                            break;
+                        case UnityWebRequest.Result.DataProcessingError:
+                            errorMsg = $"数据处理错误: {request.error}\nURL: {url}";
+                            break;
+                        default:
+                            errorMsg = $"请求失败: {request.error}\nURL: {url}\n错误代码: {request.result}";
+                            break;
+                    }
+                    onError?.Invoke(errorMsg);
                 }
                 request.Dispose();
             };

@@ -102,7 +102,7 @@ namespace PFPackageManager
             {
                 EditorGUILayout.BeginVertical("box");
                 {
-                    EditorGUILayout.LabelField(operationManager.CurrentOperation, EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(operationManager.CurrentOperation, PFPackageStyles.ProgressTitleStyle);
                     EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), 0.5f, "Processing...");
                 }
                 EditorGUILayout.EndVertical();
