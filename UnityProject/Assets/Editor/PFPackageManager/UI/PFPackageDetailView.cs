@@ -267,12 +267,43 @@ namespace PFPackageManager
 
                         GUILayout.FlexibleSpace();
 
-                        // Unity包的特殊操作按钮
-                        if (depStatus.isUnityPackage && !depStatus.isAvailable)
+                        // 根据不同状态显示不同的按钮
+                        if (depStatus.isUnityPackage)
                         {
-                            if (GUILayout.Button("安装", GUILayout.Width(60)))
+                            // Unity 官方包
+                            if (!depStatus.isAvailable)
                             {
-                                UnityPackageDependencyChecker.InstallUnityPackage(packageName, versionRange);
+                                if (GUILayout.Button("安装", GUILayout.Width(60)))
+                                {
+                                    UnityPackageDependencyChecker.InstallUnityPackage(packageName, versionRange);
+                                }
+                            }
+                            else if (!depStatus.isVersionCompatible)
+                            {
+                                if (GUILayout.Button("升级", GUILayout.Width(60)))
+                                {
+                                    UnityPackageDependencyChecker.InstallUnityPackage(packageName, versionRange);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // 第三方包
+                            if (!depStatus.isAvailable)
+                            {
+                                // 未安装
+                                if (GUILayout.Button("安装", GUILayout.Width(60)))
+                                {
+                                    eventHandler?.HandleUpgradeDependency(packageName, versionRange, allPackages);
+                                }
+                            }
+                            else if (!depStatus.isVersionCompatible)
+                            {
+                                // 已安装但版本不匹配
+                                if (GUILayout.Button("升级", GUILayout.Width(60)))
+                                {
+                                    eventHandler?.HandleUpgradeDependency(packageName, versionRange, allPackages);
+                                }
                             }
                         }
                     }

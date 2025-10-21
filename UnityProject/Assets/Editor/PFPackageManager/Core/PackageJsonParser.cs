@@ -19,7 +19,7 @@ namespace PFPackageManager
             var root = JSON.Parse(json);
 
             // /-/all 返回格式: { "_updated": xxx, "packageName": {...}, ... }
-            foreach (var key in root.Keys)
+            foreach (var key in root.Keys) 
             {
                 // 跳过 _updated 字段
                 if (key.StartsWith("_"))

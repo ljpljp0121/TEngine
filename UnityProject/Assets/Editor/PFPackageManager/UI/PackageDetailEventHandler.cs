@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -76,6 +77,59 @@ namespace PFPackageManager
         private void OpenPackageManagerAndSelectPackage(string packageName)
         {
             EditorApplication.ExecuteMenuItem("Window/Package Manager");
+        }
+
+        /// <summary>
+        /// 处理升级依赖包（从依赖列表点击升级）
+        /// </summary>
+        public void HandleUpgradeDependency(string packageName, string requiredVersion, System.Collections.Generic.List<PackageInfo> allPackages)
+        {
+            // 查找依赖包
+            var depPackage = allPackages.Find(p => p.name == packageName);
+            if (depPackage == null)
+            {
+                EditorUtility.DisplayDialog("未找到依赖包", $"依赖包 {packageName} 不在当前包列表中", "OK");
+                return;
+            }
+
+            // 解析版本范围，找到最佳版本
+            var versionRange = new VersionRange(requiredVersion);
+
+            var availableVersions = new System.Collections.Generic.List<string> { depPackage.version };
+            if (depPackage.versions != null && depPackage.versions.Count > 0)
+            {
+                availableVersions.AddRange(depPackage.versions.Select(v => v.version));
+            }
+
+            string targetVersion = versionRange.SelectBestVersion(availableVersions);
+
+            if (string.IsNullOrEmpty(targetVersion))
+            {
+                EditorUtility.DisplayDialog(
+                    "无法升级",
+                    $"找不到满足要求 '{requiredVersion}' 的版本\n\n" +
+                    $"可用版本: {string.Join(", ", availableVersions)}",
+                    "OK"
+                );
+                return;
+            }
+
+            // 确认升级
+            bool confirm = EditorUtility.DisplayDialog(
+                "升级依赖包",
+                $"将升级 {depPackage.displayName} 到版本 {targetVersion}\n\n" +
+                $"当前版本: {depPackage.localVersion}\n" +
+                $"需求版本: {requiredVersion}\n" +
+                $"目标版本: {targetVersion}\n\n" +
+                "是否继续？",
+                "升级",
+                "取消"
+            );
+
+            if (confirm)
+            {
+                operationManager.InstallPackage(depPackage, targetVersion);
+            }
         }
 
         /// <summary>

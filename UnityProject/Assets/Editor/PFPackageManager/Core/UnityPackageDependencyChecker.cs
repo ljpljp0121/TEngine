@@ -27,8 +27,7 @@ namespace PFPackageManager
                 installedVersion = null,
                 canInstall = false
             };
-
-            // 使用Unity PackageManager API查询包信息
+            
             var packageInfo = UnityEditor.PackageManager.PackageInfo.FindForPackageName(packageName);
 
             if (packageInfo != null)
@@ -124,88 +123,16 @@ namespace PFPackageManager
         }
 
         /// <summary>
-        /// 检查版本兼容性（简化版本）
+        /// 检查版本兼容性（使用 VersionRange 进行完整的语义化版本匹配）
         /// </summary>
         private static bool IsVersionCompatible(string installedVersion, string requiredVersion)
         {
             if (string.IsNullOrEmpty(requiredVersion) || requiredVersion == "*")
                 return true;
 
-            // 处理常见的版本范围符号
-            if (requiredVersion.StartsWith("^"))
-            {
-                // ^1.0.0 表示 >=1.0.0 且 <2.0.0
-                string baseVersion = requiredVersion.Substring(1);
-                return CompareVersions(installedVersion, baseVersion) >= 0 &&
-                       GetMajorVersion(installedVersion) == GetMajorVersion(baseVersion);
-            }
-            else if (requiredVersion.StartsWith("~"))
-            {
-                // ~1.0.0 表示 >=1.0.0 且 <1.1.0
-                string baseVersion = requiredVersion.Substring(1);
-                return CompareVersions(installedVersion, baseVersion) >= 0 &&
-                       GetMajorVersion(installedVersion) == GetMajorVersion(baseVersion) &&
-                       GetMinorVersion(installedVersion) == GetMinorVersion(baseVersion);
-            }
-            else if (requiredVersion.StartsWith(">="))
-            {
-                // >=1.0.0
-                string minVersion = requiredVersion.Substring(2);
-                return CompareVersions(installedVersion, minVersion) >= 0;
-            }
-            else if (requiredVersion.StartsWith("<="))
-            {
-                // <=1.0.0
-                string maxVersion = requiredVersion.Substring(2);
-                return CompareVersions(installedVersion, maxVersion) <= 0;
-            }
-            else if (requiredVersion.StartsWith(">"))
-            {
-                // >1.0.0
-                string minVersion = requiredVersion.Substring(1);
-                return CompareVersions(installedVersion, minVersion) > 0;
-            }
-            else if (requiredVersion.StartsWith("<"))
-            {
-                // <1.0.0
-                string maxVersion = requiredVersion.Substring(1);
-                return CompareVersions(installedVersion, maxVersion) < 0;
-            }
-            else
-            {
-                // 精确版本
-                return installedVersion == requiredVersion;
-            }
-        }
-
-        /// <summary>
-        /// 获取主版本号
-        /// </summary>
-        private static int GetMajorVersion(string version)
-        {
-            var parts = version.Split('.');
-            if (parts.Length > 0)
-                return int.Parse(parts[0]);
-            return 0;
-        }
-
-        /// <summary>
-        /// 获取次版本号
-        /// </summary>
-        private static int GetMinorVersion(string version)
-        {
-            var parts = version.Split('.');
-            if (parts.Length > 1)
-                return int.Parse(parts[1]);
-            return 0;
-        }
-
-        /// <summary>
-        /// 比较版本号
-        /// </summary>
-        private static int CompareVersions(string v1, string v2)
-        {
-            return VersionComparer.CompareVersion(v1, v2);
+            // 使用 VersionRange 进行完整的范围匹配
+            var versionRange = new VersionRange(requiredVersion);
+            return versionRange.IsSatisfiedBy(installedVersion);
         }
 
         /// <summary>

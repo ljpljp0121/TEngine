@@ -39,7 +39,25 @@ namespace PFPackageManager
             Debug.Log($"[InstallPackage] 开始安装 {package.name}");
             string targetVersion = version ?? package.version;
 
-            // 检查并安装依赖
+            // 1. 检测依赖冲突
+            var conflicts = DependencyConflictDetector.DetectConflicts(package, allPackages, installer);
+            if (conflicts.Count > 0)
+            {
+                string conflictReport = DependencyConflictDetector.GenerateConflictReport(conflicts);
+                Debug.LogWarning(conflictReport);
+
+                bool proceed = UnityEditor.EditorUtility.DisplayDialog(
+                    "依赖冲突警告",
+                    conflictReport + "\n\n是否仍要继续安装？",
+                    "继续安装（可能出错）",
+                    "取消"
+                );
+
+                if (!proceed)
+                    return;
+            }
+
+            // 2. 检查并安装依赖
             if (package.dependencies != null && package.dependencies.Count > 0)
             {
                 Debug.Log($"检查依赖: {package.displayName} 需要 {package.dependencies.Count} 个依赖");
@@ -54,7 +72,7 @@ namespace PFPackageManager
                 }
             }
 
-            // 直接安装
+            // 3. 直接安装
             InstallPackageInternal(package.name, targetVersion, package);
         }
 
@@ -239,8 +257,31 @@ namespace PFPackageManager
                     if (dep.Key.StartsWith("com.unity."))
                         return false;
 
-                    // 只处理未安装的第三方包
-                    return !installer.IsPackageInstalled(dep.Key);
+                    // 检查是否已安装
+                    if (!installer.IsPackageInstalled(dep.Key))
+                    {
+                        // 未安装，需要安装
+                        return true;
+                    }
+
+                    // 已安装，检查版本是否兼容
+                    string installedVersion = installer.GetInstalledVersion(dep.Key);
+                    string requiredVersion = dep.Value;
+
+                    var versionRange = new VersionRange(requiredVersion);
+                    bool isCompatible = versionRange.IsSatisfiedBy(installedVersion);
+
+                    if (!isCompatible)
+                    {
+                        Debug.LogWarning($"⚠️ 依赖冲突: {dep.Key}");
+                        Debug.LogWarning($"   已安装版本: {installedVersion}");
+                        Debug.LogWarning($"   需要版本: {requiredVersion}");
+                        Debug.LogWarning($"   将尝试升级到兼容版本");
+                        return true; // 需要重新安装
+                    }
+
+                    Debug.Log($"✓ 依赖 {dep.Key}@{installedVersion} 已满足要求 ({requiredVersion})");
+                    return false; // 已安装且兼容，跳过
                 })
                 .ToList();
 
@@ -268,7 +309,7 @@ namespace PFPackageManager
             }
 
             // 获取符合版本要求的版本
-            string depVersion = ResolveVersion(depVersionRange, depPackage.version);
+            string depVersion = ResolveVersion(depVersionRange, depPackage);
 
             // 递归安装依赖包
             InstallPackageInternal(depName, depVersion, depPackage,
@@ -342,16 +383,35 @@ namespace PFPackageManager
         }
 
         /// <summary>
-        /// 解析版本范围（简单实现）
+        /// 解析版本范围，从依赖包的所有版本中选择最佳版本
         /// </summary>
-        private string ResolveVersion(string versionRange, string latestVersion)
+        private string ResolveVersion(string versionRange, PackageInfo depPackage)
         {
-            // 移除版本前缀符号 ^, ~, >, <, =
-            string version = versionRange.TrimStart('^', '~', '>', '<', '=', ' ');
+            // 如果没有指定范围，返回最新版本
+            if (string.IsNullOrEmpty(versionRange) || versionRange == "*")
+            {
+                return depPackage.version;
+            }
 
-            // TODO: 实现完整的语义化版本匹配
-            // 目前简单返回最新版本
-            return latestVersion;
+            // 收集所有可用版本
+            var availableVersions = new System.Collections.Generic.List<string> { depPackage.version };
+            if (depPackage.versions != null)
+            {
+                availableVersions.AddRange(depPackage.versions.Select(v => v.version));
+            }
+
+            // 使用版本范围解析器选择最佳版本
+            var versionRangeParser = new VersionRange(versionRange);
+            string bestVersion = versionRangeParser.SelectBestVersion(availableVersions);
+
+            if (string.IsNullOrEmpty(bestVersion))
+            {
+                Debug.LogWarning($"无法找到满足 {versionRange} 的版本，将使用最新版本 {depPackage.version}");
+                return depPackage.version;
+            }
+
+            Debug.Log($"版本范围 '{versionRange}' 解析为: {bestVersion}");
+            return bestVersion;
         }
 
         /// <summary>
@@ -363,4 +423,3 @@ namespace PFPackageManager
         }
     }
 }
-
