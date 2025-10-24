@@ -2,6 +2,7 @@ using System.Collections;
 using System.Globalization;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace PFDebugger
@@ -28,12 +29,15 @@ namespace PFDebugger
         private Text ErrorCountText;
         [SerializeField]
         private Text FrameCountText;
+        [FormerlySerializedAs("alertColorInfo")]
         [SerializeField]
-        private Color alertColorInfo;
+        private Color AlertColorInfo;
+        [FormerlySerializedAs("alertColorWarning")]
         [SerializeField]
-        private Color alertColorWarning;
+        private Color AlertColorWarning;
+        [FormerlySerializedAs("alertColorError")]
         [SerializeField]
-        private Color alertColorError;
+        private Color AlertColorError;
 
         private Image backgroundImage;
         private RectTransform rectTransform;
@@ -102,77 +106,85 @@ namespace PFDebugger
         /// <param name="immediately"></param>
         private void UpdatePosition(bool immediately)
         {
-            Vector2 canvasRawSize = DebuggerManager.I.RectTransform.rect.size;
-            Debug.Log($"Canvas size: {canvasRawSize}, anchoredPosition: {rectTransform.anchoredPosition}");
-            float canvasWidth = canvasRawSize.x;
-            float canvasHeight = canvasRawSize.y;
-
-            float canvasBottomLeftX = 0f;
-            float canvasBottomLeftY = 0f;
-
-            // Calculate safe area position of the popup
-            // normalizedPosition allows us to glue the popup to a specific edge of the screen. It becomes useful when
-            // the popup is at the right edge and we switch from portrait screen orientation to landscape screen orientation.
-            // Without normalizedPosition, popup could jump to bottom or top edges instead of staying at the right edge
-            Vector2 pos = canvasRawSize * 0.5f + (immediately
-                ? new Vector2(normalizedPosition.x * canvasWidth, normalizedPosition.y * canvasHeight)
-                : (rectTransform.anchoredPosition - new Vector2(canvasBottomLeftX, canvasBottomLeftY)));
+            RectTransform managerRect = DebuggerManager.I.RectTransform;
+            Vector2 canvasSize = managerRect.rect.size;
+            float canvasWidth = canvasSize.x;
+            float canvasHeight = canvasSize.y;
             
-            // Find distances to all four edges of the safe area
-            float distToLeft = pos.x;
-            float distToRight = canvasWidth - distToLeft;
-
-            float distToBottom = pos.y;
-            float distToTop = canvasHeight - distToBottom;
-            
-            float horDistance = Mathf.Min( distToLeft, distToRight );
-            float vertDistance = Mathf.Min( distToBottom, distToTop );
-            
-            if( horDistance < vertDistance )
+            // 计算当前位置
+            Vector2 currentPosition;
+            if (immediately)
             {
-                if( distToLeft < distToRight )
-                    pos = new Vector2( halfSize.x, pos.y );
-                else
-                    pos = new Vector2( canvasWidth - halfSize.x, pos.y );
-
-                pos.y = Mathf.Clamp( pos.y, halfSize.y, canvasHeight - halfSize.y );
+                currentPosition = canvasSize * 0.5f + new Vector2(
+                    normalizedPosition.x * canvasWidth, 
+                    normalizedPosition.y * canvasHeight);
             }
             else
             {
-                if( distToBottom < distToTop )
-                    pos = new Vector2( pos.x, halfSize.y );
-                else
-                    pos = new Vector2( pos.x, canvasHeight - halfSize.y );
-
-                pos.x = Mathf.Clamp( pos.x, halfSize.x, canvasWidth - halfSize.x );
+                currentPosition = rectTransform.anchoredPosition + canvasSize * 0.5f;
             }
             
-            pos -= canvasRawSize * 0.5f;
+            float distanceToLeft = currentPosition.x;
+            float distanceToRight = canvasWidth - distanceToLeft;
+            float distanceToBottom = currentPosition.y;
+            float distanceToTop = canvasHeight - distanceToBottom;
             
-            normalizedPosition.Set( pos.x / canvasWidth, pos.y / canvasHeight );
-            
-            // Safe area's bottom left coordinates are added to pos only after normalizedPosition's value
-            // is set because normalizedPosition is in range [-canvasWidth / 2, canvasWidth / 2]
-            pos += new Vector2( canvasBottomLeftX, canvasBottomLeftY );
-            
-            // If another smooth movement animation is in progress, cancel it
-            if( moveToPosCoroutine != null )
+            // 确定最近的边缘方向
+            Vector2 targetPosition;
+            if (Mathf.Min(distanceToLeft, distanceToRight) < Mathf.Min(distanceToBottom, distanceToTop))
             {
-                StopCoroutine( moveToPosCoroutine );
+                // 水平边缘更近
+                if (distanceToLeft < distanceToRight)
+                {
+                    targetPosition = new Vector2(halfSize.x, currentPosition.y);
+                }
+                else
+                {
+                    targetPosition = new Vector2(canvasWidth - halfSize.x, currentPosition.y);
+                }
+        
+                // 限制Y轴范围
+                targetPosition.y = Mathf.Clamp(targetPosition.y, halfSize.y, canvasHeight - halfSize.y);
+            }
+            else
+            {
+                // 垂直边缘更近
+                if (distanceToBottom < distanceToTop)
+                {
+                    targetPosition = new Vector2(currentPosition.x, halfSize.y);
+                }
+                else
+                {
+                    targetPosition = new Vector2(currentPosition.x, canvasHeight - halfSize.y);
+                }
+        
+                // 限制X轴范围
+                targetPosition.x = Mathf.Clamp(targetPosition.x, halfSize.x, canvasWidth - halfSize.x);
+            }
+            
+            normalizedPosition.Set(
+                (targetPosition.x - canvasSize.x * 0.5f) / canvasWidth,
+                (targetPosition.y - canvasSize.y * 0.5f) / canvasHeight);
+            
+            Vector2 finalPosition = targetPosition - canvasSize * 0.5f;
+            
+            if (moveToPosCoroutine != null)
+            {
+                StopCoroutine(moveToPosCoroutine);
                 moveToPosCoroutine = null;
             }
             
-            if( immediately )
-                rectTransform.anchoredPosition = pos;
+            if (immediately)
+            {
+                rectTransform.anchoredPosition = finalPosition;
+            }
             else
             {
-                // Smoothly translate the popup to the specified position
-                moveToPosCoroutine = MoveToPosAnimation( pos );
-                StartCoroutine( moveToPosCoroutine );
+                moveToPosCoroutine = MoveToPosAnimation(finalPosition);
+                StartCoroutine(moveToPosCoroutine);
             }
         }
-    
-        // A simple smooth movement animation
+        
         private IEnumerator MoveToPosAnimation(Vector2 targetPos)
         {
             float modifier = 0f;
