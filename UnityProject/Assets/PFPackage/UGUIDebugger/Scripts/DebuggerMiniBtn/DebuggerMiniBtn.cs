@@ -1,5 +1,13 @@
+/* 
+****************************************************
+* 文件：DebuggerMiniBtn.cs
+* 作者：PeiFeng
+* 创建时间：2025/10/25 18:58:53 星期六
+* 功能：日志系统迷你入口
+****************************************************
+*/
+
 using System.Collections;
-using System.Globalization;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;

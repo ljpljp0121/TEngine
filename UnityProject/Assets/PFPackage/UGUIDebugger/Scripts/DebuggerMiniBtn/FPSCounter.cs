@@ -1,5 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+/* 
+****************************************************
+* 文件：FPSCounter.cs
+* 作者：PeiFeng
+* 创建时间：2025/10/25 18:59:20 星期六
+* 功能：帧率计算
+****************************************************
+*/
+
 using UnityEngine;
 
 namespace PFDebugger

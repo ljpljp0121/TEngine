@@ -1,6 +1,12 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+/* 
+****************************************************
+* 文件：DebuggerManager.cs
+* 作者：PeiFeng
+* 创建时间：2025/10/25 18:54:49 星期六
+* 功能：日志系统管理器
+****************************************************
+*/
+
 using UnityEngine;
 
 namespace PFDebugger
