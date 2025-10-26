@@ -98,6 +98,18 @@ namespace PFDebugger
                 debuggerMainWindow.OnUpdate();
         }
 
+        private void OnDestroy()
+        {
+            if (!isActive) return;
+            OnRelease();
+        }
+
+        private void OnRelease()
+        {   
+            debuggerMiniBtn?.OnRelease();
+            debuggerMainWindow?.OnRelease();
+        }
+
 
         private void CheckActive()
         {

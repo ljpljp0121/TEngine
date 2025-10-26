@@ -34,7 +34,7 @@ namespace PFDebugger
             {
                 //查看窗口
                 var windowAttr = type.GetCustomAttribute<DebuggerWindowAttribute>();
-                if (windowAttr != null && typeof(IWindowBase).IsAssignableFrom(type))
+                if (windowAttr != null && typeof(WindowBase).IsAssignableFrom(type))
                 {
                     AddNode(windowAttr.Path, windowAttr.Order, PathNodeType.Window, windowType: type);
                 }

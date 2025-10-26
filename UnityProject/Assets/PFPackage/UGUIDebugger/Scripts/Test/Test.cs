@@ -3,25 +3,25 @@ using UnityEngine;
 namespace PFDebugger
 {
     [DebuggerWindow("Test3/TestWindow1")]
-    public class TestWindow1 : IWindowBase
+    public class TestWindow1 : WindowBase
     {
         
     }
     
     [DebuggerWindow("Test3/TestWindow2")]
-    public class TestWindow2 : IWindowBase
+    public class TestWindow2 : WindowBase
     {
         
     }
     
     [DebuggerWindow("Test1/TestWindow3")]
-    public class TestWindow3 : IWindowBase
+    public class TestWindow3 : WindowBase
     {
         
     }
     
     [DebuggerWindow("Test2/TestWindow4")]
-    public class TestWindow4 : IWindowBase
+    public class TestWindow4 : WindowBase
     {
         
     }
@@ -29,10 +29,10 @@ namespace PFDebugger
     public class Test
     {
      
-        [DebuggerWindow("Test1/MethodTest")]
+        [DebuggerWindow("Close")]
         public static void MethodTest()
         { 
-            Debug.Log("MethodTest");
+            DebuggerManager.I.ShowMainWindow(false);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace PFDebugger
         public string Path;
         public int Order;
         public PathNodeType NodeType;
-        public IWindowBase Window;
+        public WindowBase Window;
         public Action Method;
         public List<PathNode> Children = new List<PathNode>();
         public PathNode Parent;

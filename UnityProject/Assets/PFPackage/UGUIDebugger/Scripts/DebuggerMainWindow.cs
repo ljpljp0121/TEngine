@@ -32,8 +32,8 @@ namespace PFDebugger
         public GameObject BtnLayoutPrefab;
         public GameObject BtnPrefab;
 
-        public Transform TitleRoot;
-        public Transform WindowRoot;
+        public RectTransform TitleRoot;
+        public RectTransform WindowRoot;
 
         private WindowTreeBuilder windowTreeBuilder;
         private PathNode selectedNode; //当前选中的窗口节点
@@ -49,6 +49,11 @@ namespace PFDebugger
         }
 
         internal void OnUpdate() { }
+        
+        internal void OnRelease()
+        {
+            ClearCurrentUI();
+        }
 
         public void ShowLevel(PathNode node)
         {
@@ -80,6 +85,7 @@ namespace PFDebugger
                     SetMenuAction(child, item);
                 }
             }
+            WindowRoot.offsetMax = new Vector2(0, -currentLayouts.Count * BtnLayoutPrefab.GetComponent<RectTransform>().rect.height);
         }
 
         private void SetMenuAction(PathNode child, MenuItem item)

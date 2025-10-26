@@ -78,6 +78,11 @@ namespace PFDebugger
             fpsCounter.Update(Time.deltaTime, Time.unscaledDeltaTime);
             FrameCountText.text = fpsCounter.CurrentFps.ToString("F2");
         }
+        
+        internal void OnRelease()
+        {
+            
+        }
 
         public void OnBeginDrag(PointerEventData eventData)
         {
