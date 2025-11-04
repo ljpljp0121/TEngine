@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8a0dfbcd6854965bb6ae78627009a53, type: 3}
   m_Name: ScriptGeneratorSetting
   m_EditorClassIdentifier: 
-  _codePath: 
-  _namespace: Client_UI
+  useBindComponent: 1
+  windowComponentSuffixName: DataComponent
+  widgetComponentSuffixName: WidgetDataComponent
+  _codePath: Assets/GameScripts/HotFix/GameLogic/UI
+  _namespace: GameLogic
   _widgetName: item
-  CodeStyle: 0
+  CodeStyle: 1
   scriptGenerateRule:
   - uiElementRegex: m_go
     componentName: 0

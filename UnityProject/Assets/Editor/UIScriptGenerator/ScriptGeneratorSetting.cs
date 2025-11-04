@@ -28,10 +28,14 @@ namespace TEngine.Editor.UI
             }
         }
 
+        [SerializeField] private bool useBindComponent;
+        [SerializeField] private string windowComponentSuffixName = "DataComponent";
+        [SerializeField] private string widgetComponentSuffixName = "WidgetDataComponent";
+
         // [FolderPath]
         // [LabelText("默认组件代码保存路径")]
         [SerializeField]
-        private string _codePath;
+        private string _codePath = "Assets/GameScripts/HotFix/GameLogic/UI";
 
         // [LabelText("绑定代码命名空间")]
         [SerializeField]
@@ -41,12 +45,17 @@ namespace TEngine.Editor.UI
         [SerializeField]
         private string _widgetName = "item";
 
+        public string WindowComponentSuffixName => windowComponentSuffixName;
+        public string WidgetComponentSuffixName => widgetComponentSuffixName;
+
+        public bool UseBindComponent => useBindComponent;
+
         public string CodePath => _codePath;
 
         public string Namespace => _namespace;
 
         public string WidgetName => _widgetName;
-        
+
         public UIFieldCodeStyle CodeStyle = UIFieldCodeStyle.UnderscorePrefix;
 
         [SerializeField]
@@ -132,7 +141,7 @@ namespace TEngine.Editor.UI
 
             return Instance.CodePath;
         }
-        
+
         public static string GetWidgetName()
         {
             if (Instance == null)
@@ -141,6 +150,35 @@ namespace TEngine.Editor.UI
             }
 
             return Instance.WidgetName;
+        }
+
+        public static string GetPrefixNameByCodeStyle(UIFieldCodeStyle style)
+        {
+            return style switch
+            {
+                UIFieldCodeStyle.UnderscorePrefix => "_",
+                UIFieldCodeStyle.MPrefix => "m_",
+                _ => "m_"
+            };
+        }
+
+        public static string GetUIComponentWithoutPrefixName(UIComponentName uiComponentName)
+        {
+            if (Instance.ScriptGenerateRule == null)
+            {
+                return string.Empty;
+            }
+
+            for (int i = 0; i < Instance.ScriptGenerateRule.Count; i++)
+            {
+                var rule = Instance.ScriptGenerateRule[i];
+
+                if (rule.componentName == uiComponentName)
+                {
+                    return rule.uiElementRegex.Substring(rule.uiElementRegex.IndexOf("_", StringComparison.Ordinal) + 1);
+                }
+            }
+            return string.Empty;
         }
     }
 }

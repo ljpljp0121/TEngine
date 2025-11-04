@@ -17,6 +17,9 @@ namespace TEngine.Editor.UI
         /// </summary>
         [InspectorName("Field names start with m_ prefix (e.g., m_variable)")]
         MPrefix,
+
+        [InspectorName("占位符(选择无效)")]
+        Max,
     }
 
     [Serializable]

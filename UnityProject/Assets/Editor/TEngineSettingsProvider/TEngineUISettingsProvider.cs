@@ -1,3 +1,4 @@
+using System;
 using TEngine.Editor.UI;
 using UnityEditor;
 using UnityEditorInternal;
@@ -22,9 +23,23 @@ public static class TEngineUISettingsProvider
             guiHandler = (searchContext) =>  
             {  
                 var scriptGeneratorSetting = ScriptGeneratorSetting.Instance;  
-                var scriptGenerator = new SerializedObject(scriptGeneratorSetting);  
-                scriptGenerator.Update();
-                EditorGUILayout.PropertyField(scriptGenerator.FindProperty("_codePath"));  
+                var scriptGenerator = new SerializedObject(scriptGeneratorSetting);
+                var useBindComponent = scriptGenerator.FindProperty("useBindComponent");
+                EditorGUILayout.PropertyField(useBindComponent);
+
+                if (useBindComponent.boolValue)
+                {
+                    var codePath = scriptGenerator.FindProperty("_codePath");
+                    codePath.stringValue =
+                        DrawFolderField("代码文件生成路径", String.Empty, codePath.stringValue); // "FolderOpened Icon"
+                    var windowComponentSuffixName = scriptGenerator.FindProperty("windowComponentSuffixName");
+                    windowComponentSuffixName.stringValue =
+                        EditorGUILayout.TextField("窗体组件脚本后缀名", windowComponentSuffixName.stringValue);
+                    var widgetComponentSuffixName = scriptGenerator.FindProperty("widgetComponentSuffixName");
+                    widgetComponentSuffixName.stringValue =
+                        EditorGUILayout.TextField("widget组件脚本后缀名", widgetComponentSuffixName.stringValue);
+                }
+                // EditorGUILayout.PropertyField(scriptGenerator.FindProperty("_codePath"));
                 EditorGUILayout.PropertyField(scriptGenerator.FindProperty("_namespace"));  
                 EditorGUILayout.PropertyField(scriptGenerator.FindProperty("_widgetName"));  
                 EditorGUILayout.PropertyField(scriptGenerator.FindProperty("CodeStyle"));
@@ -33,6 +48,39 @@ public static class TEngineUISettingsProvider
             },  
             keywords = new[] { "TEngine", "Settings", "Custom" }  
         };  
+    }
+
+    private static string DrawFolderField(string label, string labelIcon, string path)
+    {
+        using var horizontalScope = new EditorGUILayout.HorizontalScope();
+
+        var buttonGUIContent = new GUIContent("选择", EditorGUIUtility.IconContent("Folder Icon").image);
+
+        if (!string.IsNullOrEmpty(labelIcon))
+        {
+            var labelGUIContent = new GUIContent(" " + label, EditorGUIUtility.IconContent(labelIcon).image);
+            path = EditorGUILayout.TextField(labelGUIContent, path);
+        }
+        else
+        {
+            path = EditorGUILayout.TextField(label, path);
+        }
+
+        if (GUILayout.Button(buttonGUIContent, GUILayout.Width(60), GUILayout.Height(20)))
+        {
+            var newPath = EditorUtility.OpenFolderPanel(label, Application.dataPath, string.Empty);
+
+            if (!string.IsNullOrEmpty(newPath) && newPath.StartsWith(Application.dataPath))
+            {
+                path = "Assets" + newPath.Substring(Application.dataPath.Length);
+            }
+            else
+            {
+                Debug.LogError("路径不在Unity项目内: " + newPath);
+            }
+        }
+
+        return path;
     }
 
     private static void DrawReorderableList(SerializedObject serializedObject)
@@ -85,7 +133,6 @@ public static class TEngineUISettingsProvider
                 {
                     serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(serializedObject.targetObject);
-                    AssetDatabase.SaveAssets();
                 };
                 _reorderableList.onAddCallback = (ReorderableList list) =>
                 {
@@ -93,22 +140,18 @@ public static class TEngineUISettingsProvider
                     list.index = list.serializedProperty.arraySize - 1;
                     serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(serializedObject.targetObject);
-                    AssetDatabase.SaveAssets();
                 };
                 _reorderableList.onRemoveCallback = (ReorderableList list) =>
                 {
                     list.serializedProperty.DeleteArrayElementAtIndex(list.index);
                     serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(serializedObject.targetObject);
-                    AssetDatabase.SaveAssets();
                 };
             }
-            serializedObject.Update();
             _reorderableList.DoLayoutList();
             if (serializedObject.ApplyModifiedProperties())
             {
                 EditorUtility.SetDirty(serializedObject.targetObject);
-                AssetDatabase.SaveAssets();
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
