@@ -35,10 +35,20 @@
 
         public static void OnImportSprite(string assetPath, bool isCreateNew = false)
         {
+            assetPath = assetPath.Replace("\\", "/");
             if (!ShouldProcess(assetPath)) return;
 
             var atlasName = GetAtlasName(assetPath);
             if (string.IsNullOrEmpty(atlasName)) return;
+
+            if (CheckIsNeedGenerateSingleAtlas(assetPath))
+            {
+                atlasName = GetSingleAtlasName(assetPath);
+            }
+            else if (CheckIsNeedGenerateRootChildDirAtlas(assetPath))
+            {
+                atlasName = GetRootChildDirAtlasName(assetPath);
+            }
 
             if (!_atlasMap.TryGetValue(atlasName, out var list))
             {
@@ -56,10 +66,20 @@
 
         public static void OnDeleteSprite(string assetPath, bool isCreateNew = true)
         {
+            assetPath = assetPath.Replace("\\", "/");
             if (!ShouldProcess(assetPath)) return;
 
             var atlasName = GetAtlasName(assetPath);
             if (string.IsNullOrEmpty(atlasName)) return;
+
+            if (CheckIsNeedGenerateSingleAtlas(assetPath))
+            {
+                atlasName = GetSingleAtlasName(assetPath);
+            }
+            else if (CheckIsNeedGenerateRootChildDirAtlas(assetPath))
+            {
+                atlasName = GetRootChildDirAtlasName(assetPath);
+            }
 
             if (_atlasMap.TryGetValue(atlasName, out var list))
             {
@@ -72,12 +92,43 @@
         }
 
         [MenuItem("Tools/图集工具/ForceGenerateAll")]
-        public static void ForceGenerateAll()
+        private static void ForceGenerateAll()
         {
+            ForceGenerateAll(false);
+        }
+
+        public static void ForceGenerateAll(bool isClearAll = false)
+        {
+            if (isClearAll)
+            {
+                ClearCache();
+                ClearAllAtlas();
+            }
             _atlasMap.Clear();
             ScanExistingSprites();
             _dirtyAtlasNamesNeedCreateNew.UnionWith(_atlasMap.Keys);
             ProcessDirtyAtlases(true);
+        }
+
+        private static void ClearAllAtlas()
+        {
+            string[] atlasV2Files =
+                Directory.GetFiles(Config.outputAtlasDir, "*.spriteatlasv2", SearchOption.AllDirectories);
+            string[] atlasFiles =
+                Directory.GetFiles(Config.outputAtlasDir, "*.spriteatlas", SearchOption.AllDirectories);
+
+            foreach (string filePath in atlasFiles)
+            {
+                AssetDatabase.DeleteAsset(filePath);
+            }
+
+            foreach (string filePath in atlasV2Files)
+            {
+                AssetDatabase.DeleteAsset(filePath);
+            }
+
+            AssetDatabase.Refresh();
+            Debug.Log($"已删除 {atlasFiles?.Length + atlasV2Files?.Length} 个图集文件");
         }
 
         public static void ClearCache()
@@ -90,17 +141,23 @@
 
         public static void MarkParentAtlasesDirty(string assetPath, bool isCreateNew)
         {
-            var currentPath = Path.GetDirectoryName(assetPath).Replace("\\", "/");
-            var rootPath = Config.sourceAtlasRoot.Replace("\\", "/").TrimEnd('/');
-            while (currentPath != null && currentPath.StartsWith(rootPath))
-            {
-                var parentAtlasName = GetAtlasNameForDirectory(currentPath);
-                if (!string.IsNullOrEmpty(parentAtlasName))
-                {
-                    MarkDirty(parentAtlasName, isCreateNew);
-                }
+            var currentPath = Path.GetDirectoryName(assetPath)?.Replace("\\", "/");
 
-                currentPath = Path.GetDirectoryName(currentPath);
+            var tempRootDirArr = new List<string>(Config.sourceAtlasRootDir);
+            tempRootDirArr.AddRange(Config.rootChildAtlasDir);
+            foreach (var rootPath in tempRootDirArr)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                while (currentPath != null && currentPath.StartsWith(tempPath))
+                {
+                    var parentAtlasName = GetAtlasNameForDirectory(currentPath);
+
+                    if (!string.IsNullOrEmpty(parentAtlasName))
+                    {
+                        MarkDirty(parentAtlasName, isCreateNew);
+                    }
+                    currentPath = Path.GetDirectoryName(assetPath);
+                }
             }
         }
 
@@ -368,22 +425,29 @@
 
         private static string GetAtlasName(string assetPath)
         {
-            var normalizedPath = assetPath.Replace("\\", "/");
-            var rootPath = Config.sourceAtlasRoot.Replace("\\", "/").TrimEnd('/');
-
-            if (!normalizedPath.StartsWith(rootPath + "/")) return null;
-
-            var relativePath = normalizedPath
-                .Substring(rootPath.Length + 1)
-                .Split('/');
-
-            if (relativePath.Length < 2) return null;
-
-            var directories = relativePath.Take(relativePath.Length - 1);
-            var atlasNamePart = string.Join("_", directories);
-            var rootFolderName = Path.GetFileName(rootPath);
-
-            return $"{rootFolderName}_{atlasNamePart}";
+            var tempRootDirArr = new List<string>(Config.sourceAtlasRootDir);
+            tempRootDirArr.AddRange(Config.rootChildAtlasDir);
+            foreach (var rootPath in tempRootDirArr)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                if (!assetPath.StartsWith(tempPath + "/"))
+                {
+                    continue;
+                }
+                var relativePath = assetPath.Substring(tempPath.Length + 1).Split('/');
+                // 根目录下文本不处理
+                if (relativePath.Length < 2)
+                {
+                    return null;
+                }
+                // 提取目录部分
+                var directories = relativePath.Take(relativePath.Length - 1);
+                var atlasNames = string.Join("_", directories);
+                // 根目录文件名
+                var rootFolderName = Path.GetFileName(tempPath);
+                return $"{rootFolderName}_{atlasNames}";
+            }
+            return null;
         }
 
         private static bool ShouldProcess(string assetPath)
@@ -393,8 +457,8 @@
 
         private static bool IsExcluded(string path)
         {
-            return path.StartsWith(Config.excludeFolder) ||
-                   Config.excludeKeywords.Any(k => path.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0);
+            return CheckIsExcludeFolder(path)//spritePath.StartsWith(Config.excludeFolder)
+                   || Config.excludeKeywords.Any(key => path.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         private static bool IsImageFile(string path)
@@ -411,7 +475,10 @@
             }
             else
             {
-                _dirtyAtlasNames.Add(atlasName);
+                if (!_dirtyAtlasNamesNeedCreateNew.Contains(atlasName))
+                {
+                    _dirtyAtlasNames.Add(atlasName);
+                }
             }
         }
 
@@ -436,6 +503,7 @@
                 AssetDatabase.DeleteAsset(path);
                 if (Config.enableLogging)
                     Debug.Log($"Deleted empty atlas: {Path.GetFileName(path)}");
+                AssetDatabase.Refresh();
             }
         }
 
@@ -450,10 +518,15 @@
 
         private static void ScanExistingSprites(bool isCreateNew = true)
         {
-            var guids = AssetDatabase.FindAssets("t:Sprite", new[] { Config.sourceAtlasRoot });
-            foreach (var guid in guids)
+            List<string> sprites = new List<string>();
+            var guids = AssetDatabase.FindAssets("t:sprite", Config.sourceAtlasRootDir);
+            sprites.AddRange(guids);
+            guids = AssetDatabase.FindAssets("t:sprite", Config.rootChildAtlasDir);
+            sprites.AddRange(guids);
+            foreach (var guid in sprites)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
+
                 if (ShouldProcess(path))
                 {
                     OnImportSprite(path, isCreateNew);
@@ -463,19 +536,94 @@
 
         private static string GetAtlasNameForDirectory(string directoryPath)
         {
-            var normalizedPath = directoryPath.Replace("\\", "/");
-            var rootPath = Config.sourceAtlasRoot.Replace("\\", "/").TrimEnd('/');
+            foreach (var rootPath in Config.sourceAtlasRootDir)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                if (!directoryPath.StartsWith(tempPath + "/"))
+                {
+                    continue;
+                }
+                var relativePath = directoryPath.Substring(rootPath.Length + 1).Split('/');
+                var atlasNamePart = string.Join("_", relativePath);
+                var rootFolderName = Path.GetFileName(rootPath);
+                return $"{rootFolderName}_{atlasNamePart}";
+            }
+            return null;
+        }
 
-            if (!normalizedPath.StartsWith(rootPath + "/")) return null;
+        private static string GetSingleAtlasName(string spritePath)
+        {
+            foreach (var rootPath in Config.sourceAtlasRootDir)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                if (!spritePath.StartsWith(tempPath + "/"))
+                {
+                    continue;
+                }
+                var relativePath = spritePath.Substring(tempPath.Length + 1).Split('/');
+                // 根目录下文本不处理
+                if (relativePath.Length < 2)
+                {
+                    return null;
+                }
+                // 提取目录部分
+                // var directories = relativePath.Take(relativePath.Length - 1);
+                relativePath[^1] = Path.GetFileNameWithoutExtension(spritePath);
+                var atlasNames = string.Join("_", relativePath);
+                // 根目录文件名
+                var rootFolderName = Path.GetFileName(tempPath);
+                return $"{rootFolderName}_{atlasNames}";
+            }
+            return null;
+        }
 
-            var relativePath = normalizedPath
-                .Substring(rootPath.Length + 1)
-                .Split('/');
+        private static bool CheckIsNeedGenerateSingleAtlas(string spritePath)
+        {
+            // 检查是否是需要排除的路径
+            return !CheckIsExcludeFolder(spritePath)//spritePath.StartsWith(Config.excludeFolder)
+                   && Config.singleAtlasDir.Any(key => spritePath.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
 
-            var atlasNamePart = string.Join("_", relativePath);
-            var rootFolderName = Path.GetFileName(rootPath);
+        private static bool CheckIsNeedGenerateRootChildDirAtlas(string spritePath)
+        {
+            // 检查是否是需要排除的路径
+            return !CheckIsExcludeFolder(spritePath)//spritePath.StartsWith(Config.excludeFolder)
+                   && Config.rootChildAtlasDir.Any(key => spritePath.IndexOf(key, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
 
-            return $"{rootFolderName}_{atlasNamePart}";
+        private static string GetRootChildDirAtlasName(string spritePath)
+        {
+            foreach (var rootPath in Config.rootChildAtlasDir)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                if (spritePath.StartsWith(tempPath))
+                {
+                    string[] subDirectories = AssetDatabase.GetSubFolders(tempPath);
+                    foreach (var subDirectory in subDirectories)
+                    {
+                        if (spritePath.StartsWith(subDirectory))
+                        {
+                            string rootName = Path.GetFileName(tempPath);
+                            string directoryName = Path.GetFileName(subDirectory);
+                            return $"{rootName}_{directoryName}";
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        private static bool CheckIsExcludeFolder(string assetPath)
+        {
+            foreach (var rootPath in AtlasConfiguration.Instance.excludeFolder)
+            {
+                var tempPath = rootPath.Replace("\\", "/").TrimEnd('/');
+                if (assetPath.StartsWith(tempPath + "/"))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
