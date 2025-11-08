@@ -6,6 +6,7 @@ using System.IO;
 using Obfuz.Settings;
 using Obfuz4HybridCLR;
 using System.Collections.Generic;
+using HybridCLR.Editor.Installer;
 using TEngine.Editor;
 using UnityEditor;
 using UnityEngine;
@@ -35,12 +36,20 @@ public static class BuildDLLCommand
     [MenuItem("HybridCLR/Define Symbols/Enable HybridCLR", false, 31)]
     public static void EnableHybridCLR()
     {
+        // 先去判断安装了没
+        var controller = new InstallerController();
+        if (!controller.HasInstalledHybridCLR())
+        {
+            controller.InstallDefaultHybridCLR();
+        }
+
+        if (!HybridCLR.Editor.SettingsUtil.Enable)
+        {
+            HybridCLR.Editor.SettingsUtil.Enable = true;
+            UpdateSettingEditor.ForceUpdateAssemblies();
+        }
         ScriptingDefineSymbols.RemoveScriptingDefineSymbol(EnableHybridClrScriptingDefineSymbol);
         ScriptingDefineSymbols.AddScriptingDefineSymbol(EnableHybridClrScriptingDefineSymbol);
-#if ENABLE_HYBRIDCLR
-        HybridCLR.Editor.SettingsUtil.Enable = true;
-        UpdateSettingEditor.ForceUpdateAssemblies();
-#endif
     }
     #endregion
     

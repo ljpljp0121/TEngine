@@ -64,6 +64,7 @@ namespace TEngine.Editor
                 {
                     // 在修改HybridCLRSettings后添加
                     EditorUtility.SetDirty(HybridCLRSettings.Instance);
+                    HybridCLRSettings.Save();
                     AssetDatabase.SaveAssets();
                 }
             }
@@ -95,6 +96,9 @@ namespace TEngine.Editor
             }
             
             HybridCLRSettings.Instance.patchAOTAssemblies = updateSetting.AOTMetaAssemblies.ToArray();
+            HybridCLRSettings.Save();
+            EditorUtility.SetDirty(HybridCLRSettings.Instance);
+            AssetDatabase.SaveAssets();
             
             Debug.Log("HotUpdateAssemblies changed");
         }
