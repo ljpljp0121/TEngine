@@ -33,6 +33,7 @@ namespace PFDebugger
         public GameObject BtnPrefab;
 
         public RectTransform TitleRoot;
+        public RectTransform MainWindowRoot;
         public RectTransform WindowRoot;
 
         private WindowTreeBuilder windowTreeBuilder;
@@ -48,8 +49,6 @@ namespace PFDebugger
             ShowLevel(windowTreeBuilder.GetRoot());
         }
 
-        internal void OnUpdate() { }
-        
         internal void OnRelease()
         {
             ClearCurrentUI();
@@ -85,17 +84,21 @@ namespace PFDebugger
                     SetMenuAction(child, item);
                 }
             }
-            WindowRoot.offsetMax = new Vector2(0, -currentLayouts.Count * BtnLayoutPrefab.GetComponent<RectTransform>().rect.height);
+            MainWindowRoot.offsetMax = new Vector2(0, -currentLayouts.Count * BtnLayoutPrefab.GetComponent<RectTransform>().rect.height);
         }
 
         private void SetMenuAction(PathNode child, MenuItem item)
         {
-            if (child.NodeType == PathNodeType.Menu)
+            if (child.NodeType == PathNodeType.Menu )
                 item.AddListener(() => ShowLevel(child));
             else if (child.NodeType == PathNodeType.Method)
                 item.AddListener(child.Method);
             else if (child.NodeType == PathNodeType.Window)
-                item.AddListener(() => Debug.Log($"打开窗口: {child.Window}"));
+                item.AddListener(() =>
+                {
+                    ShowLevel(child);
+                    
+                });
         }
 
         /// <summary>

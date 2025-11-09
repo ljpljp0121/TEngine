@@ -29,7 +29,7 @@ namespace PFDebugger
     public class Test
     {
      
-        [DebuggerWindow("Close")]
+        [DebuggerBtn("Close")]
         public static void MethodTest()
         { 
             DebuggerManager.I.ShowMainWindow(false);

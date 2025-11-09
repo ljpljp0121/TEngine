@@ -43,7 +43,7 @@ namespace PFDebugger
                 var methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
                 foreach (var method in methods)
                 {
-                    var methodAttr = method.GetCustomAttribute<DebuggerWindowAttribute>();
+                    var methodAttr = method.GetCustomAttribute<DebuggerBtnAttribute>();
                     if (methodAttr != null)
                     {
                         AddNode(methodAttr.Path, methodAttr.Order, PathNodeType.Method, method: () => method.Invoke(null, null));
@@ -96,7 +96,7 @@ namespace PFDebugger
                 {
                     if (nodeType == PathNodeType.Window && windowType != null)
                     {
-                        // node.Window = Activator.CreateInstance(windowType) as IWindowBase;
+                       
                     }
                     else if (nodeType == PathNodeType.Method)
                     {

@@ -94,8 +94,6 @@ namespace PFDebugger
             if (!isActive) return;
             if (debuggerMiniBtn != null && debuggerMiniBtn.IsActive)
                 debuggerMiniBtn.OnUpdate();
-            if (debuggerMainWindow != null && debuggerMainWindow.IsActive)
-                debuggerMainWindow.OnUpdate();
         }
 
         private void OnDestroy()
