@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65d8129285eb62e48a9dbc9a0fde212d, type: 3}
+  m_Name: FeiShuExcelSetting
+  m_EditorClassIdentifier: 
+  APPID: cli_a985cf7c0475900e
+  APPSecret: EW6Udcp67Gl3K0u16F3h3foP8yejduIZ
+  FeiShuFolderRootToken: CmD2fQ2felRuw3dLB0Rc26NfnDc
+  LocalRootPath: E:\Unity\TEngine\Configs\GameConfig\Datas
+  ExcelInfoDic:
+    Keys:
+    - F5ucsODCjhi00EtD5i1cKlRxn6d
+    Values:
+    - ExcelToken: F5ucsODCjhi00EtD5i1cKlRxn6d
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 6eb039
+        Index: 0
+      - SheetTitle: Sheet2
+        SheetId: w61fD8
+        Index: 1
