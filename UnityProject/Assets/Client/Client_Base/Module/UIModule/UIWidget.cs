@@ -209,6 +209,7 @@ namespace Client_Base
             _parent = parentUI;
             Parent.ListChild.Add(this);
             Parent.SetUpdateDirty();
+            Inject();
             ScriptGenerator();
             BindMemberProperty();
             RegisterEvent();

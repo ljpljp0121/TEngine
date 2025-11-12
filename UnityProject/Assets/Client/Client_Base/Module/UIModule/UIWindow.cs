@@ -285,6 +285,7 @@ namespace Client_Base
             if (_isCreate == false)
             {
                 _isCreate = true;
+                Inject();
                 ScriptGenerator();
                 BindMemberProperty();
                 RegisterEvent();
