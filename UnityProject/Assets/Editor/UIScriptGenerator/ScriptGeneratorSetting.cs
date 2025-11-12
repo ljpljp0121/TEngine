@@ -58,6 +58,8 @@ namespace TEngine.Editor.UI
 
         public UIFieldCodeStyle CodeStyle = UIFieldCodeStyle.UnderscorePrefix;
 
+        public bool NullableEnable;
+
         [SerializeField]
         private List<ScriptGenerateRuler> scriptGenerateRule = new List<ScriptGenerateRuler>()
         {

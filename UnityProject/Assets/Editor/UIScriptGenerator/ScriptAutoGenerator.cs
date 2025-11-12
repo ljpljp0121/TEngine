@@ -382,7 +382,7 @@ namespace TEngine.Editor.UI
                 return;
             }
             // string varPath = GetRelativePath(child, root);
-            strVar.AppendLine($"\t\tprivate {componentName} {varName};");
+            strVar.AppendLine($"\t\tprivate {componentName} {varName}{(ScriptGeneratorSetting.Instance.NullableEnable?" = null!;":";")}");
             strBind.AppendLine($"\t\t\t{varName} = m_bindComponent.{varName};");
 
             switch (rule.componentName)
