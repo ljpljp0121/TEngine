@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outputAtlasDir: Assets/AssetArt/Atlas
   sourceAtlasRootDir:
-  - Assets/AssetRaw/UIRaw/Atlas
+  - Assets/Bundle/UIRaw/Atlas
   rootChildAtlasDir:
   - Assets/AssetRaw/UIRaw/Atlas/SingleAtlas
   singleAtlasDir:

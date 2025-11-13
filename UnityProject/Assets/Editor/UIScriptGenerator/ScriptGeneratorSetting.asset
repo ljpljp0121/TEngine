@@ -15,10 +15,11 @@ MonoBehaviour:
   useBindComponent: 1
   windowComponentSuffixName: DataComponent
   widgetComponentSuffixName: WidgetDataComponent
-  _codePath: Assets/GameScripts/HotFix/GameLogic/UI
-  _namespace: GameLogic
+  _codePath: Assets/Client/Client_UI/UI
+  _namespace: Client_UI
   _widgetName: item
   CodeStyle: 1
+  NullableEnable: 0
   scriptGenerateRule:
   - uiElementRegex: m_go
     componentName: 0
