@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Sirenix.OdinInspector;
+// using Sirenix.OdinInspector;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -36,14 +36,14 @@ namespace PFPackage.FeiShuExcel
 
         public SerializableDictionary<string, FeiShuExcelInfo> ExcelInfoDic = new SerializableDictionary<string, FeiShuExcelInfo>();
 
-        [InfoBox("主要原因是因为飞书创建电子表格API限制一分钟只能20次,所以可以先用这个按钮每个一分钟创建一次，把表格先创建完再说")]
-        [Button("同步文件结构")]
+        // [InfoBox("主要原因是因为飞书创建电子表格API限制一分钟只能20次,所以可以先用这个按钮每个一分钟创建一次，把表格先创建完再说")]
+        // [Button("同步文件结构")]
         public async Task CreateFolder()
         {
             await FeiShuUtils.SyncDirectoryStructure(LocalRootPath, FeiShuFolderRootToken);
         }
 
-        [Button("写入飞书表格")]
+        // [Button("写入飞书表格")]
         public async Task WriteExcel()
         {
             FeiShuExcelInfo info = await FeiShuUtils.GetSheetInfo("F5ucsODCjhi00EtD5i1cKlRxn6d");
