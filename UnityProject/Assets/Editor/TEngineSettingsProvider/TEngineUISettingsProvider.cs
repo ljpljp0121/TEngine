@@ -46,7 +46,7 @@ public static class TEngineUISettingsProvider
                 DrawReorderableList(scriptGenerator);
                 scriptGenerator.ApplyModifiedProperties();
             },  
-            keywords = new[] { "TEngine", "Settings", "Custom" }  
+            keywords = new[] { "TEngine", "Settings", "Custom", "UISettings" }
         };  
     }
 

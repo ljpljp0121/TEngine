@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 namespace TEngine.Editor.UI
@@ -19,143 +20,6 @@ namespace TEngine.Editor.UI
             for (int i = 0; i < cnt; i++)
             {
                 VARIABLE_NAME_REGEX[i] = GetPrefixNameByCodeStyle((UIFieldCodeStyle)i);
-            }
-        }
-
-        public class GenerateUIComponentWindow : EditorWindow
-        {
-            private string m_savePath;
-            private bool m_isGenerateUIComponent;
-            private bool m_isUniTask;
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成组件绑定脚本", priority = 81)]
-            public static void GenerateUIComponent()
-            {
-                var window = EditorWindow.GetWindow<GenerateUIComponentWindow>();
-                window.minSize = new Vector2(400, 60);
-                window.maxSize = new Vector2(400, 60);
-                window.m_isGenerateUIComponent = true;
-            }
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成组件绑定脚本", true)]
-            public static bool ValidateGenerateUIComponent()
-            {
-                return ScriptGeneratorSetting.Instance.UseBindComponent;
-            }
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成窗口脚本", priority = 82)]
-            public static void GenerateUIPropertyBindComponent()
-            {
-                var window = EditorWindow.GetWindow<GenerateUIComponentWindow>();
-                window.minSize = new Vector2(400, 60);
-                window.maxSize = new Vector2(400, 60);
-                window.m_isGenerateUIComponent = false;
-                window.m_isUniTask = false;
-            }
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成窗口脚本", true)]
-            public static bool ValidateGenerateUIPropertyBindComponent()
-            {
-                return ScriptGeneratorSetting.Instance.UseBindComponent;
-            }
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成窗口脚本 - UniTask", priority = 83)]
-            public static void GenerateUIPropertyBindComponentUniTask()
-            {
-                var window = EditorWindow.GetWindow<GenerateUIComponentWindow>();
-                window.minSize = new Vector2(600, 65);
-                window.maxSize = new Vector2(600, 65);
-                window.m_isGenerateUIComponent = false;
-                window.m_isUniTask = true;
-            }
-
-            [MenuItem("GameObject/ScriptGenerator/自动生成窗口脚本 - UniTask", true)]
-            public static bool ValidateGenerateUIPropertyBindComponentUniTask()
-            {
-                return ScriptGeneratorSetting.Instance.UseBindComponent;
-            }
-
-            private void OnEnable()
-            {
-                m_savePath = ScriptGeneratorSetting.GetCodePath();
-            }
-
-            private void OnGUI()
-            {
-                GUILayout.Label($"生成目录: {m_savePath}", EditorStyles.boldLabel);
-                // m_savePath = EditorGUILayout.TextField("生成目标目录名", m_savePath);
-                m_savePath = DrawFolderField("生成脚本目录", String.Empty, m_savePath);
-                // 横向排列的按钮
-                GUILayout.BeginHorizontal();
-                {
-                    // 取消按钮
-                    if (GUILayout.Button("Cancel", GUILayout.ExpandWidth(true)))
-                    {
-                        Close();
-                    }
-
-                    // 生成按钮
-                    GUI.enabled = !string.IsNullOrEmpty(m_savePath); // 输入为空时禁用生成按钮
-                    if (GUILayout.Button("Generate", GUILayout.ExpandWidth(true)))
-                    {
-                        if (m_isGenerateUIComponent)
-                        {
-                            if (GenerateUIComponentScript(m_savePath))
-                            {
-
-                            }
-                            Close();
-                        }
-                        else
-                        {
-                            if (m_isUniTask)
-                            {
-                                GenerateCSharpScript(true, true, true, m_savePath);
-                            }
-                            else
-                            {
-                                GenerateCSharpScript(true, false, true, m_savePath);
-                            }
-                            Close();
-                        }
-                    }
-                    GUI.enabled = true; // 恢复GUI启用状态
-                }
-                GUILayout.EndHorizontal();
-            }
-
-            private static string DrawFolderField(string label, string labelIcon, string path)
-            {
-                using var horizontalScope = new EditorGUILayout.HorizontalScope();
-
-                var buttonGUIContent = new GUIContent("选择", EditorGUIUtility.IconContent("Folder Icon").image);
-
-                if (!string.IsNullOrEmpty(labelIcon))
-                {
-                    var labelGUIContent = new GUIContent(" " + label, EditorGUIUtility.IconContent(labelIcon).image);
-                    path = EditorGUILayout.TextField(labelGUIContent, path);
-                }
-                else
-                {
-                    path = EditorGUILayout.TextField(label, path);
-                }
-
-                if (GUILayout.Button(buttonGUIContent, GUILayout.Width(60), GUILayout.Height(20)))
-                {
-                    var newPath = EditorUtility.OpenFolderPanel(label, path, string.Empty);
-                    newPath = newPath.Replace(Application.dataPath, "Assets");
-                    if (!string.IsNullOrEmpty(newPath) && newPath.StartsWith(ScriptGeneratorSetting.GetCodePath()))
-                    {
-                        path = newPath;
-                        // path = "Assets" + newPath.Substring(Application.dataPath.Length);
-                        // Debug.LogError(newPath);
-                    }
-                    else
-                    {
-                        Debug.LogError("路径不在ScriptGeneratorSetting设置的codePath内: " + newPath);
-                    }
-                }
-                return path;
             }
         }
 
@@ -207,14 +71,17 @@ namespace TEngine.Editor.UI
             return ScriptGeneratorSetting.Instance.UseBindComponent;
         }
 
-        private static bool GenerateCSharpScript(bool includeListener, bool isUniTask = false, bool isAutoGenerate = false, string savePath = null)
+        private static bool GenerateCSharpScript(bool includeListener, bool isUniTask = false,
+            bool isAutoGenerate = false, string savePath = null, bool isAutoDiff = true, bool m_isWidget = false)
         {
             var root = Selection.activeTransform;
 
             if (root == null)
             {
+                Debug.LogWarning("请选中一个物体再进行脚本生成操作");
                 return false;
             }
+
             CheckVariableNames();
             StringBuilder strVar = new StringBuilder();
             StringBuilder strBind = new StringBuilder();
@@ -227,16 +94,30 @@ namespace TEngine.Editor.UI
             var widgetPrefix = GetUIWidgetName();
             var rootName = $"{root.name}{windowComSufName}";
             string fileName = $"{root.name}.cs";
+            string uiType = "UIWindow";
             if (root.name.StartsWith(widgetPrefix))
             {
+                uiType = "UIWidget";
                 fileName = $"{root.name.Replace(GetUIWidgetName(), string.Empty)}.cs";
                 rootName = $"{root.name.Replace(GetUIWidgetName(), string.Empty)}{widgetComSufName}";
-                strVar.AppendLine($"\t\tprivate {rootName} m_bindComponent;");
             }
-            else
+
+            if (!isAutoDiff)
             {
-                strVar.AppendLine($"\t\tprivate {rootName} m_bindComponent;");
+                if (m_isWidget)
+                {
+                    uiType = "UIWidget";
+                    rootName = $"{root.name}{widgetComSufName}";
+                }
+                else
+                {
+                    uiType = "UIWindow";
+                    rootName = $"{root.name}{windowComSufName}";
+                }
+                fileName = $"{root.name}.cs";
             }
+
+            strVar.AppendLine($"\t\tprivate {rootName} m_bindComponent;");
 
             strBind.AppendLine($"\t\t\tm_bindComponent = gameObject.GetComponent<{rootName}>();");
             AutoErgodic(root, root, ref strVar, ref strBind, ref strOnCreate, ref strCallback, isUniTask);
@@ -251,6 +132,7 @@ namespace TEngine.Editor.UI
                 {
                     strFile.AppendLine("using Cysharp.Threading.Tasks;");
                 }
+
                 strFile.AppendLine("using UnityEngine;");
                 strFile.AppendLine("using UnityEngine.UI;");
                 strFile.AppendLine("using TEngine;");
@@ -258,15 +140,28 @@ namespace TEngine.Editor.UI
                 strFile.AppendLine($"namespace {ScriptGeneratorSetting.GetUINameSpace()}");
                 strFile.AppendLine("{");
                 {
-                    if (root.name.StartsWith(widgetPrefix))
+                    if (isAutoDiff)
                     {
-                        strFile.AppendLine($"\tpublic class {root.name.Replace(widgetPrefix, string.Empty)} : UIWidget");
+                        if (root.name.StartsWith(widgetPrefix))
+                        {
+                            strFile.AppendLine($"\tpublic class {fileName.Replace(".cs", "")} : {uiType}");
+                        }
+                        else
+                        {
+                            strFile.AppendLine($"\t[Window(UILayer.UI, location : \"{fileName.Replace(".cs", "")}\")]");
+                            strFile.AppendLine($"\tpublic class {fileName.Replace(".cs", "")} : {uiType}");
+                        }
                     }
                     else
                     {
-                        strFile.AppendLine($"\t[Window(UILayer.UI, location : \"{root.name}\")]");
-                        strFile.AppendLine($"\tpublic class {root.name} : UIWindow");
+                        if (!m_isWidget)
+                        {
+                            strFile.AppendLine($"\t[Window(UILayer.UI, location : \"{fileName.Replace(".cs", "")}\")]");
+                        }
+                        strFile.AppendLine($"\tpublic class {fileName.Replace(".cs", "")} : {uiType}");
                     }
+
+
                     strFile.AppendLine("\t{");
                 }
             }
@@ -307,7 +202,8 @@ namespace TEngine.Editor.UI
                 string path = savePath?.Replace("\\", "/");
 
                 bool isOk = EditorUtility.DisplayDialog("生成脚本确认", $"将在目录: {path} 生成脚本文件: {fileName}", "确认", "取消");
-                if (!isOk)
+
+                if (!isOk || string.IsNullOrEmpty(path))
                 {
                     return false;
                 }
@@ -316,7 +212,9 @@ namespace TEngine.Editor.UI
                 {
                     Directory.CreateDirectory(path);
                 }
+
                 var filePath = Path.Combine(path, fileName).Replace("\\", "/");
+
                 if (File.Exists(filePath))
                 {
                     bool isOverride = EditorUtility.DisplayDialog("警告", $"目录: {path} 已存在脚本文件: {fileName} 是否覆盖生成？", "确认", "取消");
@@ -331,6 +229,7 @@ namespace TEngine.Editor.UI
                         return false;
                     }
                 }
+
                 File.WriteAllText(filePath, strFile.ToString(), Encoding.UTF8);
                 AssetDatabase.Refresh();
             }
@@ -425,12 +324,13 @@ namespace TEngine.Editor.UI
             }
         }
 
-        private static bool GenerateUIComponentScript(string savePath)
+        private static bool GenerateUIComponentScript(string savePath, bool isAutoDiff = true, bool m_isWidget = false)
         {
             var root = Selection.activeTransform;
 
             if (root == null)
             {
+                Debug.LogWarning("请选中一个物体再进行脚本生成操作");
                 return false;
             }
 
@@ -438,7 +338,7 @@ namespace TEngine.Editor.UI
 
             var windowComSufName = ScriptGeneratorSetting.Instance.WindowComponentSuffixName;
             var widgetComSufName = ScriptGeneratorSetting.Instance.WidgetComponentSuffixName;
-
+            string generatorClassSuffixName = string.Empty;
             string fileName = null;
             var widgetPrefix = GetUIWidgetName();
             var rootName = $"{root.name}{windowComSufName}";
@@ -446,6 +346,21 @@ namespace TEngine.Editor.UI
             if (root.name.StartsWith(widgetPrefix))
             {
                 rootName = $"{root.name.Replace(GetUIWidgetName(), string.Empty)}{widgetComSufName}";
+                generatorClassSuffixName = string.Empty;
+            }
+
+            if (!isAutoDiff)
+            {
+                if (m_isWidget)
+                {
+                    rootName = $"{root.name}{widgetComSufName}";
+                    generatorClassSuffixName = widgetComSufName;
+                }
+                else
+                {
+                    rootName = $"{root.name}{windowComSufName}";
+                    generatorClassSuffixName = windowComSufName;
+                }
             }
             fileName = $"{rootName}.cs";
 
@@ -470,13 +385,13 @@ namespace TEngine.Editor.UI
             strFile.AppendLine($"namespace {ScriptGeneratorSetting.GetUINameSpace()}");
             strFile.AppendLine("{");
             {
+                strFile.AppendLine($"\t[DisallowMultipleComponent]");
                 if (root.name.StartsWith(widgetPrefix))
                 {
                     strFile.AppendLine($"\tpublic class {rootName} : MonoBehaviour");
                 }
                 else
                 {
-                    strFile.AppendLine($"\t[DisallowMultipleComponent]");
                     strFile.AppendLine($"\tpublic class {rootName} : MonoBehaviour");
                 }
                 strFile.AppendLine("\t{");
@@ -507,6 +422,7 @@ namespace TEngine.Editor.UI
             }
             File.WriteAllText(filePath, strFile.ToString(), Encoding.UTF8);
             EditorPrefs.SetString("GeneratorClassName", fileName.Replace(".cs", string.Empty));
+            EditorPrefs.SetString("GeneratorClassSuffixName", generatorClassSuffixName);
             AssetDatabase.Refresh();
             return true;
             // Debug.Log($"<color=#1E90FF>脚本已生成到剪贴板，请自行Ctl+V粘贴</color>");
@@ -559,8 +475,11 @@ namespace TEngine.Editor.UI
         private static void AddComponent2Window()
         {
             var generatorClassName = EditorPrefs.GetString("GeneratorClassName");
+            var generatorClassSuffixName = EditorPrefs.GetString("GeneratorClassSuffixName");
             if (string.IsNullOrEmpty(generatorClassName))
             {
+                EditorPrefs.DeleteKey("GeneratorClassName");
+                EditorPrefs.DeleteKey("GeneratorClassSuffixName");
                 return;
             }
 
@@ -575,29 +494,37 @@ namespace TEngine.Editor.UI
 
             if (type == null)
             {
+                EditorPrefs.DeleteKey("GeneratorClassName");
+                EditorPrefs.DeleteKey("GeneratorClassSuffixName");
                 return;
             }
 
             var windowComSufName = ScriptGeneratorSetting.Instance.WindowComponentSuffixName;
             var widgetComSufName = ScriptGeneratorSetting.Instance.WidgetComponentSuffixName;
+            string windowObjName;
             //获取要挂载的那个物体
-            string windowObjName = generatorClassName.Replace(windowComSufName, "");
-
-            if (generatorClassName.EndsWith(widgetComSufName))
+            if (!string.IsNullOrEmpty(generatorClassSuffixName))
             {
-                windowObjName = generatorClassName.Replace(widgetComSufName, "");
-                windowObjName = GetPrefixName() + ScriptGeneratorSetting.GetWidgetName() + windowObjName;
+                windowObjName = generatorClassName.Replace(generatorClassSuffixName, "");
             }
-            GameObject windowObj = GameObject.Find(windowObjName);
+            else
+            {
+                windowObjName = generatorClassName.Replace(windowComSufName, "");
+                if (generatorClassName.EndsWith(widgetComSufName))
+                {
+                    windowObjName = generatorClassName.Replace(widgetComSufName, "");
+                    windowObjName = GetPrefixName() + ScriptGeneratorSetting.GetWidgetName() + windowObjName;
+                }
+            }
+
+            GameObject windowObj = FindGameObjectInAllContexts(windowObjName);
 
             if (windowObj == null)
             {
-                windowObj = GameObject.Find("UIRoot/UICanvas/" + windowObjName);
-
-                if (windowObj == null)
-                {
-                    return;
-                }
+                Debug.LogWarning($"找不到GameObject: {windowObjName}");
+                EditorPrefs.DeleteKey("GeneratorClassName");
+                EditorPrefs.DeleteKey("GeneratorClassSuffixName");
+                return;
             }
 
             //先获取现窗口上有没有挂载该数据组件，如果没挂载在进行挂载
@@ -624,6 +551,8 @@ namespace TEngine.Editor.UI
 
                 if (go == null)
                 {
+                    EditorPrefs.DeleteKey("GeneratorClassName");
+                    EditorPrefs.DeleteKey("GeneratorClassSuffixName");
                     return;
                 }
                 if (string.Equals(item.FieldType.Name, "GameObject"))
@@ -632,7 +561,7 @@ namespace TEngine.Editor.UI
                 }
                 else
                 {
-                    item.SetValue(compt, go?.GetComponent(item.FieldType));
+                    item.SetValue(compt, go.GetComponent(item.FieldType));
                 }
             }
 
@@ -644,6 +573,88 @@ namespace TEngine.Editor.UI
             }
 
             EditorPrefs.DeleteKey("GeneratorClassName");
+            EditorPrefs.DeleteKey("GeneratorClassSuffixName");
+        }
+
+        /// <summary>
+        /// 在各种上下文中查找GameObject（支持预制体模式）
+        /// </summary>
+        private static GameObject FindGameObjectInAllContexts(string objectName)
+        {
+            GameObject result = null;
+
+            // 首先尝试在当前场景中查找
+            result = GameObject.Find(objectName);
+            if (result != null) return result;
+
+            // 尝试在UIRoot/UICanvas路径下查找
+            result = GameObject.Find("UIRoot/UICanvas/" + objectName);
+            if (result != null) return result;
+
+            // 处理预制体模式
+            if (IsInPrefabMode())
+            {
+                // 在预制体模式下查找
+                result = FindGameObjectInPrefabMode(objectName);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 在预制体模式下查找GameObject
+        /// </summary>
+        private static GameObject FindGameObjectInPrefabMode(string objectName)
+        {
+            // 获取当前预制体阶段
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage != null)
+            {
+                // 在预制体根物体下查找
+                GameObject prefabRoot = prefabStage.prefabContentsRoot;
+                if (prefabRoot.name == objectName)
+                    return prefabRoot;
+
+                // 在预制体子物体中查找
+                Transform found = FindDeepChild(prefabRoot.transform, objectName);
+                if (found != null)
+                    return found.gameObject;
+            }
+
+            // 检查选中的预制体实例
+            var selected = Selection.activeGameObject;
+            if (selected != null)
+            {
+                if (selected.name == objectName)
+                    return selected;
+
+                Transform found = FindDeepChild(selected.transform, objectName);
+                if (found != null)
+                    return found.gameObject;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// 检查是否在预制体编辑模式
+        /// </summary>
+        private static bool IsInPrefabMode()
+        {
+            // 方法1: 检查当前选中的预制体
+            var prefabStage = PrefabStageUtility.GetCurrentPrefabStage();
+            if (prefabStage != null) return true;
+
+            // 方法2: 检查选中的对象是否是预制体实例
+            var selected = Selection.activeGameObject;
+            if (selected != null)
+            {
+                PrefabInstanceStatus status = PrefabUtility.GetPrefabInstanceStatus(selected);
+                PrefabAssetType assetType = PrefabUtility.GetPrefabAssetType(selected);
+                return assetType != PrefabAssetType.NotAPrefab;
+            }
+
+            return false;
         }
 
         private static Transform FindDeepChild(Transform parent, string childName)
