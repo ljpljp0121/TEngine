@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -28,7 +29,7 @@ namespace PFPackageManager
         /// <summary>
         /// 下载包的 .tgz 文件
         /// </summary>
-        public void DownloadPackage(string packageName, string version, Action<string> onSuccess, Action<string> onError)
+        public void DownloadPackage(string packageName, string version, Action<string> onSuccess, Action<string> onError, Action<float> onProgress = null)
         {
             // NPM tarball URL: {registry}/{packageName}/-/{packageName}-{version}.tgz
             string tarballUrl = $"{registryUrl}/{packageName}/-/{packageName}-{version}.tgz";
@@ -36,6 +37,26 @@ namespace PFPackageManager
 
             UnityWebRequest request = UnityWebRequest.Get(tarballUrl);
             var operation = request.SendWebRequest();
+            
+            if (onProgress != null)
+            {
+                EditorApplication.CallbackFunction progressCallback = null;
+                progressCallback = () =>
+                {
+                    if (!operation.isDone)
+                    {
+                        // downloadProgress 范围是0-1，转换为0-100百分比
+                        float progress = request.downloadProgress;
+                        onProgress?.Invoke(progress);
+                    }
+                    else
+                    {
+                        // 完成时停止回调
+                        EditorApplication.update -= progressCallback;
+                    }
+                };
+                EditorApplication.update += progressCallback;
+            }
 
             operation.completed += (asyncOp) =>
             {

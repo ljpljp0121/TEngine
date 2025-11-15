@@ -207,7 +207,7 @@ namespace PFPackageManager
         public void UninstallPackage(PackageInfo package)
         {
             if (!EditorUtility.DisplayDialog("确认卸载",
-                $"确定要卸载 {package.displayName} 吗？", "卸载", "取消"))
+                    $"确定要卸载 {package.displayName} 吗？", "卸载", "取消"))
             {
                 return;
             }
@@ -328,13 +328,17 @@ namespace PFPackageManager
             SetOperationState(true, $"正在安装 {package.displayName} v{version}...");
 
             installer.InstallPackage(packageName, version,
-                onProgress: (msg) =>
+                onDownloadProgress: (progress) =>
                 {
-                    CurrentOperation = msg;
-                    Debug.Log(msg);
+                    // 显示Unity自带的进度条
+                    string progressText = $"正在下载 {package.displayName} v{version} - {Math.Round(progress * 100, 1)}%";
+                    EditorUtility.DisplayProgressBar("下载进度", progressText, progress);
                 },
                 onSuccess: () =>
                 {
+                    // 清除进度条
+                    EditorUtility.ClearProgressBar();
+
                     Debug.Log($"安装成功: {package.displayName} v{version}");
 
                     // 更新包状态
@@ -357,6 +361,9 @@ namespace PFPackageManager
                 },
                 onError: (error) =>
                 {
+                    // 确保在错误时也清除进度条
+                    EditorUtility.ClearProgressBar();
+
                     Debug.LogError($"✗ 安装失败: {error}");
                     SetOperationState(false, "");
                     EditorUtility.DisplayDialog("安装失败", error, "OK");

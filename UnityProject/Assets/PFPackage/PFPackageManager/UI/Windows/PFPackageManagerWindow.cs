@@ -97,18 +97,6 @@ namespace PFPackageManager
 
         private void OnGUI()
         {
-            // 显示进度条
-            if (operationManager.IsOperating)
-            {
-                EditorGUILayout.BeginVertical("box");
-                {
-                    EditorGUILayout.LabelField(operationManager.CurrentOperation, PFPackageStyles.ProgressTitleStyle);
-                    EditorGUI.ProgressBar(EditorGUILayout.GetControlRect(), 0.5f, "Processing...");
-                }
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.Space(5);
-            }
-
             EditorGUILayout.BeginHorizontal();
             {
                 // 左侧列表

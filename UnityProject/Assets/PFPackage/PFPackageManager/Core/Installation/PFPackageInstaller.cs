@@ -25,30 +25,22 @@ namespace PFPackageManager
         /// <summary>
         /// 安装包（下载 → 解压 → 安装）
         /// </summary>
-        public void InstallPackage(string packageName, string version, Action<string> onProgress, Action onSuccess, Action<string> onError)
+        public void InstallPackage(string packageName, string version, Action onSuccess, Action<string> onError, Action<float> onDownloadProgress = null)
         {
-            onProgress?.Invoke($"正在下载 {packageName}@{version}...");
-
             // 1. 下载 .tgz 文件
             downloader.DownloadPackage(packageName, version,
                 onSuccess: (tgzPath) =>
                 {
-                    onProgress?.Invoke($"正在解压 {packageName}...");
-
                     try
                     {
                         // 2. 解压到临时目录
                         string extractPath = extractor.ExtractPackage(tgzPath, packageName);
-
-                        onProgress?.Invoke($"正在安装 {packageName}...");
 
                         // 3. 安装到目标目录
                         InstallToTargetDirectory(extractPath, packageName);
 
                         // 4. 刷新 Unity AssetDatabase
                         FileSystemOperations.RefreshAssetDatabase();
-
-                        onProgress?.Invoke($"安装完成: {packageName}@{version}");
                         onSuccess?.Invoke();
                     }
                     catch (Exception e)
@@ -56,7 +48,8 @@ namespace PFPackageManager
                         onError?.Invoke($"安装失败: {e.Message}");
                     }
                 },
-                onError: onError
+                onError: onError,
+                onProgress: onDownloadProgress
             );
         }
 
