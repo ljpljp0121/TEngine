@@ -28,8 +28,8 @@ namespace PFPackageManager
         private PackageDetailEventHandler detailEventHandler;
 
         // 配置
-        private const string REGISTRY_URL = "https://pfpackage.peifengcoding.com";
-        private const string INSTALL_PATH = "Assets/PFPackage";
+        public const string REGISTRY_URL = "https://pfpackage.peifengcoding.com";
+        public const string INSTALL_PATH = "Assets/PFPackage";
  
         private void OnEnable()
         {

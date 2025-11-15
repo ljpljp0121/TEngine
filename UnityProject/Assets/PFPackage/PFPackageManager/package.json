@@ -1,0 +1,11 @@
+{
+    "name": "com.peifengcoding.pfpackage",
+    "displayName": "PFPackage",
+    "version": "1.0.1",
+    "unity": "2019.4",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://blog.peifengcoding.com"
+    },
+    "description": "PFPackage, 用于管理 PFPackage的包"
+}

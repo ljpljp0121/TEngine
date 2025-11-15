@@ -36,10 +36,14 @@ namespace PFPackageManager
                         // 2. 解压到临时目录
                         string extractPath = extractor.ExtractPackage(tgzPath, packageName);
 
-                        // 3. 安装到目标目录
-                        InstallToTargetDirectory(extractPath, packageName);
+                        // 3. 获取显示名称作为目录名
+                        string displayName = FileSystemOperations.ReadPackageDisplayName(extractPath);
+                        string targetDirName = !string.IsNullOrEmpty(displayName) ? displayName : packageName;
 
-                        // 4. 刷新 Unity AssetDatabase
+                        // 4. 安装到目标目录
+                        InstallToTargetDirectory(extractPath, targetDirName, packageName);
+
+                        // 5. 刷新 Unity AssetDatabase
                         FileSystemOperations.RefreshAssetDatabase();
                         onSuccess?.Invoke();
                     }
@@ -56,9 +60,9 @@ namespace PFPackageManager
         /// <summary>
         /// 安装到目标目录
         /// </summary>
-        private void InstallToTargetDirectory(string sourcePath, string packageName)
+        private void InstallToTargetDirectory(string sourcePath, string directoryName, string packageName)
         {
-            string targetPath = Path.Combine(installPath, packageName);
+            string targetPath = Path.Combine(installPath, directoryName);
 
             // 如果已存在，先删除（更新）
             if (Directory.Exists(targetPath))
@@ -68,6 +72,9 @@ namespace PFPackageManager
 
             // 复制目录
             FileSystemOperations.CopyDirectory(sourcePath, targetPath);
+
+            // 注册映射关系
+            FileSystemOperations.RegisterPackageMapping(packageName, directoryName);
         }
 
         /// <summary>
@@ -77,7 +84,9 @@ namespace PFPackageManager
         {
             try
             {
-                string packagePath = Path.Combine(installPath, packageName);
+                // 通过映射表获取实际的目录名
+                string directoryName = FileSystemOperations.GetPackageDirectory(packageName, installPath);
+                string packagePath = Path.Combine(installPath, directoryName);
 
                 if (!Directory.Exists(packagePath))
                 {
@@ -87,6 +96,9 @@ namespace PFPackageManager
 
                 // 删除包目录和meta文件
                 FileSystemOperations.DeleteDirectoryWithMeta(packagePath);
+
+                // 移除映射关系
+                FileSystemOperations.UnregisterPackageMapping(packageName);
 
                 // 刷新 Unity AssetDatabase
                 FileSystemOperations.RefreshAssetDatabase();
@@ -104,7 +116,9 @@ namespace PFPackageManager
         /// </summary>
         public bool IsPackageInstalled(string packageName)
         {
-            string packagePath = Path.Combine(installPath, packageName);
+            // 通过映射表获取实际的目录名
+            string directoryName = FileSystemOperations.GetPackageDirectory(packageName, installPath);
+            string packagePath = Path.Combine(installPath, directoryName);
             return Directory.Exists(packagePath);
         }
 
@@ -113,7 +127,9 @@ namespace PFPackageManager
         /// </summary>
         public string GetInstalledVersion(string packageName)
         {
-            string packagePath = Path.Combine(installPath, packageName);
+            // 通过映射表获取实际的目录名
+            string directoryName = FileSystemOperations.GetPackageDirectory(packageName, installPath);
+            string packagePath = Path.Combine(installPath, directoryName);
             return FileSystemOperations.ReadPackageVersion(packagePath);
         }
     }
