@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+#if DOTWEEN
 using DG.Tweening;
+#endif
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -611,6 +613,25 @@ public class TableView : MonoBehaviour
         return null;
     }
 
+  #if !DOTWEEN
+    private IEnumerator JumpToPositionCoroutine(float targetPos, float duration)
+    {
+        float startPos = scrollView.verticalNormalizedPosition;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float progress = elapsedTime / duration;
+            float currentPos = Mathf.Lerp(startPos, targetPos, progress);
+            scrollView.verticalNormalizedPosition = currentPos;
+            yield return null;
+        }
+
+        scrollView.verticalNormalizedPosition = targetPos;
+    }
+#endif
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     float EmptyGap(TableView _, int __)
     {
@@ -948,8 +969,12 @@ public class TableView : MonoBehaviour
 
                 if (duration > 0)
                 {
+#if DOTWEEN
                     var initPos = scrollView.verticalNormalizedPosition;
                     DOTween.To(() => initPos, value => scrollView.verticalNormalizedPosition = value, offset, duration).SetEase(Ease.Linear);
+#else
+                    StartCoroutine(JumpToPositionCoroutine(offset, duration));
+#endif
                     scrollView.verticalNormalizedPosition = offset;
                 }
                 else
