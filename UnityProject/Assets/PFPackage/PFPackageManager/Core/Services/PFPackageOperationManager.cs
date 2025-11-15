@@ -328,11 +328,11 @@ namespace PFPackageManager
             SetOperationState(true, $"正在安装 {package.displayName} v{version}...");
 
             installer.InstallPackage(packageName, version,
-                onDownloadProgress: (progress) =>
+                onProgress: (progress) =>
                 {
                     // 显示Unity自带的进度条
-                    string progressText = $"正在下载 {package.displayName} v{version} - {Math.Round(progress * 100, 1)}%";
-                    EditorUtility.DisplayProgressBar("下载进度", progressText, progress);
+                    string progressText = $"快马加鞭下载中 {package.displayName} v{version} - {Math.Round(progress * 100, 1)}%";
+                    EditorUtility.DisplayProgressBar("PFPackage", progressText, progress);
                 },
                 onSuccess: () =>
                 {

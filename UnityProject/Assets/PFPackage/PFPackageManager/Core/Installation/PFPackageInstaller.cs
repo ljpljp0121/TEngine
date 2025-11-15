@@ -25,7 +25,7 @@ namespace PFPackageManager
         /// <summary>
         /// 安装包（下载 → 解压 → 安装）
         /// </summary>
-        public void InstallPackage(string packageName, string version, Action onSuccess, Action<string> onError, Action<float> onDownloadProgress = null)
+        public void InstallPackage(string packageName, string version, Action onSuccess, Action<string> onError, Action<float> onProgress = null)
         {
             // 1. 下载 .tgz 文件
             downloader.DownloadPackage(packageName, version,
@@ -49,7 +49,7 @@ namespace PFPackageManager
                     }
                 },
                 onError: onError,
-                onProgress: onDownloadProgress
+                onProgress: onProgress
             );
         }
 
