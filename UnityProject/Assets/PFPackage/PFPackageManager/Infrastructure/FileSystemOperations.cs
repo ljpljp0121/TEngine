@@ -74,7 +74,7 @@ namespace PFPackageManager
             try
             {
                 string json = File.ReadAllText(packageJsonPath);
-                var packageJson = TEngine.Localization.SimpleJSON.JSON.Parse(json);
+                var packageJson = JSON.Parse(json);
                 return packageJson["version"];
             }
             catch

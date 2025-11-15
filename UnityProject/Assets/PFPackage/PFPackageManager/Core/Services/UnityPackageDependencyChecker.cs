@@ -103,7 +103,7 @@ namespace PFPackageManager
                 if (File.Exists(manifestPath))
                 {
                     string json = File.ReadAllText(manifestPath);
-                    var manifest = TEngine.Localization.SimpleJSON.JSON.Parse(json);
+                    var manifest = JSON.Parse(json);
 
                     if (manifest["dependencies"] != null)
                     {
