@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -275,31 +276,54 @@ namespace PFPackage.FeiShuExcel
                 if (localCount > onlineCount)
                 {
                     int toCreate = localCount - onlineCount;
+                    var createTasks = new Task<FeiShuSheetInfo>[toCreate];
                     for (int i = 0; i < toCreate; i++)
                     {
-                        var newSheet = await CreateSheet(excelToken, localInfo.SheetInfos[localCount - 1 - i].SheetTitle, i);
-                        onlineInfo.SheetInfos.Add(newSheet);
+                        int index = i;
+                        createTasks[index] = CreateSheet(excelToken, localInfo.SheetInfos[localCount - 1 - index].SheetTitle, index);
                     }
+                    var newSheets = await Task.WhenAll(createTasks);
+
+                    foreach (var newSheet in newSheets)
+                    {
+                        if (newSheet != null)
+                        {
+                            onlineInfo.SheetInfos.Add(newSheet);
+                        }
+                    }
+
                     Debug.Log($"[飞书同步] 创建 {toCreate} 个工作表");
                 }
                 else
                 {
                     int toDelete = onlineCount - localCount;
+                    var deleteTasks = new Task[toDelete];
                     for (int i = 0; i < toDelete; i++)
                     {
-                        await DeleteSheet(excelToken, onlineInfo.SheetInfos[onlineCount - 1 - i].SheetId);
+                        int index = i;
+                        deleteTasks[index] = DeleteSheet(excelToken, onlineInfo.SheetInfos[onlineCount - 1 - index].SheetId);
+                    }
+                    await Task.WhenAll(deleteTasks);
+
+                    for (int i = 0; i < toDelete; i++)
+                    {
                         onlineInfo.SheetInfos.RemoveAt(onlineCount - 1 - i);
                     }
+                    
                     Debug.Log($"[飞书同步] 删除 {toDelete} 个工作表");
                 }
 
+                var syncTasks = new List<Task>();
+                
                 for (int i = 0; i < localInfo.SheetInfos.Count; i++)
                 {
-                    var localSheet = localInfo.SheetInfos[i];
-                    var onlineSheet = onlineInfo.SheetInfos[i];
-                    await UpdateSheet(excelToken, onlineSheet.SheetId, localSheet.SheetTitle, i);
-                    await WriteOnlineSheet(excelToken, onlineSheet.SheetId, localSheet.SheetData);
+                    int index = i;
+                    var localSheet = localInfo.SheetInfos[index];
+                    var onlineSheet = onlineInfo.SheetInfos[index];
+                    syncTasks.Add(UpdateSheet(excelToken, onlineSheet.SheetId, localSheet.SheetTitle, index));
+                    syncTasks.Add(WriteOnlineSheet(excelToken, onlineSheet.SheetId, localSheet.SheetData));
                 }
+                await Task.WhenAll(syncTasks);
             }
             catch (Exception ex)
             {

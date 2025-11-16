@@ -18,46 +18,118 @@ MonoBehaviour:
   LocalRootPath: E:\Unity\TEngine\Configs\GameConfig\Datas
   ExcelInfoDic:
     Keys:
-    - OCyNsDXIDh5E1jtkw0ZcPojYneq
-    - Hlaws1MDHhmZvotndBIc7TCZnRh
-    - Sby3s5zwuhZCpOtUbomcnXe6nrc
-    - SmeusTK1Ph9GV5tfLtqc941QneI
     - ZUlosIB4JhzQ3PtboXBcXaAanVb
+    - BwXes61dEhrq0Ute3WIcwFUJnv7
     - HTq3skhc8hHE6jtDjjYcnD8QnBf
+    - RtU5sCS55hUTxptmYGhckWCSndc
+    - DtNEskhR7hJIaftL0nwc9Mr8nuf
+    - LlXBs8sqzhL3RktqnWvcjGG4nbc
+    - Qzylsjv0AhNb2Kt4jtNciqGBnqc
+    - Ote5sV9xZhf9gAt7YGic0hiqnUe
+    - Hlaws1MDHhmZvotndBIc7TCZnRh
+    - I9mOsySnRh7beRtCrJ5cn0kQnmh
+    - OCyNsDXIDh5E1jtkw0ZcPojYneq
     - RJXpszHG0ha5TQtvvHec0HBUnmd
+    - JOX6sw0nshCgewtBS9XcBQK7nkf
+    - M3Ros0GmYhxqMftDCPRctnN1nXo
     - E8oUsbPQ9hLxuctQqO8cffr2n8e
-    - XJmGs8JGQhhnK6tlwsLckXMXnld
+    - SmeusTK1Ph9GV5tfLtqc941QneI
+    - U7nBshEhshA0Sxtwijkc1phlnaf
+    - UqRYsAOdJhPichtaLuScrwDCnId
     - JWECsdjWPhASu3taJpUcyPMZnof
+    - Yyh7svJwBh4M4jtR3S9cCoQJn4P
+    - N4nHsSqv9hSWEkt3xVYcQsEHn6g
+    - YX1xsVNpOh28cotcmEQcwCY0nEb
+    - PpSZsgP9ph3Jf9tlvDzcOXNKnSe
+    - Sby3s5zwuhZCpOtUbomcnXe6nrc
+    - Lp6qso015hacjbtgI9NcWk0vn1e
+    - APb4sBbgLh9pwitZUlHcv7SJnDA
+    - XJmGs8JGQhhnK6tlwsLckXMXnld
+    - Dw2gscN8KhzBzEtOzeQcqXPLnHf
+    - MZdEsVDX0hAdpUtDiKncYXnqnde
+    - Ei9GsJ10hhMpqpt4OSsc6V7lnig
     Values:
-    - ExcelToken: OCyNsDXIDh5E1jtkw0ZcPojYneq
+    - ExcelToken: ZUlosIB4JhzQ3PtboXBcXaAanVb
       SheetInfos:
-      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
-        SheetId: 2260c8
+      - SheetTitle: Sheet1
+        SheetId: ab34c8
+        Index: 0
+    - ExcelToken: BwXes61dEhrq0Ute3WIcwFUJnv7
+      SheetInfos:
+      - SheetTitle: Buff
+        SheetId: 53f0cb
+        Index: 0
+      - SheetTitle: DeBuff
+        SheetId: 3nweE8
+        Index: 1
+    - ExcelToken: HTq3skhc8hHE6jtDjjYcnD8QnBf
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 3155f6
+        Index: 0
+    - ExcelToken: RtU5sCS55hUTxptmYGhckWCSndc
+      SheetInfos:
+      - SheetTitle: Buff
+        SheetId: iEW52
+        Index: 0
+    - ExcelToken: DtNEskhR7hJIaftL0nwc9Mr8nuf
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: f91316
+        Index: 0
+    - ExcelToken: LlXBs8sqzhL3RktqnWvcjGG4nbc
+      SheetInfos:
+      - SheetTitle: "\u53EC\u5524"
+        SheetId: iwliM
+        Index: 0
+      - SheetTitle: "\u7F81\u7ECA"
+        SheetId: kUOE8
+        Index: 1
+      - SheetTitle: "\u5143\u7D20"
+        SheetId: l0kGQ
+        Index: 2
+      - SheetTitle: "\u6218\u6597"
+        SheetId: l64Ao
+        Index: 3
+      - SheetTitle: "\u80CC\u5305"
+        SheetId: lbDPi
+        Index: 4
+      - SheetTitle: "\u6D77\u514B\u65AF"
+        SheetId: lgvny
+        Index: 5
+      - SheetTitle: "\u6280\u80FD"
+        SheetId: lkS1W
+        Index: 6
+      - SheetTitle: Buff
+        SheetId: lqlWw
+        Index: 7
+      - SheetTitle: "\u5C5E\u6027\u76F8\u5173"
+        SheetId: lu6eA
+        Index: 8
+    - ExcelToken: Qzylsjv0AhNb2Kt4jtNciqGBnqc
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 712be4
+        Index: 0
+    - ExcelToken: Ote5sV9xZhf9gAt7YGic0hiqnUe
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 6f19b8
         Index: 0
     - ExcelToken: Hlaws1MDHhmZvotndBIc7TCZnRh
       SheetInfos:
       - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
         SheetId: jfpbW
         Index: 0
-    - ExcelToken: Sby3s5zwuhZCpOtUbomcnXe6nrc
-      SheetInfos:
-      - SheetTitle: "\u5143\u7D20"
-        SheetId: iIhRC
-        Index: 0
-    - ExcelToken: SmeusTK1Ph9GV5tfLtqc941QneI
-      SheetInfos:
-      - SheetTitle: "\u6B66\u5668\u8BCD\u6761"
-        SheetId: f79e97
-        Index: 0
-    - ExcelToken: ZUlosIB4JhzQ3PtboXBcXaAanVb
+    - ExcelToken: I9mOsySnRh7beRtCrJ5cn0kQnmh
       SheetInfos:
       - SheetTitle: Sheet1
-        SheetId: ab34c8
+        SheetId: 95fc13
         Index: 0
-    - ExcelToken: HTq3skhc8hHE6jtDjjYcnD8QnBf
+    - ExcelToken: OCyNsDXIDh5E1jtkw0ZcPojYneq
       SheetInfos:
-      - SheetTitle: Sheet1
-        SheetId: 3155f6
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: 2260c8
         Index: 0
     - ExcelToken: RJXpszHG0ha5TQtvvHec0HBUnmd
       SheetInfos:
@@ -67,18 +139,96 @@ MonoBehaviour:
       - SheetTitle: "\u77AC\u95F4"
         SheetId: kUW6A
         Index: 1
+    - ExcelToken: JOX6sw0nshCgewtBS9XcBQK7nkf
+      SheetInfos:
+      - SheetTitle: "\u6E38\u620F\u6570\u636E"
+        SheetId: f45746
+        Index: 0
+    - ExcelToken: M3Ros0GmYhxqMftDCPRctnN1nXo
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: de7abb
+        Index: 0
     - ExcelToken: E8oUsbPQ9hLxuctQqO8cffr2n8e
       SheetInfos:
       - SheetTitle: "\u6B66\u5668\u6570\u636E"
         SheetId: kbICQ
+        Index: 0
+    - ExcelToken: SmeusTK1Ph9GV5tfLtqc941QneI
+      SheetInfos:
+      - SheetTitle: "\u6B66\u5668\u8BCD\u6761"
+        SheetId: f79e97
+        Index: 0
+    - ExcelToken: U7nBshEhshA0Sxtwijkc1phlnaf
+      SheetInfos:
+      - SheetTitle: "\u6D77\u514B\u65AF"
+        SheetId: f1dd7c
+        Index: 0
+    - ExcelToken: UqRYsAOdJhPichtaLuScrwDCnId
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: jaW9a
+        Index: 0
+    - ExcelToken: JWECsdjWPhASu3taJpUcyPMZnof
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: jq3PW
+        Index: 0
+    - ExcelToken: Yyh7svJwBh4M4jtR3S9cCoQJn4P
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: 36baa9
+        Index: 0
+    - ExcelToken: N4nHsSqv9hSWEkt3xVYcQsEHn6g
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 2a0fd9
+        Index: 0
+    - ExcelToken: YX1xsVNpOh28cotcmEQcwCY0nEb
+      SheetInfos:
+      - SheetTitle: "\u80CC\u5305\u7269\u54C1"
+        SheetId: b36416
+        Index: 0
+    - ExcelToken: PpSZsgP9ph3Jf9tlvDzcOXNKnSe
+      SheetInfos:
+      - SheetTitle: "\u97F3\u6548"
+        SheetId: jwhzi
+        Index: 0
+      - SheetTitle: BGM
+        SheetId: kWL3q
+        Index: 1
+    - ExcelToken: Sby3s5zwuhZCpOtUbomcnXe6nrc
+      SheetInfos:
+      - SheetTitle: "\u5143\u7D20"
+        SheetId: iIhRC
+        Index: 0
+    - ExcelToken: Lp6qso015hacjbtgI9NcWk0vn1e
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: 0b86a2
+        Index: 0
+    - ExcelToken: APb4sBbgLh9pwitZUlHcv7SJnDA
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 70191c
         Index: 0
     - ExcelToken: XJmGs8JGQhhnK6tlwsLckXMXnld
       SheetInfos:
       - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
         SheetId: c4279a
         Index: 0
-    - ExcelToken: JWECsdjWPhASu3taJpUcyPMZnof
+    - ExcelToken: Dw2gscN8KhzBzEtOzeQcqXPLnHf
       SheetInfos:
-      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
-        SheetId: jq3PW
+      - SheetTitle: "\u6548\u679C"
+        SheetId: iZIl2
+        Index: 0
+    - ExcelToken: MZdEsVDX0hAdpUtDiKncYXnqnde
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 57551a
+        Index: 0
+    - ExcelToken: Ei9GsJ10hhMpqpt4OSsc6V7lnig
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 29fc39
         Index: 0
