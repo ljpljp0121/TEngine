@@ -111,11 +111,6 @@ namespace PFPackage.FeiShuExcel
                 stopwatch.Stop();
                 Debug.Log($"[飞书同步] 表格同步完成，耗时: {stopwatch.ElapsedMilliseconds}ms");
                 
-                // foreach (var pair in syncResult)
-                // {
-                //     await WriteOnlineExcel(pair.Value, pair.Key);
-                // }
-                
                 Debug.Log($"[飞书同步] 同步完成！当前共有 {syncResult.Count} 个文件(包括文件夹)" +
                           $" 映射信息：\n{string.Join("\n", syncResult.Select(kvp => $"{kvp.Key} -> {kvp.Value}"))}");
             }
