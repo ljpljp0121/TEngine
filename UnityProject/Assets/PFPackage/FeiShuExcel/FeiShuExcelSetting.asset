@@ -18,13 +18,64 @@ MonoBehaviour:
   LocalRootPath: E:\Unity\TEngine\Configs\GameConfig\Datas
   ExcelInfoDic:
     Keys:
-    - F5ucsODCjhi00EtD5i1cKlRxn6d
+    - APb4sBbgLh9pwitZUlHcv7SJnDA
+    - Lp6qso015hacjbtgI9NcWk0vn1e
+    - U7nBshEhshA0Sxtwijkc1phlnaf
+    - OCyNsDXIDh5E1jtkw0ZcPojYneq
+    - JOX6sw0nshCgewtBS9XcBQK7nkf
+    - XJmGs8JGQhhnK6tlwsLckXMXnld
+    - YX1xsVNpOh28cotcmEQcwCY0nEb
+    - Yyh7svJwBh4M4jtR3S9cCoQJn4P
+    - M3Ros0GmYhxqMftDCPRctnN1nXo
+    - SmeusTK1Ph9GV5tfLtqc941QneI
     Values:
-    - ExcelToken: F5ucsODCjhi00EtD5i1cKlRxn6d
+    - ExcelToken: APb4sBbgLh9pwitZUlHcv7SJnDA
       SheetInfos:
       - SheetTitle: Sheet1
-        SheetId: 6eb039
+        SheetId: 70191c
         Index: 0
-      - SheetTitle: Sheet2
-        SheetId: w61fD8
-        Index: 1
+    - ExcelToken: Lp6qso015hacjbtgI9NcWk0vn1e
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: 0b86a2
+        Index: 0
+    - ExcelToken: U7nBshEhshA0Sxtwijkc1phlnaf
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: f1dd7c
+        Index: 0
+    - ExcelToken: OCyNsDXIDh5E1jtkw0ZcPojYneq
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 2260c8
+        Index: 0
+    - ExcelToken: JOX6sw0nshCgewtBS9XcBQK7nkf
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: f45746
+        Index: 0
+    - ExcelToken: XJmGs8JGQhhnK6tlwsLckXMXnld
+      SheetInfos:
+      - SheetTitle: "\u5C5E\u6027\u5347\u7EA7"
+        SheetId: c4279a
+        Index: 0
+    - ExcelToken: YX1xsVNpOh28cotcmEQcwCY0nEb
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: b36416
+        Index: 0
+    - ExcelToken: Yyh7svJwBh4M4jtR3S9cCoQJn4P
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: 36baa9
+        Index: 0
+    - ExcelToken: M3Ros0GmYhxqMftDCPRctnN1nXo
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: de7abb
+        Index: 0
+    - ExcelToken: SmeusTK1Ph9GV5tfLtqc941QneI
+      SheetInfos:
+      - SheetTitle: Sheet1
+        SheetId: f79e97
+        Index: 0

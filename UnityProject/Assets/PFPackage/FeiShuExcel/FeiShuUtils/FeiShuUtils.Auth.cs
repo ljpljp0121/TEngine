@@ -9,10 +9,8 @@ using UnityEngine;
 
 namespace PFPackage.FeiShuExcel
 {
-    public static class FeiShuAuthUtils
+    public static partial class FeiShuUtils
     {
-        public const string URL_GET_ACCESS_TOKEN = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal";
-
         /// <summary>
         /// 获取 飞书 tenant_access_token 用于鉴权
         /// </summary>
