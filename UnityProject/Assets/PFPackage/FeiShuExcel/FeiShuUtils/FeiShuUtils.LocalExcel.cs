@@ -50,11 +50,15 @@ namespace PFPackage.FeiShuExcel
                             sheetData[row - dimension.Start.Row, col - dimension.Start.Column] = worksheet.Cells[row, col].Text;
                         }
                     }
+                    // 获取合并单元格信息
+                    var mergeCells = GetMergeCells(worksheet);
+
                     allSheetInfo.SheetInfos.Add(new LocalSheetInfo()
                     {
                         SheetTitle = worksheet.Name,
                         Index = worksheet.Index,
                         SheetData = sheetData,
+                        MergeCells = mergeCells
                     });
                 }
                 
@@ -66,7 +70,7 @@ namespace PFPackage.FeiShuExcel
                 return null;
             }
         }
-        
+
         /// <summary>
         /// 判断是否为 Excel 文件
         /// </summary>
@@ -77,6 +81,31 @@ namespace PFPackage.FeiShuExcel
 
             var extension = Path.GetExtension(fileName).ToLower();
             return extension == ".xlsx" || extension == ".xls";
+        }
+
+        /// <summary>
+        /// 获取工作表的合并单元格信息
+        /// </summary>
+        private static List<MergeCellInfo> GetMergeCells(OfficeOpenXml.ExcelWorksheet worksheet)
+        {
+            var mergeCells = new List<MergeCellInfo>();
+
+            try
+            {
+                if (worksheet.MergedCells != null)
+                {
+                    foreach (var merge in worksheet.MergedCells)
+                    {
+                        mergeCells.Add(new MergeCellInfo { Range = merge });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[飞书读表] 获取合并单元格信息失败: {ex.Message}");
+            }
+
+            return mergeCells;
         }
     }
 }

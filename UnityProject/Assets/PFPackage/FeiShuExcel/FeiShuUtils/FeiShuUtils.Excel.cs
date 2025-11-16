@@ -50,7 +50,7 @@ namespace PFPackage.FeiShuExcel
         /// <summary>
         /// 获取飞书表格信息
         /// </summary>
-        private static async Task<FeiShuExcelInfo> GetSheetInfo(string excelToken)
+        private static async Task<FeiShuExcelInfo> GetOnlineSheetInfo(string excelToken)
         {
             if (FeiShuExcelSetting.I.ExcelInfoDic.TryGetValue(excelToken, out var excelInfo))
             {
@@ -68,6 +68,12 @@ namespace PFPackage.FeiShuExcel
                 var requestUrl = string.Format(URL_GET_SHEET_INFO, excelToken);
                 var response = await httpClient.GetAsync(requestUrl);
                 var responseString = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                    return excelInfo;
+                }
 
                 JObject jObject = JsonConvert.DeserializeObject<JObject>(responseString);
 
@@ -101,7 +107,7 @@ namespace PFPackage.FeiShuExcel
         /// <summary>
         /// 创建工作表
         /// </summary>
-        private static async Task<FeiShuSheetInfo> CreateSheet(string excelToken, string sheetTitle, int index)
+        private static async Task<FeiShuSheetInfo> CreateOnlineSheet(string excelToken, string sheetTitle, int index)
         {
             try
             {
@@ -157,7 +163,7 @@ namespace PFPackage.FeiShuExcel
         /// <summary>
         /// 删除工作表
         /// </summary>
-        private static async Task DeleteSheet(string excelToken, string sheetId)
+        private static async Task DeleteOnlineSheet(string excelToken, string sheetId)
         {
             try
             {
@@ -182,6 +188,10 @@ namespace PFPackage.FeiShuExcel
 
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(string.Format(URL_UPDATE_SHEET, excelToken), content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                }
             }
             catch (Exception ex)
             {
@@ -192,7 +202,7 @@ namespace PFPackage.FeiShuExcel
         /// <summary>
         /// 更新工作表信息
         /// </summary>
-        private static async Task UpdateSheet(string excelToken, string sheetId, string newTitle, int index)
+        private static async Task UpdateOnlineSheet(string excelToken, string sheetId, string newTitle, int index)
         {
             try
             {
@@ -222,10 +232,42 @@ namespace PFPackage.FeiShuExcel
 
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(string.Format(URL_UPDATE_SHEET, excelToken), content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                }
             }
             catch (Exception ex)
             {
                 Debug.LogError($"[飞书读表] 飞书表格删除工作表时发生错误: {ex.Message} 堆栈信息:{ex.StackTrace}");
+            }
+        }
+
+        private static async Task MergeOnlineCellData(string excelToken, string sheetId, string mergeCell)
+        {
+            try
+            {
+                using var httpClient = new HttpClient();
+
+                string token = await GetOnlineToken();
+                httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {token}");
+
+                var requestBody = JsonConvert.SerializeObject(new
+                {
+                    range = $"{sheetId}!{mergeCell}",
+                    mergeType = "MERGE_ROWS"
+                });
+
+                var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+                var response = await httpClient.PostAsync(string.Format(URL_Merge_Cell, excelToken), content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[飞书读表] 飞书表格合并单元格时发生错误: {ex.Message} 堆栈信息:{ex.StackTrace}");
             }
         }
 
@@ -246,7 +288,11 @@ namespace PFPackage.FeiShuExcel
                 });
 
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                await httpClient.PutAsync(string.Format(URL_WRITE_SHEET, excelToken), content);
+                var response = await httpClient.PutAsync(string.Format(URL_WRITE_SHEET, excelToken), content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                }
             }
             catch (Exception ex)
             {
@@ -263,14 +309,14 @@ namespace PFPackage.FeiShuExcel
         {
             try
             {
-                FeiShuExcelInfo onlineInfo = await GetSheetInfo(excelToken);
+                FeiShuExcelInfo onlineInfo = await GetOnlineSheetInfo(excelToken);
                 LocalExcelInfo localInfo = ReadExcelFile(localFilePath);
                 if (localInfo == null) return;
 
                 int localCount = localInfo.SheetInfos.Count;
                 int onlineCount = onlineInfo.SheetInfos.Count;
 
-                Debug.Log($"[飞书同步] 本地工作表: {localCount}个, 云端工作表:{onlineCount}个");
+                Debug.Log($"[飞书同步] {excelToken} 本地工作表: {localCount}个, 云端工作表:{onlineCount}个");
 
                 //数量对齐
                 if (localCount > onlineCount)
@@ -280,7 +326,7 @@ namespace PFPackage.FeiShuExcel
                     for (int i = 0; i < toCreate; i++)
                     {
                         int index = i;
-                        createTasks[index] = CreateSheet(excelToken, localInfo.SheetInfos[localCount - 1 - index].SheetTitle, index);
+                        createTasks[index] = CreateOnlineSheet(excelToken, localInfo.SheetInfos[localCount - 1 - index].SheetTitle, index);
                     }
                     var newSheets = await Task.WhenAll(createTasks);
 
@@ -292,16 +338,17 @@ namespace PFPackage.FeiShuExcel
                         }
                     }
 
-                    Debug.Log($"[飞书同步] 创建 {toCreate} 个工作表");
+                    Debug.Log($"[飞书同步]  {excelToken} 创建 {toCreate} 个工作表");
                 }
-                else
+                else if (localCount < onlineCount)
                 {
                     int toDelete = onlineCount - localCount;
+
                     var deleteTasks = new Task[toDelete];
                     for (int i = 0; i < toDelete; i++)
                     {
                         int index = i;
-                        deleteTasks[index] = DeleteSheet(excelToken, onlineInfo.SheetInfos[onlineCount - 1 - index].SheetId);
+                        deleteTasks[index] = DeleteOnlineSheet(excelToken, onlineInfo.SheetInfos[onlineCount - 1 - index].SheetId);
                     }
                     await Task.WhenAll(deleteTasks);
 
@@ -309,21 +356,25 @@ namespace PFPackage.FeiShuExcel
                     {
                         onlineInfo.SheetInfos.RemoveAt(onlineCount - 1 - i);
                     }
-                    
-                    Debug.Log($"[飞书同步] 删除 {toDelete} 个工作表");
+                    Debug.Log($"[飞书同步]  {excelToken} 删除 {toDelete} 个工作表");
                 }
 
                 var syncTasks = new List<Task>();
-                
+
                 for (int i = 0; i < localInfo.SheetInfos.Count; i++)
                 {
                     int index = i;
                     var localSheet = localInfo.SheetInfos[index];
                     var onlineSheet = onlineInfo.SheetInfos[index];
-                    syncTasks.Add(UpdateSheet(excelToken, onlineSheet.SheetId, localSheet.SheetTitle, index));
+                    syncTasks.Add(UpdateOnlineSheet(excelToken, onlineSheet.SheetId, localSheet.SheetTitle, index));
                     syncTasks.Add(WriteOnlineSheet(excelToken, onlineSheet.SheetId, localSheet.SheetData));
+                    foreach (var mergeCell in localSheet.MergeCells)
+                    {
+                        syncTasks.Add(MergeOnlineCellData(excelToken, onlineSheet.SheetId, mergeCell.Range));
+                    }
                 }
                 await Task.WhenAll(syncTasks);
+                
             }
             catch (Exception ex)
             {

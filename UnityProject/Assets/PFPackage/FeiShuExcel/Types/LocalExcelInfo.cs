@@ -14,5 +14,12 @@ namespace PFPackage.FeiShuExcel
         public string SheetTitle;
         public int Index;
         public string[,] SheetData;
+        public List<MergeCellInfo> MergeCells = new List<MergeCellInfo>();
+    }
+
+    [Serializable]
+    public class MergeCellInfo
+    {
+        public string Range;  
     }
 }

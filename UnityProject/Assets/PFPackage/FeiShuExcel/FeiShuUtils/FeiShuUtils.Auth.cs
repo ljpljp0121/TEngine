@@ -27,6 +27,11 @@ namespace PFPackage.FeiShuExcel
 
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(URL_GET_ACCESS_TOKEN, content);
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                    return;
+                }
 
                 var responseString = await response.Content.ReadAsStringAsync();
                 JObject jObject = JsonConvert.DeserializeObject<JObject>(responseString);

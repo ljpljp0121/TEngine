@@ -29,6 +29,13 @@ namespace PFPackage.FeiShuExcel
 
                 var requestUrl = $"{URL_GET_FOLDER_CHECK_LIST}?folder_token={folderToken}";
                 var response = await httpClient.GetAsync(requestUrl);
+                
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                    return result;
+                }
+                
                 var responseString = await response.Content.ReadAsStringAsync();
 
                 JObject jObject = JsonConvert.DeserializeObject<JObject>(responseString);
@@ -82,6 +89,12 @@ namespace PFPackage.FeiShuExcel
                 var content = new StringContent(requestBody, Encoding.UTF8, "application/json");
                 var response = await httpClient.PostAsync(URL_CREATE_FOLDER, content);
 
+                if (!response.IsSuccessStatusCode)
+                {
+                    Debug.LogError($"[飞书读表] HTTP请求失败: {response.StatusCode}");
+                    return folderToken;
+                }
+                
                 var responseString = await response.Content.ReadAsStringAsync();
                 JObject jObject = JsonConvert.DeserializeObject<JObject>(responseString);
 

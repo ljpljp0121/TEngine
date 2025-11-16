@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using UnityEditor;
 using UnityEngine;
 
 namespace PFPackage.FeiShuExcel
@@ -16,8 +18,11 @@ namespace PFPackage.FeiShuExcel
         public const string URL_GET_SHEET_INFO = "https://open.feishu.cn/open-apis/sheets/v3/spreadsheets/{0}/sheets/query";
         public const string URL_GET_ACCESS_TOKEN = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal";
         public const string URL_UPDATE_SHEET = "https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/{0}/sheets_batch_update";
-        
-          /// <summary>
+        public const string URL_Merge_Cell = "https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/{0}/merge_cells";
+        private static readonly SemaphoreSlim writeSemaphore = new SemaphoreSlim(10);
+
+
+        /// <summary>
         /// 递归同步目录结构到飞书云端
         /// </summary>
         /// <param name="localPath">本地目录路径</param>
@@ -78,7 +83,7 @@ namespace PFPackage.FeiShuExcel
 
             return pathToTokenMap;
         }
-        
+
         /// <summary>
         /// 同步本地配置表到远端(递归)
         /// </summary>
@@ -86,6 +91,8 @@ namespace PFPackage.FeiShuExcel
         {
             try
             {
+                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
                 string localRootPath = FeiShuExcelSetting.I.LocalRootPath;
 
                 if (string.IsNullOrEmpty(localRootPath))
@@ -100,22 +107,43 @@ namespace PFPackage.FeiShuExcel
                     return;
                 }
 
+                EditorUtility.DisplayProgressBar("飞书同步", "准备同步中...", 0f);
                 Debug.Log($"[飞书同步] 开始同步本地目录: {localRootPath}");
+                EditorUtility.DisplayProgressBar("飞书同步", "同步目录结构...", 0.2f);
+
                 var syncResult = await SyncDirectoryStructure(localRootPath, FeiShuExcelSetting.I.FeiShuFolderRootToken);
-                Debug.Log($"[飞书同步] 文件结构同步完成");
-                
-                Debug.Log($"[飞书同步] 开始同步所有Excel表");
-                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-                var excelSyncTasks = syncResult.Select(pair => WriteOnlineExcel(pair.Value, pair.Key)).ToArray();
+
+                var excelFiles = syncResult.Count(kvp => IsExcelFile(kvp.Key));
+
+                Debug.Log($"[飞书同步] 开始同步 {excelFiles} 个Excel表");
+                EditorUtility.DisplayProgressBar("飞书同步", $"同步 {excelFiles} 个Excel文件...", 0.5f);
+
+                //最多并发 14 个
+                var excelSyncTasks = syncResult.Select(async pair =>
+                {
+                    await writeSemaphore.WaitAsync();
+                    try
+                    {
+                        await WriteOnlineExcel(pair.Value, pair.Key);
+                    }
+                    finally
+                    {
+                        writeSemaphore.Release();
+                    }
+                }).ToArray();
                 await Task.WhenAll(excelSyncTasks);
                 stopwatch.Stop();
-                Debug.Log($"[飞书同步] 表格同步完成，耗时: {stopwatch.ElapsedMilliseconds}ms");
-                
+
+                EditorUtility.DisplayProgressBar("飞书同步", "同步完成！", 0.9f);
                 Debug.Log($"[飞书同步] 同步完成！当前共有 {syncResult.Count} 个文件(包括文件夹)" +
                           $" 映射信息：\n{string.Join("\n", syncResult.Select(kvp => $"{kvp.Key} -> {kvp.Value}"))}");
+                Debug.Log($"[飞书同步] 表格同步完成，耗时: {stopwatch.ElapsedMilliseconds}ms");
+                // 清除进度条
+                EditorUtility.ClearProgressBar();
             }
             catch (Exception ex)
             {
+                EditorUtility.ClearProgressBar(); // 确保异常时也清除进度条
                 Debug.LogError($"[飞书同步] 同步过程中发生错误: {ex.Message}\n{ex.StackTrace}");
             }
         }
