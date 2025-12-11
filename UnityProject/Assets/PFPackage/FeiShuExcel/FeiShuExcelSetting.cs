@@ -37,16 +37,22 @@ namespace PFPackage.FeiShuExcel
         public SerializableDictionary<string, FeiShuExcelInfo> ExcelInfoDic = new SerializableDictionary<string, FeiShuExcelInfo>();
 
         [InfoBox("主要原因是因为飞书创建电子表格API限制一分钟只能20次,所以可以先用这个按钮每个一分钟创建一次，把表格先创建完再说")]
-        [Button("同步文件结构")]
+        [Button("同步本地文件结构到飞书")]
         public async Task CreateFolder()
         {
-            await FeiShuUtils.SyncDirectoryStructure(LocalRootPath, FeiShuFolderRootToken);
+            await FeiShuUtils.SyncLocalFileTreeToOnline(LocalRootPath, FeiShuFolderRootToken);
         }
 
         [Button("写入飞书表格")]
         public async Task WriteExcel()
         {
             await FeiShuUtils.SyncLocalExcelToOnline();
+        }
+        
+        [Button("同步飞书表格到本地")]
+        public async Task SyncExcelToLocal()
+        {
+            await FeiShuUtils.SyncOnlineExcelToLocal();
         }
     }
 }

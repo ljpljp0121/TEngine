@@ -1,0 +1,867 @@
+[
+  {
+    "Id": 1001,
+    "Name": "TableCubeName_1001",
+    "Level": 0,
+    "Des": "TableCubeDes_1001",
+    "EffectIds": [
+      1003,
+      1004
+    ],
+    "ImagePath": "Rubik/cube1",
+    "Frequency": 1
+  },
+  {
+    "Id": 1002,
+    "Name": "TableCubeName_1002",
+    "Level": 0,
+    "Des": "TableCubeDes_1002",
+    "EffectIds": [
+      1005,
+      1006
+    ],
+    "ImagePath": "Rubik/cube2",
+    "Frequency": 0
+  },
+  {
+    "Id": 1003,
+    "Name": "TableCubeName_1003",
+    "Level": 0,
+    "Des": "TableCubeDes_1003",
+    "EffectIds": [
+      1001
+    ],
+    "ImagePath": "Rubik/cube3",
+    "Frequency": 0
+  },
+  {
+    "Id": 1004,
+    "Name": "TableCubeName_1004",
+    "Level": 0,
+    "Des": "TableCubeDes_1004",
+    "EffectIds": [
+      1002
+    ],
+    "ImagePath": "Rubik/cube4",
+    "Frequency": 0
+  },
+  {
+    "Id": 1005,
+    "Name": "TableCubeName_1005",
+    "Level": 0,
+    "Des": "TableCubeDes_1005",
+    "EffectIds": [],
+    "ImagePath": "",
+    "Frequency": 0
+  },
+  {
+    "Id": 1006,
+    "Name": "TableCubeName_1006",
+    "Level": 1,
+    "Des": "TableCubeDes_1006",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1006",
+    "Frequency": 0
+  },
+  {
+    "Id": 1007,
+    "Name": "TableCubeName_1007",
+    "Level": 0,
+    "Des": "TableCubeDes_1007",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1007",
+    "Frequency": 0
+  },
+  {
+    "Id": 1008,
+    "Name": "TableCubeName_1008",
+    "Level": 3,
+    "Des": "TableCubeDes_1008",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1008",
+    "Frequency": 0
+  },
+  {
+    "Id": 1009,
+    "Name": "TableCubeName_1009",
+    "Level": 2,
+    "Des": "TableCubeDes_1009",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1009",
+    "Frequency": 0
+  },
+  {
+    "Id": 1010,
+    "Name": "TableCubeName_1010",
+    "Level": 3,
+    "Des": "TableCubeDes_1010",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1010",
+    "Frequency": 0
+  },
+  {
+    "Id": 1011,
+    "Name": "TableCubeName_1011",
+    "Level": 1,
+    "Des": "TableCubeDes_1011",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1011",
+    "Frequency": 0
+  },
+  {
+    "Id": 1012,
+    "Name": "TableCubeName_1012",
+    "Level": 3,
+    "Des": "TableCubeDes_1012",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1012",
+    "Frequency": 0
+  },
+  {
+    "Id": 1013,
+    "Name": "TableCubeName_1013",
+    "Level": 3,
+    "Des": "TableCubeDes_1013",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1013",
+    "Frequency": 0
+  },
+  {
+    "Id": 1014,
+    "Name": "TableCubeName_1014",
+    "Level": 3,
+    "Des": "TableCubeDes_1014",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1014",
+    "Frequency": 0
+  },
+  {
+    "Id": 1015,
+    "Name": "TableCubeName_1015",
+    "Level": 1,
+    "Des": "TableCubeDes_1015",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1015",
+    "Frequency": 0
+  },
+  {
+    "Id": 1016,
+    "Name": "TableCubeName_1016",
+    "Level": 2,
+    "Des": "TableCubeDes_1016",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1016",
+    "Frequency": 0
+  },
+  {
+    "Id": 1017,
+    "Name": "TableCubeName_1017",
+    "Level": 1,
+    "Des": "TableCubeDes_1017",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1017",
+    "Frequency": 0
+  },
+  {
+    "Id": 1018,
+    "Name": "TableCubeName_1018",
+    "Level": 0,
+    "Des": "TableCubeDes_1018",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1018",
+    "Frequency": 0
+  },
+  {
+    "Id": 1019,
+    "Name": "TableCubeName_1019",
+    "Level": 0,
+    "Des": "TableCubeDes_1019",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1019",
+    "Frequency": 0
+  },
+  {
+    "Id": 1020,
+    "Name": "TableCubeName_1020",
+    "Level": 1,
+    "Des": "TableCubeDes_1020",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1020",
+    "Frequency": 0
+  },
+  {
+    "Id": 1021,
+    "Name": "TableCubeName_1021",
+    "Level": 3,
+    "Des": "TableCubeDes_1021",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1021",
+    "Frequency": 0
+  },
+  {
+    "Id": 1022,
+    "Name": "TableCubeName_1022",
+    "Level": 2,
+    "Des": "TableCubeDes_1022",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1022",
+    "Frequency": 0
+  },
+  {
+    "Id": 1023,
+    "Name": "TableCubeName_1023",
+    "Level": 0,
+    "Des": "TableCubeDes_1023",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1023",
+    "Frequency": 0
+  },
+  {
+    "Id": 1024,
+    "Name": "TableCubeName_1024",
+    "Level": 0,
+    "Des": "TableCubeDes_1024",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1024",
+    "Frequency": 0
+  },
+  {
+    "Id": 1025,
+    "Name": "TableCubeName_1025",
+    "Level": 0,
+    "Des": "TableCubeDes_1025",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1025",
+    "Frequency": 0
+  },
+  {
+    "Id": 1026,
+    "Name": "TableCubeName_1026",
+    "Level": 0,
+    "Des": "TableCubeDes_1026",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1026",
+    "Frequency": 0
+  },
+  {
+    "Id": 1027,
+    "Name": "TableCubeName_1027",
+    "Level": 2,
+    "Des": "TableCubeDes_1027",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1027",
+    "Frequency": 0
+  },
+  {
+    "Id": 1028,
+    "Name": "TableCubeName_1028",
+    "Level": 0,
+    "Des": "TableCubeDes_1028",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1028",
+    "Frequency": 0
+  },
+  {
+    "Id": 1029,
+    "Name": "TableCubeName_1029",
+    "Level": 2,
+    "Des": "TableCubeDes_1029",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1029",
+    "Frequency": 0
+  },
+  {
+    "Id": 1030,
+    "Name": "TableCubeName_1030",
+    "Level": 3,
+    "Des": "TableCubeDes_1030",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1030",
+    "Frequency": 0
+  },
+  {
+    "Id": 1031,
+    "Name": "TableCubeName_1031",
+    "Level": 3,
+    "Des": "TableCubeDes_1031",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1031",
+    "Frequency": 0
+  },
+  {
+    "Id": 1032,
+    "Name": "TableCubeName_1032",
+    "Level": 3,
+    "Des": "TableCubeDes_1032",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1032",
+    "Frequency": 0
+  },
+  {
+    "Id": 1033,
+    "Name": "TableCubeName_1033",
+    "Level": 0,
+    "Des": "TableCubeDes_1033",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1033",
+    "Frequency": 0
+  },
+  {
+    "Id": 1034,
+    "Name": "TableCubeName_1034",
+    "Level": 0,
+    "Des": "TableCubeDes_1034",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1034",
+    "Frequency": 0
+  },
+  {
+    "Id": 1035,
+    "Name": "TableCubeName_1035",
+    "Level": 3,
+    "Des": "TableCubeDes_1035",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1035",
+    "Frequency": 0
+  },
+  {
+    "Id": 1036,
+    "Name": "TableCubeName_1036",
+    "Level": 3,
+    "Des": "TableCubeDes_1036",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1036",
+    "Frequency": 0
+  },
+  {
+    "Id": 1037,
+    "Name": "TableCubeName_1037",
+    "Level": 2,
+    "Des": "TableCubeDes_1037",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1037",
+    "Frequency": 0
+  },
+  {
+    "Id": 1038,
+    "Name": "TableCubeName_1038",
+    "Level": 3,
+    "Des": "TableCubeDes_1038",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1038",
+    "Frequency": 0
+  },
+  {
+    "Id": 1039,
+    "Name": "TableCubeName_1039",
+    "Level": 3,
+    "Des": "TableCubeDes_1039",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1039",
+    "Frequency": 0
+  },
+  {
+    "Id": 1040,
+    "Name": "TableCubeName_1040",
+    "Level": 1,
+    "Des": "TableCubeDes_1040",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1040",
+    "Frequency": 0
+  },
+  {
+    "Id": 1041,
+    "Name": "TableCubeName_1041",
+    "Level": 0,
+    "Des": "TableCubeDes_1041",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1041",
+    "Frequency": 0
+  },
+  {
+    "Id": 1042,
+    "Name": "TableCubeName_1042",
+    "Level": 3,
+    "Des": "TableCubeDes_1042",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1042",
+    "Frequency": 0
+  },
+  {
+    "Id": 1043,
+    "Name": "TableCubeName_1043",
+    "Level": 1,
+    "Des": "TableCubeDes_1043",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1043",
+    "Frequency": 0
+  },
+  {
+    "Id": 1044,
+    "Name": "TableCubeName_1044",
+    "Level": 1,
+    "Des": "TableCubeDes_1044",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1044",
+    "Frequency": 0
+  },
+  {
+    "Id": 1045,
+    "Name": "TableCubeName_1045",
+    "Level": 1,
+    "Des": "TableCubeDes_1045",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1045",
+    "Frequency": 0
+  },
+  {
+    "Id": 1046,
+    "Name": "TableCubeName_1046",
+    "Level": 1,
+    "Des": "TableCubeDes_1046",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1046",
+    "Frequency": 0
+  },
+  {
+    "Id": 1047,
+    "Name": "TableCubeName_1047",
+    "Level": 3,
+    "Des": "TableCubeDes_1047",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1047",
+    "Frequency": 0
+  },
+  {
+    "Id": 1048,
+    "Name": "TableCubeName_1048",
+    "Level": 3,
+    "Des": "TableCubeDes_1048",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1048",
+    "Frequency": 0
+  },
+  {
+    "Id": 1049,
+    "Name": "TableCubeName_1049",
+    "Level": 3,
+    "Des": "TableCubeDes_1049",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1049",
+    "Frequency": 0
+  },
+  {
+    "Id": 1050,
+    "Name": "TableCubeName_1050",
+    "Level": 3,
+    "Des": "TableCubeDes_1050",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1050",
+    "Frequency": 0
+  },
+  {
+    "Id": 1051,
+    "Name": "TableCubeName_1051",
+    "Level": 1,
+    "Des": "TableCubeDes_1051",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1051",
+    "Frequency": 0
+  },
+  {
+    "Id": 1052,
+    "Name": "TableCubeName_1052",
+    "Level": 0,
+    "Des": "TableCubeDes_1052",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1052",
+    "Frequency": 0
+  },
+  {
+    "Id": 1053,
+    "Name": "TableCubeName_1053",
+    "Level": 0,
+    "Des": "TableCubeDes_1053",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1053",
+    "Frequency": 0
+  },
+  {
+    "Id": 1054,
+    "Name": "TableCubeName_1054",
+    "Level": 0,
+    "Des": "TableCubeDes_1054",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1054",
+    "Frequency": 0
+  },
+  {
+    "Id": 1055,
+    "Name": "TableCubeName_1055",
+    "Level": 2,
+    "Des": "TableCubeDes_1055",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1055",
+    "Frequency": 0
+  },
+  {
+    "Id": 1056,
+    "Name": "TableCubeName_1056",
+    "Level": 3,
+    "Des": "TableCubeDes_1056",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1056",
+    "Frequency": 0
+  },
+  {
+    "Id": 1057,
+    "Name": "TableCubeName_1057",
+    "Level": 2,
+    "Des": "TableCubeDes_1057",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1057",
+    "Frequency": 0
+  },
+  {
+    "Id": 1058,
+    "Name": "TableCubeName_1058",
+    "Level": 1,
+    "Des": "TableCubeDes_1058",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1058",
+    "Frequency": 0
+  },
+  {
+    "Id": 1059,
+    "Name": "TableCubeName_1059",
+    "Level": 3,
+    "Des": "TableCubeDes_1059",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1059",
+    "Frequency": 0
+  },
+  {
+    "Id": 1060,
+    "Name": "TableCubeName_1060",
+    "Level": 2,
+    "Des": "TableCubeDes_1060",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1060",
+    "Frequency": 0
+  },
+  {
+    "Id": 1061,
+    "Name": "TableCubeName_1061",
+    "Level": 3,
+    "Des": "TableCubeDes_1061",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1061",
+    "Frequency": 0
+  },
+  {
+    "Id": 1062,
+    "Name": "TableCubeName_1062",
+    "Level": 1,
+    "Des": "TableCubeDes_1062",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1062",
+    "Frequency": 0
+  },
+  {
+    "Id": 1063,
+    "Name": "TableCubeName_1063",
+    "Level": 1,
+    "Des": "TableCubeDes_1063",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1063",
+    "Frequency": 0
+  },
+  {
+    "Id": 1064,
+    "Name": "TableCubeName_1064",
+    "Level": 1,
+    "Des": "TableCubeDes_1064",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1064",
+    "Frequency": 0
+  },
+  {
+    "Id": 1065,
+    "Name": "TableCubeName_1065",
+    "Level": 3,
+    "Des": "TableCubeDes_1065",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1065",
+    "Frequency": 0
+  },
+  {
+    "Id": 1066,
+    "Name": "TableCubeName_1066",
+    "Level": 0,
+    "Des": "TableCubeDes_1066",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1066",
+    "Frequency": 0
+  },
+  {
+    "Id": 1067,
+    "Name": "TableCubeName_1067",
+    "Level": 0,
+    "Des": "TableCubeDes_1067",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1067",
+    "Frequency": 0
+  },
+  {
+    "Id": 1068,
+    "Name": "TableCubeName_1068",
+    "Level": 0,
+    "Des": "TableCubeDes_1068",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1068",
+    "Frequency": 0
+  },
+  {
+    "Id": 1069,
+    "Name": "TableCubeName_1069",
+    "Level": 0,
+    "Des": "TableCubeDes_1069",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1069",
+    "Frequency": 0
+  },
+  {
+    "Id": 1070,
+    "Name": "TableCubeName_1070",
+    "Level": 1,
+    "Des": "TableCubeDes_1070",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1070",
+    "Frequency": 0
+  },
+  {
+    "Id": 1071,
+    "Name": "TableCubeName_1071",
+    "Level": 3,
+    "Des": "TableCubeDes_1071",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1071",
+    "Frequency": 0
+  },
+  {
+    "Id": 1072,
+    "Name": "TableCubeName_1072",
+    "Level": 1,
+    "Des": "TableCubeDes_1072",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1072",
+    "Frequency": 0
+  },
+  {
+    "Id": 1073,
+    "Name": "TableCubeName_1073",
+    "Level": 3,
+    "Des": "TableCubeDes_1073",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1073",
+    "Frequency": 0
+  },
+  {
+    "Id": 1074,
+    "Name": "TableCubeName_1074",
+    "Level": 0,
+    "Des": "TableCubeDes_1074",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1074",
+    "Frequency": 0
+  },
+  {
+    "Id": 1075,
+    "Name": "TableCubeName_1075",
+    "Level": 2,
+    "Des": "TableCubeDes_1075",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1075",
+    "Frequency": 0
+  },
+  {
+    "Id": 1076,
+    "Name": "TableCubeName_1076",
+    "Level": 2,
+    "Des": "TableCubeDes_1076",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1076",
+    "Frequency": 0
+  },
+  {
+    "Id": 1077,
+    "Name": "TableCubeName_1077",
+    "Level": 2,
+    "Des": "TableCubeDes_1077",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1077",
+    "Frequency": 0
+  },
+  {
+    "Id": 1078,
+    "Name": "TableCubeName_1078",
+    "Level": 2,
+    "Des": "TableCubeDes_1078",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1078",
+    "Frequency": 0
+  },
+  {
+    "Id": 1079,
+    "Name": "TableCubeName_1079",
+    "Level": 2,
+    "Des": "TableCubeDes_1079",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1079",
+    "Frequency": 0
+  },
+  {
+    "Id": 1080,
+    "Name": "TableCubeName_1080",
+    "Level": 0,
+    "Des": "TableCubeDes_1080",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1080",
+    "Frequency": 0
+  },
+  {
+    "Id": 1081,
+    "Name": "TableCubeName_1081",
+    "Level": 0,
+    "Des": "TableCubeDes_1081",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1081",
+    "Frequency": 0
+  },
+  {
+    "Id": 1082,
+    "Name": "TableCubeName_1082",
+    "Level": 0,
+    "Des": "TableCubeDes_1082",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1082",
+    "Frequency": 0
+  },
+  {
+    "Id": 1083,
+    "Name": "TableCubeName_1083",
+    "Level": 3,
+    "Des": "TableCubeDes_1083",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1083",
+    "Frequency": 0
+  },
+  {
+    "Id": 1084,
+    "Name": "TableCubeName_1084",
+    "Level": 1,
+    "Des": "TableCubeDes_1084",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1084",
+    "Frequency": 0
+  },
+  {
+    "Id": 1085,
+    "Name": "TableCubeName_1085",
+    "Level": 3,
+    "Des": "TableCubeDes_1085",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1085",
+    "Frequency": 0
+  },
+  {
+    "Id": 1086,
+    "Name": "TableCubeName_1086",
+    "Level": 3,
+    "Des": "TableCubeDes_1086",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1086",
+    "Frequency": 0
+  },
+  {
+    "Id": 1087,
+    "Name": "TableCubeName_1087",
+    "Level": 2,
+    "Des": "TableCubeDes_1087",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1087",
+    "Frequency": 0
+  },
+  {
+    "Id": 1088,
+    "Name": "TableCubeName_1088",
+    "Level": 2,
+    "Des": "TableCubeDes_1088",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1088",
+    "Frequency": 0
+  },
+  {
+    "Id": 1089,
+    "Name": "TableCubeName_1089",
+    "Level": 1,
+    "Des": "TableCubeDes_1089",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1089",
+    "Frequency": 0
+  },
+  {
+    "Id": 1090,
+    "Name": "TableCubeName_1090",
+    "Level": 2,
+    "Des": "TableCubeDes_1090",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1090",
+    "Frequency": 0
+  },
+  {
+    "Id": 1091,
+    "Name": "TableCubeName_1091",
+    "Level": 0,
+    "Des": "TableCubeDes_1091",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1091",
+    "Frequency": 0
+  },
+  {
+    "Id": 1092,
+    "Name": "TableCubeName_1092",
+    "Level": 0,
+    "Des": "TableCubeDes_1092",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1092",
+    "Frequency": 0
+  },
+  {
+    "Id": 1093,
+    "Name": "TableCubeName_1093",
+    "Level": 2,
+    "Des": "TableCubeDes_1093",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1093",
+    "Frequency": 0
+  },
+  {
+    "Id": 1094,
+    "Name": "TableCubeName_1094",
+    "Level": 3,
+    "Des": "TableCubeDes_1094",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1094",
+    "Frequency": 0
+  },
+  {
+    "Id": 1095,
+    "Name": "TableCubeName_1095",
+    "Level": 2,
+    "Des": "TableCubeDes_1095",
+    "EffectIds": [],
+    "ImagePath": "Rubik/zd1095",
+    "Frequency": 0
+  }
+]

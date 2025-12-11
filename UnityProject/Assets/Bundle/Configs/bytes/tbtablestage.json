@@ -1,0 +1,614 @@
+[
+  {
+    "Id": 1001,
+    "LevelGroup": 1,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 80,
+    "DaySubTime": 5,
+    "DayMinTime": 30,
+    "NightTime": 10,
+    "NeighAddTime": 5,
+    "NightMaxTime": 30,
+    "CubeAwardsTime": [
+      10,
+      60,
+      130
+    ],
+    "GroupsData": [
+      600001,
+      600004
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1002,
+    "LevelGroup": 1,
+    "MapId": 1,
+    "Type": 1,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 75,
+    "DaySubTime": 5,
+    "DayMinTime": 25,
+    "NightTime": 15,
+    "NeighAddTime": 5,
+    "NightMaxTime": 35,
+    "CubeAwardsTime": [
+      10,
+      80,
+      130,
+      210
+    ],
+    "GroupsData": [
+      600001,
+      600006
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1003,
+    "LevelGroup": 1,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 70,
+    "DaySubTime": 5,
+    "DayMinTime": 20,
+    "NightTime": 20,
+    "NeighAddTime": 5,
+    "NightMaxTime": 40,
+    "CubeAwardsTime": [
+      10,
+      90,
+      160,
+      260
+    ],
+    "GroupsData": [
+      600001,
+      600005
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1004,
+    "LevelGroup": 2,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 65,
+    "DaySubTime": 5,
+    "DayMinTime": 15,
+    "NightTime": 25,
+    "NeighAddTime": 5,
+    "NightMaxTime": 45,
+    "CubeAwardsTime": [
+      10,
+      120,
+      180,
+      310
+    ],
+    "GroupsData": [
+      600001,
+      600007
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1005,
+    "LevelGroup": 2,
+    "MapId": 1,
+    "Type": 2,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1006,
+    "LevelGroup": 2,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 80,
+    "DaySubTime": 5,
+    "DayMinTime": 30,
+    "NightTime": 10,
+    "NeighAddTime": 5,
+    "NightMaxTime": 30,
+    "CubeAwardsTime": [
+      10,
+      60,
+      130
+    ],
+    "GroupsData": [
+      600001,
+      600004
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1007,
+    "LevelGroup": 3,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 75,
+    "DaySubTime": 5,
+    "DayMinTime": 25,
+    "NightTime": 15,
+    "NeighAddTime": 5,
+    "NightMaxTime": 35,
+    "CubeAwardsTime": [
+      10,
+      80,
+      130,
+      210
+    ],
+    "GroupsData": [
+      600001,
+      600006
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1008,
+    "LevelGroup": 3,
+    "MapId": 1,
+    "Type": 1,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 70,
+    "DaySubTime": 5,
+    "DayMinTime": 20,
+    "NightTime": 20,
+    "NeighAddTime": 5,
+    "NightMaxTime": 40,
+    "CubeAwardsTime": [
+      10,
+      90,
+      160,
+      260
+    ],
+    "GroupsData": [
+      600001,
+      600005
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1009,
+    "LevelGroup": 3,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 65,
+    "DaySubTime": 5,
+    "DayMinTime": 15,
+    "NightTime": 25,
+    "NeighAddTime": 5,
+    "NightMaxTime": 45,
+    "CubeAwardsTime": [
+      10,
+      120,
+      180,
+      310
+    ],
+    "GroupsData": [
+      600001,
+      600007
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1010,
+    "LevelGroup": 4,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "关卡描述多语言Id",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1011,
+    "LevelGroup": 0,
+    "MapId": 0,
+    "Type": -1,
+    "Des": "-1不会使用",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 0,
+    "DaySubTime": 0,
+    "DayMinTime": 0,
+    "NightTime": 0,
+    "NeighAddTime": 0,
+    "NightMaxTime": 0,
+    "CubeAwardsTime": [],
+    "GroupsData": [],
+    "MaxEnemies": 0
+  },
+  {
+    "Id": 1012,
+    "LevelGroup": 5,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "测试关卡长度",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 80,
+    "DaySubTime": 5,
+    "DayMinTime": 30,
+    "NightTime": 10,
+    "NeighAddTime": 5,
+    "NightMaxTime": 30,
+    "CubeAwardsTime": [
+      10,
+      60,
+      130
+    ],
+    "GroupsData": [
+      600001,
+      600004
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1013,
+    "LevelGroup": 5,
+    "MapId": 1,
+    "Type": 1,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 75,
+    "DaySubTime": 5,
+    "DayMinTime": 25,
+    "NightTime": 15,
+    "NeighAddTime": 5,
+    "NightMaxTime": 35,
+    "CubeAwardsTime": [
+      10,
+      80,
+      130,
+      210
+    ],
+    "GroupsData": [
+      600001,
+      600006
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1014,
+    "LevelGroup": 5,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 70,
+    "DaySubTime": 5,
+    "DayMinTime": 20,
+    "NightTime": 20,
+    "NeighAddTime": 5,
+    "NightMaxTime": 40,
+    "CubeAwardsTime": [
+      10,
+      90,
+      160,
+      260
+    ],
+    "GroupsData": [
+      600001,
+      600005
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1015,
+    "LevelGroup": 6,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 65,
+    "DaySubTime": 5,
+    "DayMinTime": 15,
+    "NightTime": 25,
+    "NeighAddTime": 5,
+    "NightMaxTime": 45,
+    "CubeAwardsTime": [
+      10,
+      120,
+      180,
+      310
+    ],
+    "GroupsData": [
+      600001,
+      600007
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1016,
+    "LevelGroup": 6,
+    "MapId": 1,
+    "Type": 2,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1017,
+    "LevelGroup": 6,
+    "MapId": 1,
+    "Type": 0,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 80,
+    "DaySubTime": 5,
+    "DayMinTime": 30,
+    "NightTime": 10,
+    "NeighAddTime": 5,
+    "NightMaxTime": 30,
+    "CubeAwardsTime": [
+      10,
+      60,
+      130
+    ],
+    "GroupsData": [
+      600001,
+      600004
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1018,
+    "LevelGroup": 7,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 75,
+    "DaySubTime": 5,
+    "DayMinTime": 25,
+    "NightTime": 15,
+    "NeighAddTime": 5,
+    "NightMaxTime": 35,
+    "CubeAwardsTime": [
+      10,
+      80,
+      130,
+      210
+    ],
+    "GroupsData": [
+      600001,
+      600006
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1019,
+    "LevelGroup": 7,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 70,
+    "DaySubTime": 5,
+    "DayMinTime": 20,
+    "NightTime": 20,
+    "NeighAddTime": 5,
+    "NightMaxTime": 40,
+    "CubeAwardsTime": [
+      10,
+      90,
+      160,
+      260
+    ],
+    "GroupsData": [
+      600001,
+      600005
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1020,
+    "LevelGroup": 7,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 65,
+    "DaySubTime": 5,
+    "DayMinTime": 15,
+    "NightTime": 25,
+    "NeighAddTime": 5,
+    "NightMaxTime": 45,
+    "CubeAwardsTime": [
+      10,
+      120,
+      180,
+      310
+    ],
+    "GroupsData": [
+      600001,
+      600007
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1021,
+    "LevelGroup": 8,
+    "MapId": 1,
+    "Type": 2,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1022,
+    "LevelGroup": 9,
+    "MapId": 1,
+    "Type": 1,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1023,
+    "LevelGroup": 10,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  },
+  {
+    "Id": 1024,
+    "LevelGroup": 11,
+    "MapId": 1,
+    "Type": 3,
+    "Des": "测试关卡",
+    "BgmId": 0,
+    "StageTotalDuration": 15,
+    "DayTime": 60,
+    "DaySubTime": 5,
+    "DayMinTime": 10,
+    "NightTime": 30,
+    "NeighAddTime": 5,
+    "NightMaxTime": 50,
+    "CubeAwardsTime": [
+      10,
+      150,
+      230,
+      620
+    ],
+    "GroupsData": [
+      600001,
+      600003
+    ],
+    "MaxEnemies": 300
+  }
+]

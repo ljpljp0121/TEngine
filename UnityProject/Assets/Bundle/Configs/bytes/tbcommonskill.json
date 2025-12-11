@@ -1,0 +1,248 @@
+[
+  {
+    "Id": 0,
+    "BuffName": "BuffName_0",
+    "BuffDes": "无法行动",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 1,
+    "BuffName": "BuffName_1",
+    "BuffDes": "每{0}秒触发一次，每次造成当前层数*{1}的伤害,每{2}秒减1层",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 2,
+    "BuffName": "BuffName_2",
+    "BuffDes": "免疫伤害",
+    "CurrentConstantId": [
+      9
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 3,
+    "BuffName": "BuffName_3",
+    "BuffDes": "无视地形",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 4,
+    "BuffName": "BuffName_4",
+    "BuffDes": "每层增加{狂怒加成数值}伤害加成，受到伤害时层数减{狂怒衰减幅度}",
+    "CurrentConstantId": [
+      35,
+      36,
+      37
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 5,
+    "BuffName": "BuffName_5",
+    "BuffDes": "减少{寒冷减速数值}移动速度",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 6,
+    "BuffName": "BuffName_6",
+    "BuffDes": "每次收到伤害时额外一次灼热层数伤害",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 7,
+    "BuffName": "BuffName_7",
+    "BuffDes": "减少{0}攻击速度",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 8,
+    "BuffName": "BuffName_8",
+    "BuffDes": "每层获得1护盾，收到伤害移除对应层数",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 9,
+    "BuffName": "BuffName_9",
+    "BuffDes": "每次击杀加{暴走加成数值}攻速，每秒衰减{暴走衰减幅度}",
+    "CurrentConstantId": [
+      38,
+      39,
+      40
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 10,
+    "BuffName": "BuffName_10",
+    "BuffDes": "每层技能伤害额外增加1％",
+    "CurrentConstantId": [
+      34
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 11,
+    "BuffName": "BuffName_11",
+    "BuffDes": "受到伤害时，对伤害来源造成每层{尖刺加成数值}伤害",
+    "CurrentConstantId": [
+      33
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 12,
+    "BuffName": "BuffName_12",
+    "BuffDes": "快速自然回复能量",
+    "CurrentConstantId": [
+      3
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 13,
+    "BuffName": "BuffName_13",
+    "BuffDes": "每层加{狂怒加成数值}额外伤害，每秒衰减{狂怒衰减幅度}",
+    "CurrentConstantId": [
+      10
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 14,
+    "BuffName": "BuffName_14",
+    "BuffDes": "每{0}秒触发一次，每次造成当前层数*{1}的伤害,每{2}秒减1层",
+    "CurrentConstantId": [
+      26,
+      27,
+      25
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 15,
+    "BuffName": "BuffName_15",
+    "BuffDes": "造成感电状态，到达{雷霆触发层数}后造成一次雷击",
+    "CurrentConstantId": [
+      21,
+      22,
+      23
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 16,
+    "BuffName": "BuffName_16",
+    "BuffDes": "每次收到伤害时额外一次伤害x（灼热伤害加成）伤害",
+    "CurrentConstantId": [
+      19,
+      20
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 17,
+    "BuffName": "BuffName_17",
+    "BuffDes": "减少{冰霜减速数值}移动速度。到达{冻结层数}冻结1s",
+    "CurrentConstantId": [
+      14,
+      15,
+      16,
+      17,
+      18
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 18,
+    "BuffName": "BuffName_18",
+    "BuffDes": "斩杀携带低于层数x1%血量的敌人",
+    "CurrentConstantId": [
+      24
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 19,
+    "BuffName": "BuffName_19",
+    "BuffDes": "携带病毒的个体死亡后传递一半层数到最近单位",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 20,
+    "BuffName": "BuffName_20",
+    "BuffDes": "所有友方单位获得{激励层数}的狂怒层数，持续{激励持续时间}",
+    "CurrentConstantId": [
+      35,
+      36,
+      37
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 21,
+    "BuffName": "BuffName_21",
+    "BuffDes": "所有友方单位获得{呐喊层数}的暴走层数，持续{呐喊持续时间}",
+    "CurrentConstantId": [
+      38,
+      39,
+      40
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 22,
+    "BuffName": "BuffName_22",
+    "BuffDes": "死亡后产生爆炸",
+    "CurrentConstantId": [
+      30,
+      31
+    ],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 23,
+    "BuffName": "BuffName_23",
+    "BuffDes": "死亡后复活",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 24,
+    "BuffName": "BuffName_24",
+    "BuffDes": "不会被怪物主动攻击",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 25,
+    "BuffName": "BuffName_25",
+    "BuffDes": "分裂两个",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 26,
+    "BuffName": "BuffName_26",
+    "BuffDes": "到达一定时间后死亡",
+    "CurrentConstantId": [],
+    "PrefabPath": ""
+  },
+  {
+    "Id": 27,
+    "BuffName": "BuffName_27",
+    "BuffDes": "吸引范围内的敌人攻击自己",
+    "CurrentConstantId": [
+      32
+    ],
+    "PrefabPath": ""
+  }
+]

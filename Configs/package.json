@@ -1,0 +1,11 @@
+{
+    "name": "com.peifengcoding.luban",
+    "displayName": "Luban配置表",
+    "version": "1.0.2",
+    "unity": "2021.3",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://blog.peifengcoding.com"
+    },
+    "description": "基于Luban配置表的二次修改，实现了配置表懒加载，适配 TEngine框架"
+}

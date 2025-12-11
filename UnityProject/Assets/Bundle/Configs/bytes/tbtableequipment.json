@@ -1,0 +1,3053 @@
+[
+  {
+    "Id": 100001,
+    "Type": 4,
+    "TraitType": [
+      8,
+      11
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100002,
+    "Type": 4,
+    "TraitType": [
+      8,
+      11
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100003,
+    "Type": 4,
+    "TraitType": [
+      8,
+      11
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100004,
+    "Type": 4,
+    "TraitType": [
+      8,
+      11
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100005,
+    "Type": 4,
+    "TraitType": [
+      8,
+      11
+    ],
+    "AttributeIds": [
+      1
+    ],
+    "FightPrefabPath": "",
+    "Damage": 200,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 200,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100006,
+    "Type": 5,
+    "TraitType": [
+      6,
+      10
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100007,
+    "Type": 5,
+    "TraitType": [
+      6,
+      10
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100008,
+    "Type": 5,
+    "TraitType": [
+      6,
+      10
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100009,
+    "Type": 5,
+    "TraitType": [
+      6,
+      10
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100010,
+    "Type": 5,
+    "TraitType": [
+      6,
+      10
+    ],
+    "AttributeIds": [
+      2
+    ],
+    "FightPrefabPath": "",
+    "Damage": 11,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100011,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      3
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.85,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100012,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      4
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100013,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      5
+    ],
+    "FightPrefabPath": "",
+    "Damage": 9,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.25,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100014,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      6
+    ],
+    "FightPrefabPath": "",
+    "Damage": 12,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.99,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100015,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      7
+    ],
+    "FightPrefabPath": "",
+    "Damage": 35,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.42,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100016,
+    "Type": 5,
+    "TraitType": [
+      2,
+      12
+    ],
+    "AttributeIds": [
+      8
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100017,
+    "Type": 5,
+    "TraitType": [
+      2,
+      12
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100018,
+    "Type": 5,
+    "TraitType": [
+      2,
+      12
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100019,
+    "Type": 5,
+    "TraitType": [
+      2,
+      12
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100020,
+    "Type": 5,
+    "TraitType": [
+      2,
+      12
+    ],
+    "AttributeIds": [
+      9
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 3,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100021,
+    "Type": 1,
+    "TraitType": [
+      9,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100022,
+    "Type": 1,
+    "TraitType": [
+      9,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100023,
+    "Type": 1,
+    "TraitType": [
+      9,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100024,
+    "Type": 1,
+    "TraitType": [
+      9,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100025,
+    "Type": 1,
+    "TraitType": [
+      9,
+      5
+    ],
+    "AttributeIds": [
+      10
+    ],
+    "FightPrefabPath": "",
+    "Damage": 35,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.82,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100026,
+    "Type": 1,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      3
+    ],
+    "FightPrefabPath": "",
+    "Damage": 4,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100027,
+    "Type": 1,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      4
+    ],
+    "FightPrefabPath": "",
+    "Damage": 6,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.45,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100028,
+    "Type": 1,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      5
+    ],
+    "FightPrefabPath": "",
+    "Damage": 13,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100029,
+    "Type": 1,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      6
+    ],
+    "FightPrefabPath": "",
+    "Damage": 18,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100030,
+    "Type": 1,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      7
+    ],
+    "FightPrefabPath": "",
+    "Damage": 45,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100031,
+    "Type": 3,
+    "TraitType": [
+      7,
+      5
+    ],
+    "AttributeIds": [
+      8
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100032,
+    "Type": 3,
+    "TraitType": [
+      7,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100033,
+    "Type": 3,
+    "TraitType": [
+      7,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100034,
+    "Type": 3,
+    "TraitType": [
+      7,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100035,
+    "Type": 3,
+    "TraitType": [
+      7,
+      5
+    ],
+    "AttributeIds": [
+      11
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 30,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100036,
+    "Type": 1,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100037,
+    "Type": 1,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100038,
+    "Type": 1,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100039,
+    "Type": 1,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100040,
+    "Type": 1,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      12
+    ],
+    "FightPrefabPath": "",
+    "Damage": 80,
+    "Repel": 8,
+    "CriticalEfficiency": 100,
+    "AttackRange": 10,
+    "AttackCool": 1.9,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100041,
+    "Type": 1,
+    "TraitType": [
+      3,
+      1
+    ],
+    "AttributeIds": [
+      13
+    ],
+    "FightPrefabPath": "",
+    "Damage": 4,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.25,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100042,
+    "Type": 1,
+    "TraitType": [
+      3,
+      1
+    ],
+    "AttributeIds": [
+      13
+    ],
+    "FightPrefabPath": "",
+    "Damage": 8,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.15,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100043,
+    "Type": 1,
+    "TraitType": [
+      3,
+      1
+    ],
+    "AttributeIds": [
+      13
+    ],
+    "FightPrefabPath": "",
+    "Damage": 16,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100044,
+    "Type": 1,
+    "TraitType": [
+      3,
+      1
+    ],
+    "AttributeIds": [
+      13
+    ],
+    "FightPrefabPath": "",
+    "Damage": 24,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100045,
+    "Type": 1,
+    "TraitType": [
+      3,
+      1
+    ],
+    "AttributeIds": [
+      13
+    ],
+    "FightPrefabPath": "",
+    "Damage": 50,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100046,
+    "Type": 2,
+    "TraitType": [
+      3,
+      6
+    ],
+    "AttributeIds": [
+      14
+    ],
+    "FightPrefabPath": "",
+    "Damage": 2,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100047,
+    "Type": 2,
+    "TraitType": [
+      3,
+      6
+    ],
+    "AttributeIds": [
+      14
+    ],
+    "FightPrefabPath": "",
+    "Damage": 4,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.55,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100048,
+    "Type": 2,
+    "TraitType": [
+      3,
+      6
+    ],
+    "AttributeIds": [
+      14
+    ],
+    "FightPrefabPath": "",
+    "Damage": 8,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100049,
+    "Type": 2,
+    "TraitType": [
+      3,
+      6
+    ],
+    "AttributeIds": [
+      14
+    ],
+    "FightPrefabPath": "",
+    "Damage": 12,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 2.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100050,
+    "Type": 2,
+    "TraitType": [
+      3,
+      6
+    ],
+    "AttributeIds": [
+      14
+    ],
+    "FightPrefabPath": "",
+    "Damage": 25,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100051,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      15
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 1.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100052,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      15
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100053,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      15
+    ],
+    "FightPrefabPath": "",
+    "Damage": 9,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100054,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      15
+    ],
+    "FightPrefabPath": "",
+    "Damage": 13,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100055,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      15
+    ],
+    "FightPrefabPath": "",
+    "Damage": 30,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100056,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      16
+    ],
+    "FightPrefabPath": "",
+    "Damage": 6,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100057,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      17
+    ],
+    "FightPrefabPath": "",
+    "Damage": 10,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100058,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      18
+    ],
+    "FightPrefabPath": "",
+    "Damage": 18,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100059,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      19
+    ],
+    "FightPrefabPath": "",
+    "Damage": 26,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100060,
+    "Type": 5,
+    "TraitType": [
+      3,
+      2
+    ],
+    "AttributeIds": [
+      20
+    ],
+    "FightPrefabPath": "",
+    "Damage": 60,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 6,
+    "AttackCool": 0.25,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100061,
+    "Type": 1,
+    "TraitType": [
+      3,
+      4
+    ],
+    "AttributeIds": [
+      21
+    ],
+    "FightPrefabPath": "",
+    "Damage": 8,
+    "Repel": 7,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 1.5,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100062,
+    "Type": 1,
+    "TraitType": [
+      3,
+      4
+    ],
+    "AttributeIds": [
+      22
+    ],
+    "FightPrefabPath": "",
+    "Damage": 16,
+    "Repel": 7,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 1.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100063,
+    "Type": 1,
+    "TraitType": [
+      3,
+      4
+    ],
+    "AttributeIds": [
+      23
+    ],
+    "FightPrefabPath": "",
+    "Damage": 32,
+    "Repel": 7,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100064,
+    "Type": 1,
+    "TraitType": [
+      3,
+      4
+    ],
+    "AttributeIds": [
+      24
+    ],
+    "FightPrefabPath": "",
+    "Damage": 48,
+    "Repel": 7,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100065,
+    "Type": 1,
+    "TraitType": [
+      3,
+      4
+    ],
+    "AttributeIds": [
+      25
+    ],
+    "FightPrefabPath": "",
+    "Damage": 100,
+    "Repel": 7,
+    "CriticalEfficiency": 100,
+    "AttackRange": 15,
+    "AttackCool": 0.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100066,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100067,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100068,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100069,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100070,
+    "Type": 1,
+    "TraitType": [
+      1,
+      2
+    ],
+    "AttributeIds": [
+      26
+    ],
+    "FightPrefabPath": "",
+    "Damage": 75,
+    "Repel": 8,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100071,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      27
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.37,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100072,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      28
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100073,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      29
+    ],
+    "FightPrefabPath": "",
+    "Damage": 10,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100074,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      30
+    ],
+    "FightPrefabPath": "",
+    "Damage": 22,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100075,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      31
+    ],
+    "FightPrefabPath": "",
+    "Damage": 45,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100076,
+    "Type": 1,
+    "TraitType": [
+      4,
+      1
+    ],
+    "AttributeIds": [
+      3
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.25,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100077,
+    "Type": 1,
+    "TraitType": [
+      4,
+      1
+    ],
+    "AttributeIds": [
+      4
+    ],
+    "FightPrefabPath": "",
+    "Damage": 9,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.15,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100078,
+    "Type": 1,
+    "TraitType": [
+      4,
+      1
+    ],
+    "AttributeIds": [
+      5
+    ],
+    "FightPrefabPath": "",
+    "Damage": 18,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100079,
+    "Type": 1,
+    "TraitType": [
+      4,
+      1
+    ],
+    "AttributeIds": [
+      6
+    ],
+    "FightPrefabPath": "",
+    "Damage": 28,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100080,
+    "Type": 1,
+    "TraitType": [
+      4,
+      1
+    ],
+    "AttributeIds": [
+      7
+    ],
+    "FightPrefabPath": "",
+    "Damage": 60,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100081,
+    "Type": 2,
+    "TraitType": [
+      6,
+      1
+    ],
+    "AttributeIds": [
+      8
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100082,
+    "Type": 2,
+    "TraitType": [
+      6,
+      1
+    ],
+    "AttributeIds": [
+      3
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.55,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100083,
+    "Type": 2,
+    "TraitType": [
+      6,
+      1
+    ],
+    "AttributeIds": [
+      4
+    ],
+    "FightPrefabPath": "",
+    "Damage": 10,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100084,
+    "Type": 2,
+    "TraitType": [
+      6,
+      1
+    ],
+    "AttributeIds": [
+      5
+    ],
+    "FightPrefabPath": "",
+    "Damage": 15,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 2.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100085,
+    "Type": 2,
+    "TraitType": [
+      6,
+      1
+    ],
+    "AttributeIds": [
+      6
+    ],
+    "FightPrefabPath": "",
+    "Damage": 35,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100086,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      7
+    ],
+    "FightPrefabPath": "",
+    "Damage": 1,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.37,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100087,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      8
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100088,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      34
+    ],
+    "FightPrefabPath": "",
+    "Damage": 8,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100089,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      35
+    ],
+    "FightPrefabPath": "",
+    "Damage": 15,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100090,
+    "Type": 2,
+    "TraitType": [
+      8,
+      1
+    ],
+    "AttributeIds": [
+      36
+    ],
+    "FightPrefabPath": "",
+    "Damage": 25,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100091,
+    "Type": 2,
+    "TraitType": [
+      1,
+      7
+    ],
+    "AttributeIds": [
+      3
+    ],
+    "FightPrefabPath": "",
+    "Damage": 1,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 2.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100092,
+    "Type": 2,
+    "TraitType": [
+      1,
+      7
+    ],
+    "AttributeIds": [
+      4
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100093,
+    "Type": 2,
+    "TraitType": [
+      1,
+      7
+    ],
+    "AttributeIds": [
+      5
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100094,
+    "Type": 2,
+    "TraitType": [
+      1,
+      7
+    ],
+    "AttributeIds": [
+      6
+    ],
+    "FightPrefabPath": "",
+    "Damage": 10,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100095,
+    "Type": 2,
+    "TraitType": [
+      1,
+      7
+    ],
+    "AttributeIds": [
+      7
+    ],
+    "FightPrefabPath": "",
+    "Damage": 15,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100096,
+    "Type": 3,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      8
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 10,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100097,
+    "Type": 3,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      38
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 15,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100098,
+    "Type": 3,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      39
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 20,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100099,
+    "Type": 3,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      40
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 25,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100100,
+    "Type": 3,
+    "TraitType": [
+      1,
+      5
+    ],
+    "AttributeIds": [
+      41
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 50,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100101,
+    "Type": 1,
+    "TraitType": [
+      1,
+      4
+    ],
+    "AttributeIds": [
+      42
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.25,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100102,
+    "Type": 1,
+    "TraitType": [
+      1,
+      4
+    ],
+    "AttributeIds": [
+      43
+    ],
+    "FightPrefabPath": "",
+    "Damage": 9,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.15,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100103,
+    "Type": 1,
+    "TraitType": [
+      1,
+      4
+    ],
+    "AttributeIds": [
+      44
+    ],
+    "FightPrefabPath": "",
+    "Damage": 18,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100104,
+    "Type": 1,
+    "TraitType": [
+      1,
+      4
+    ],
+    "AttributeIds": [
+      45
+    ],
+    "FightPrefabPath": "",
+    "Damage": 28,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100105,
+    "Type": 1,
+    "TraitType": [
+      1,
+      4
+    ],
+    "AttributeIds": [
+      46
+    ],
+    "FightPrefabPath": "",
+    "Damage": 60,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100106,
+    "Type": 2,
+    "TraitType": [
+      6,
+      4
+    ],
+    "AttributeIds": [
+      47
+    ],
+    "FightPrefabPath": "",
+    "Damage": 2,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100107,
+    "Type": 2,
+    "TraitType": [
+      6,
+      4
+    ],
+    "AttributeIds": [
+      48
+    ],
+    "FightPrefabPath": "",
+    "Damage": 4,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.55,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100108,
+    "Type": 2,
+    "TraitType": [
+      6,
+      4
+    ],
+    "AttributeIds": [
+      49
+    ],
+    "FightPrefabPath": "",
+    "Damage": 8,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100109,
+    "Type": 2,
+    "TraitType": [
+      6,
+      4
+    ],
+    "AttributeIds": [
+      50
+    ],
+    "FightPrefabPath": "",
+    "Damage": 12,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 2.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100110,
+    "Type": 2,
+    "TraitType": [
+      6,
+      4
+    ],
+    "AttributeIds": [
+      51
+    ],
+    "FightPrefabPath": "",
+    "Damage": 25,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100111,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100112,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100113,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100114,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100115,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      52
+    ],
+    "FightPrefabPath": "",
+    "Damage": 65,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 10,
+    "AttackCool": 1.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100116,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      53
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100117,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      54
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.45,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100118,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      55
+    ],
+    "FightPrefabPath": "",
+    "Damage": 12,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100119,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      56
+    ],
+    "FightPrefabPath": "",
+    "Damage": 17,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100120,
+    "Type": 1,
+    "TraitType": [
+      4,
+      2
+    ],
+    "AttributeIds": [
+      57
+    ],
+    "FightPrefabPath": "",
+    "Damage": 45,
+    "Repel": 4,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100121,
+    "Type": 2,
+    "TraitType": [
+      8,
+      2
+    ],
+    "AttributeIds": [
+      58
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.37,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100122,
+    "Type": 2,
+    "TraitType": [
+      8,
+      2
+    ],
+    "AttributeIds": [
+      58
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100123,
+    "Type": 2,
+    "TraitType": [
+      8,
+      2
+    ],
+    "AttributeIds": [
+      58
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100124,
+    "Type": 2,
+    "TraitType": [
+      8,
+      2
+    ],
+    "AttributeIds": [
+      58
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 1.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100125,
+    "Type": 2,
+    "TraitType": [
+      8,
+      2
+    ],
+    "AttributeIds": [
+      58
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 1,
+    "CriticalEfficiency": 100,
+    "AttackRange": 50,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100126,
+    "Type": 3,
+    "TraitType": [
+      5,
+      2
+    ],
+    "AttributeIds": [
+      59
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 5,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100127,
+    "Type": 3,
+    "TraitType": [
+      5,
+      2
+    ],
+    "AttributeIds": [
+      60
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 10,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100128,
+    "Type": 3,
+    "TraitType": [
+      5,
+      2
+    ],
+    "AttributeIds": [
+      61
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 15,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100129,
+    "Type": 3,
+    "TraitType": [
+      5,
+      2
+    ],
+    "AttributeIds": [
+      62
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 20,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100130,
+    "Type": 3,
+    "TraitType": [
+      5,
+      2
+    ],
+    "AttributeIds": [
+      63
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 45,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100131,
+    "Type": 1,
+    "TraitType": [
+      10,
+      1
+    ],
+    "AttributeIds": [
+      64
+    ],
+    "FightPrefabPath": "",
+    "Damage": 25,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.5,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100132,
+    "Type": 1,
+    "TraitType": [
+      10,
+      1
+    ],
+    "AttributeIds": [
+      64
+    ],
+    "FightPrefabPath": "",
+    "Damage": 35,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.35,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100133,
+    "Type": 1,
+    "TraitType": [
+      10,
+      1
+    ],
+    "AttributeIds": [
+      64
+    ],
+    "FightPrefabPath": "",
+    "Damage": 40,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100134,
+    "Type": 1,
+    "TraitType": [
+      10,
+      1
+    ],
+    "AttributeIds": [
+      64
+    ],
+    "FightPrefabPath": "",
+    "Damage": 75,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100135,
+    "Type": 1,
+    "TraitType": [
+      10,
+      1
+    ],
+    "AttributeIds": [
+      64
+    ],
+    "FightPrefabPath": "",
+    "Damage": 150,
+    "Repel": 5,
+    "CriticalEfficiency": 100,
+    "AttackRange": 12,
+    "AttackCool": 0.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100136,
+    "Type": 5,
+    "TraitType": [
+      4,
+      3
+    ],
+    "AttributeIds": [
+      65
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 52,
+    "AttackCool": 6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100137,
+    "Type": 5,
+    "TraitType": [
+      4,
+      3
+    ],
+    "AttributeIds": [
+      66
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 52,
+    "AttackCool": 5.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100138,
+    "Type": 5,
+    "TraitType": [
+      4,
+      3
+    ],
+    "AttributeIds": [
+      67
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 52,
+    "AttackCool": 5.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100139,
+    "Type": 5,
+    "TraitType": [
+      4,
+      3
+    ],
+    "AttributeIds": [
+      68
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 52,
+    "AttackCool": 4.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100140,
+    "Type": 5,
+    "TraitType": [
+      4,
+      3
+    ],
+    "AttributeIds": [
+      69
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 52,
+    "AttackCool": 3,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100141,
+    "Type": 2,
+    "TraitType": [
+      7,
+      4
+    ],
+    "AttributeIds": [
+      70
+    ],
+    "FightPrefabPath": "",
+    "Damage": 1,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 2.1,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100142,
+    "Type": 2,
+    "TraitType": [
+      7,
+      4
+    ],
+    "AttributeIds": [
+      71
+    ],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100143,
+    "Type": 2,
+    "TraitType": [
+      7,
+      4
+    ],
+    "AttributeIds": [
+      72
+    ],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.6,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100144,
+    "Type": 2,
+    "TraitType": [
+      7,
+      4
+    ],
+    "AttributeIds": [
+      73
+    ],
+    "FightPrefabPath": "",
+    "Damage": 10,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100145,
+    "Type": 2,
+    "TraitType": [
+      7,
+      4
+    ],
+    "AttributeIds": [
+      74
+    ],
+    "FightPrefabPath": "",
+    "Damage": 15,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 25,
+    "AttackCool": 1.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100146,
+    "Type": 3,
+    "TraitType": [
+      5,
+      4
+    ],
+    "AttributeIds": [
+      75
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 8,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100147,
+    "Type": 3,
+    "TraitType": [
+      5,
+      4
+    ],
+    "AttributeIds": [
+      76
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 12,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100148,
+    "Type": 3,
+    "TraitType": [
+      5,
+      4
+    ],
+    "AttributeIds": [
+      77
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 18,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100149,
+    "Type": 3,
+    "TraitType": [
+      5,
+      4
+    ],
+    "AttributeIds": [
+      78
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 20,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100150,
+    "Type": 3,
+    "TraitType": [
+      5,
+      4
+    ],
+    "AttributeIds": [
+      79
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 40,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100151,
+    "Type": 3,
+    "TraitType": [
+      2,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100152,
+    "Type": 3,
+    "TraitType": [
+      2,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100153,
+    "Type": 3,
+    "TraitType": [
+      2,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100154,
+    "Type": 3,
+    "TraitType": [
+      2,
+      5
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100155,
+    "Type": 3,
+    "TraitType": [
+      2,
+      5
+    ],
+    "AttributeIds": [
+      80
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 60,
+    "ShieldCool": 10
+  },
+  {
+    "Id": 100156,
+    "Type": 2,
+    "TraitType": [
+      6,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 1,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100157,
+    "Type": 2,
+    "TraitType": [
+      6,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 2,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.55,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100158,
+    "Type": 2,
+    "TraitType": [
+      6,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 3,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 3.2,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100159,
+    "Type": 2,
+    "TraitType": [
+      6,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 5,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 2.8,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100160,
+    "Type": 2,
+    "TraitType": [
+      6,
+      2
+    ],
+    "AttributeIds": [
+      81
+    ],
+    "FightPrefabPath": "",
+    "Damage": 15,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 8,
+    "AttackCool": 1.4,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100161,
+    "Type": 5,
+    "TraitType": [
+      7,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100162,
+    "Type": 5,
+    "TraitType": [
+      7,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100163,
+    "Type": 5,
+    "TraitType": [
+      7,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100164,
+    "Type": 5,
+    "TraitType": [
+      7,
+      2
+    ],
+    "AttributeIds": [],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 0,
+    "AttackRange": 0,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  },
+  {
+    "Id": 100165,
+    "Type": 5,
+    "TraitType": [
+      7,
+      2
+    ],
+    "AttributeIds": [
+      82
+    ],
+    "FightPrefabPath": "",
+    "Damage": 0,
+    "Repel": 0,
+    "CriticalEfficiency": 100,
+    "AttackRange": 30,
+    "AttackCool": 0,
+    "Shield": 0,
+    "ShieldCool": 0
+  }
+]

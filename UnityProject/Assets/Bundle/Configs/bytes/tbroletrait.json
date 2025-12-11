@@ -1,0 +1,212 @@
+[
+  {
+    "Id": 1,
+    "Name": "TraitName_1",
+    "Color": "",
+    "Type": 1,
+    "IconPath": "",
+    "Grade": [
+      2,
+      8,
+      12
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": [
+      "TraitDes_1，TraitDes_1002，TraitDes_3，TraitDes_4"
+    ]
+  },
+  {
+    "Id": 2,
+    "Name": "TraitName_2",
+    "Color": "",
+    "Type": 2,
+    "IconPath": "",
+    "Grade": [
+      2,
+      8,
+      12
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 3,
+    "Name": "TraitName_3",
+    "Color": "",
+    "Type": 4,
+    "IconPath": "",
+    "Grade": [
+      2,
+      8,
+      12
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 4,
+    "Name": "TraitName_4",
+    "Color": "",
+    "Type": 8,
+    "IconPath": "",
+    "Grade": [
+      2,
+      8,
+      12
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 5,
+    "Name": "TraitName_5",
+    "Color": "",
+    "Type": 16,
+    "IconPath": "",
+    "Grade": [
+      2,
+      8,
+      12
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 6,
+    "Name": "TraitName_6",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      6,
+      10
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 7,
+    "Name": "TraitName_7",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      6,
+      10
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 8,
+    "Name": "TraitName_8",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      6,
+      10
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 9,
+    "Name": "TraitName_9",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      4,
+      6
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 10,
+    "Name": "TraitName_10",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      4,
+      6
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 11,
+    "Name": "TraitName_11",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      4,
+      6
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 12,
+    "Name": "TraitName_12",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      4,
+      6
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  },
+  {
+    "Id": 13,
+    "Name": "TraitName_13",
+    "Color": "",
+    "Type": 0,
+    "IconPath": "",
+    "Grade": [
+      2,
+      4,
+      6
+    ],
+    "TraitTime": [
+      14
+    ],
+    "Des": []
+  }
+]

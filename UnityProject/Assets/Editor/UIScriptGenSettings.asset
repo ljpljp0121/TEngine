@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d8ad67628ab4e61a1ab4115c21d2973, type: 3}
+  m_Name: UIScriptGenSettings
+  m_EditorClassIdentifier: 
+  codeHeadPath: Script/UI/
+  codeNameSpace: GameUI
+  uiObjReferenceRules:
+  - uiElementRegex: go
+    componentName: GameObject
+  - uiElementRegex: tf
+    componentName: Transform
+  - uiElementRegex: rect
+    componentName: RectTransform
+  - uiElementRegex: text
+    componentName: Text
+  - uiElementRegex: btn
+    componentName: Button
+  - uiElementRegex: img
+    componentName: Image
+  - uiElementRegex: rimg
+    componentName: RawImage
+  - uiElementRegex: scrollBar
+    componentName: Scrollbar
+  - uiElementRegex: input
+    componentName: InputField
+  - uiElementRegex: grid
+    componentName: GridLayoutGroup
+  - uiElementRegex: hlay
+    componentName: HorizontalLayoutGroup
+  - uiElementRegex: vlay
+    componentName: VerticalLayoutGroup
+  - uiElementRegex: slider
+    componentName: Slider
+  - uiElementRegex: group
+    componentName: ToggleGroup
+  - uiElementRegex: canvasGroup
+    componentName: CanvasGroup
+  - uiElementRegex: tmp
+    componentName: TextMeshProUGUI

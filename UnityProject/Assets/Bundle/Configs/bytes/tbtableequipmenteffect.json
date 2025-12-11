@@ -1,0 +1,1608 @@
+[
+  {
+    "Id": 1,
+    "Name": "",
+    "Des": "ItemEntryData_0001",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": []
+  },
+  {
+    "Id": 2,
+    "Name": "",
+    "Des": "ItemEntryData_0002",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": []
+  },
+  {
+    "Id": 3,
+    "Name": "",
+    "Des": "ItemEntryData_0003",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        20
+      ]
+    ]
+  },
+  {
+    "Id": 4,
+    "Name": "",
+    "Des": "ItemEntryData_0004",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        30
+      ]
+    ]
+  },
+  {
+    "Id": 5,
+    "Name": "",
+    "Des": "ItemEntryData_0005",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        40
+      ]
+    ]
+  },
+  {
+    "Id": 6,
+    "Name": "",
+    "Des": "ItemEntryData_0006",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        50
+      ]
+    ]
+  },
+  {
+    "Id": 7,
+    "Name": "",
+    "Des": "ItemEntryData_0007",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        80
+      ]
+    ]
+  },
+  {
+    "Id": 8,
+    "Name": "",
+    "Des": "ItemEntryData_0008",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          3
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      1
+    ],
+    "EffectParameters": [
+      [
+        100
+      ]
+    ]
+  },
+  {
+    "Id": 9,
+    "Name": "",
+    "Des": "ItemEntryData_0009",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [],
+    "EffectParameters": []
+  },
+  {
+    "Id": 10,
+    "Name": "",
+    "Des": "ItemEntryData_0010",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [],
+    "EffectParameters": []
+  },
+  {
+    "Id": 11,
+    "Name": "",
+    "Des": "ItemEntryData_0011",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 12,
+    "Name": "",
+    "Des": "ItemEntryData_0012",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [],
+    "EffectParameters": []
+  },
+  {
+    "Id": 13,
+    "Name": "",
+    "Des": "ItemEntryData_0013",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 600,
+    "EffectType": [
+      5
+    ],
+    "EffectParameters": []
+  },
+  {
+    "Id": 14,
+    "Name": "",
+    "Des": "ItemEntryData_0014",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 200,
+    "EffectType": [
+      5
+    ],
+    "EffectParameters": []
+  },
+  {
+    "Id": 15,
+    "Name": "",
+    "Des": "ItemEntryData_0015",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 800,
+    "EffectType": [
+      5
+    ],
+    "EffectParameters": []
+  },
+  {
+    "Id": 16,
+    "Name": "",
+    "Des": "ItemEntryData_0016",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 17,
+    "Name": "",
+    "Des": "ItemEntryData_0017",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 18,
+    "Name": "",
+    "Des": "ItemEntryData_0018",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 19,
+    "Name": "",
+    "Des": "ItemEntryData_0019",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 20,
+    "Name": "",
+    "Des": "ItemEntryData_0020",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 21,
+    "Name": "",
+    "Des": "ItemEntryData_0021",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 22,
+    "Name": "",
+    "Des": "ItemEntryData_0022",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 23,
+    "Name": "",
+    "Des": "ItemEntryData_0023",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 24,
+    "Name": "",
+    "Des": "ItemEntryData_0024",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 25,
+    "Name": "",
+    "Des": "ItemEntryData_0025",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 26,
+    "Name": "",
+    "Des": "ItemEntryData_0026",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 27,
+    "Name": "",
+    "Des": "ItemEntryData_0027",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 28,
+    "Name": "",
+    "Des": "ItemEntryData_0028",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 29,
+    "Name": "",
+    "Des": "ItemEntryData_0029",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 30,
+    "Name": "",
+    "Des": "ItemEntryData_0030",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 31,
+    "Name": "",
+    "Des": "ItemEntryData_0031",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        6
+      ]
+    ]
+  },
+  {
+    "Id": 32,
+    "Name": "",
+    "Des": "ItemEntryData_0032",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 33,
+    "Name": "",
+    "Des": "ItemEntryData_0033",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 34,
+    "Name": "",
+    "Des": "ItemEntryData_0034",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 35,
+    "Name": "",
+    "Des": "ItemEntryData_0035",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 36,
+    "Name": "",
+    "Des": "ItemEntryData_0036",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      6
+    ],
+    "EffectParameters": [
+      [
+        6
+      ]
+    ]
+  },
+  {
+    "Id": 37,
+    "Name": "",
+    "Des": "ItemEntryData_0037",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 38,
+    "Name": "",
+    "Des": "ItemEntryData_0038",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 39,
+    "Name": "",
+    "Des": "ItemEntryData_0039",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 40,
+    "Name": "",
+    "Des": "ItemEntryData_0040",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 41,
+    "Name": "",
+    "Des": "ItemEntryData_0041",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 42,
+    "Name": "",
+    "Des": "ItemEntryData_0042",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 43,
+    "Name": "",
+    "Des": "ItemEntryData_0043",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 19,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 44,
+    "Name": "",
+    "Des": "ItemEntryData_0044",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 18,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 45,
+    "Name": "",
+    "Des": "ItemEntryData_0045",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 17,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 46,
+    "Name": "",
+    "Des": "ItemEntryData_0046",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 15,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 47,
+    "Name": "",
+    "Des": "ItemEntryData_0047",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 48,
+    "Name": "",
+    "Des": "ItemEntryData_0048",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 19,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 49,
+    "Name": "",
+    "Des": "ItemEntryData_0049",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 18,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 50,
+    "Name": "",
+    "Des": "ItemEntryData_0050",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 17,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 51,
+    "Name": "",
+    "Des": "ItemEntryData_0051",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 15,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 52,
+    "Name": "",
+    "Des": "ItemEntryData_0052",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 53,
+    "Name": "",
+    "Des": "ItemEntryData_0053",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 45,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 54,
+    "Name": "",
+    "Des": "ItemEntryData_0054",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 40,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 55,
+    "Name": "",
+    "Des": "ItemEntryData_0055",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 35,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 56,
+    "Name": "",
+    "Des": "ItemEntryData_0056",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 30,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 57,
+    "Name": "",
+    "Des": "ItemEntryData_0057",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 58,
+    "Name": "",
+    "Des": "ItemEntryData_0058",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [],
+    "EffectParameters": []
+  },
+  {
+    "Id": 59,
+    "Name": "",
+    "Des": "ItemEntryData_0059",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 60,
+    "Name": "",
+    "Des": "ItemEntryData_0060",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 61,
+    "Name": "",
+    "Des": "ItemEntryData_0061",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 62,
+    "Name": "",
+    "Des": "ItemEntryData_0062",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 63,
+    "Name": "",
+    "Des": "ItemEntryData_0063",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 64,
+    "Name": "",
+    "Des": "ItemEntryData_0064",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 0,
+    "EffectType": [],
+    "EffectParameters": []
+  },
+  {
+    "Id": 65,
+    "Name": "",
+    "Des": "ItemEntryData_0065",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 15,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 66,
+    "Name": "",
+    "Des": "ItemEntryData_0066",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 14,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        2
+      ]
+    ]
+  },
+  {
+    "Id": 67,
+    "Name": "",
+    "Des": "ItemEntryData_0067",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 13,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        3
+      ]
+    ]
+  },
+  {
+    "Id": 68,
+    "Name": "",
+    "Des": "ItemEntryData_0068",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 12,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        4
+      ]
+    ]
+  },
+  {
+    "Id": 69,
+    "Name": "",
+    "Des": "ItemEntryData_0069",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 5,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        5
+      ]
+    ]
+  },
+  {
+    "Id": 70,
+    "Name": "",
+    "Des": "ItemEntryData_0070",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 20,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 71,
+    "Name": "",
+    "Des": "ItemEntryData_0071",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 19,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 72,
+    "Name": "",
+    "Des": "ItemEntryData_0072",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 18,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 73,
+    "Name": "",
+    "Des": "ItemEntryData_0073",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 17,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 74,
+    "Name": "",
+    "Des": "ItemEntryData_0074",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          2
+        ]
+      ]
+    ],
+    "TriggerCount": 15,
+    "EffectType": [],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 75,
+    "Name": "",
+    "Des": "ItemEntryData_0075",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 15,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 76,
+    "Name": "",
+    "Des": "ItemEntryData_0076",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 14,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 77,
+    "Name": "",
+    "Des": "ItemEntryData_0077",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 13,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 78,
+    "Name": "",
+    "Des": "ItemEntryData_0078",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 12,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 79,
+    "Name": "",
+    "Des": "ItemEntryData_0079",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 10,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 80,
+    "Name": "",
+    "Des": "ItemEntryData_0080",
+    "TriggerTime": 0,
+    "Condition": [],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 81,
+    "Name": "",
+    "Des": "ItemEntryData_0081",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          1
+        ]
+      ]
+    ],
+    "TriggerCount": 1,
+    "EffectType": [
+      2
+    ],
+    "EffectParameters": [
+      [
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 82,
+    "Name": "",
+    "Des": "ItemEntryData_0082",
+    "TriggerTime": 0,
+    "Condition": [
+      [
+        [
+          5
+        ]
+      ]
+    ],
+    "TriggerCount": 0,
+    "EffectType": [
+      3
+    ],
+    "EffectParameters": []
+  }
+]

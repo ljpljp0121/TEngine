@@ -1,0 +1,302 @@
+[
+  {
+    "Id": 0,
+    "StatName": "statTypeName_0",
+    "ShowType": 1,
+    "Role": [
+      1000
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 1,
+    "StatTypeDes": "statTypeName_0"
+  },
+  {
+    "Id": 1,
+    "StatName": "statTypeName_1",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 2,
+    "StatName": "statTypeName_2",
+    "ShowType": 1,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 5,
+    "StatType": 2,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 3,
+    "StatName": "statTypeName_3",
+    "ShowType": 1,
+    "Role": [
+      0
+    ],
+    "Percentage": 1,
+    "Sort": 2,
+    "StatType": 1,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 4,
+    "StatName": "statTypeName_4",
+    "ShowType": 1,
+    "Role": [
+      0
+    ],
+    "Percentage": 1,
+    "Sort": 7,
+    "StatType": 2,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 5,
+    "StatName": "statTypeName_5",
+    "ShowType": 1,
+    "Role": [
+      5
+    ],
+    "Percentage": 1,
+    "Sort": 8,
+    "StatType": 2,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 6,
+    "StatName": "statTypeName_6",
+    "ShowType": 1,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 9,
+    "StatType": 2,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 7,
+    "StatName": "statTypeName_7",
+    "ShowType": 1,
+    "Role": [
+      18
+    ],
+    "Percentage": 0,
+    "Sort": 3,
+    "StatType": 1,
+    "StatTypeDes": "statTypeName_0"
+  },
+  {
+    "Id": 8,
+    "StatName": "statTypeName_8",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 9,
+    "StatName": "statTypeName_9",
+    "ShowType": 1,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 1,
+    "StatType": 1,
+    "StatTypeDes": "statTypeName_0"
+  },
+  {
+    "Id": 10,
+    "StatName": "statTypeName_10",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 11,
+    "StatName": "statTypeName_11",
+    "ShowType": 1,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 6,
+    "StatType": 2,
+    "StatTypeDes": "statTypeName_1"
+  },
+  {
+    "Id": 12,
+    "StatName": "statTypeName_12",
+    "ShowType": 1,
+    "Role": [
+      0
+    ],
+    "Percentage": 1,
+    "Sort": 10,
+    "StatType": 3,
+    "StatTypeDes": "statTypeName_2"
+  },
+  {
+    "Id": 13,
+    "StatName": "statTypeName_13",
+    "ShowType": 2,
+    "Role": [
+      100
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 14,
+    "StatName": "statTypeName_14",
+    "ShowType": 1,
+    "Role": [
+      1
+    ],
+    "Percentage": 1,
+    "Sort": 11,
+    "StatType": 3,
+    "StatTypeDes": "statTypeName_2"
+  },
+  {
+    "Id": 15,
+    "StatName": "statTypeName_15",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 1,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 16,
+    "StatName": "statTypeName_16",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 17,
+    "StatName": "statTypeName_17",
+    "ShowType": 2,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 18,
+    "StatName": "statTypeName_18",
+    "ShowType": 1,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 14,
+    "StatType": 3,
+    "StatTypeDes": "statTypeName_2"
+  },
+  {
+    "Id": 19,
+    "StatName": "statTypeName_19",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 1,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 20,
+    "StatName": "statTypeName_20",
+    "ShowType": 1,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 4,
+    "StatType": 1,
+    "StatTypeDes": "statTypeName_0"
+  },
+  {
+    "Id": 21,
+    "StatName": "statTypeName_21",
+    "ShowType": 1,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 13,
+    "StatType": 3,
+    "StatTypeDes": "statTypeName_2"
+  },
+  {
+    "Id": 22,
+    "StatName": "statTypeName_22",
+    "ShowType": 2,
+    "Role": [
+      100
+    ],
+    "Percentage": 1,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 23,
+    "StatName": "statTypeName_23",
+    "ShowType": 2,
+    "Role": [
+      0
+    ],
+    "Percentage": 0,
+    "Sort": 0,
+    "StatType": 0,
+    "StatTypeDes": ""
+  },
+  {
+    "Id": 24,
+    "StatName": "statTypeName_24",
+    "ShowType": 1,
+    "Role": [
+      5
+    ],
+    "Percentage": 1,
+    "Sort": 12,
+    "StatType": 3,
+    "StatTypeDes": "statTypeName_2"
+  }
+]

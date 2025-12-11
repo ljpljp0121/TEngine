@@ -3,7 +3,7 @@ setlocal enabledelayedexpansion
 
 :: Set script directory and application directory
 set SCRIPT_DIR=../../
-set APP_PATH=%SCRIPT_DIR%Tools\Docs
+set APP_PATH=%SCRIPT_DIR%Configs\Docs
 
 echo ======================================
 echo      VitePress Development Server

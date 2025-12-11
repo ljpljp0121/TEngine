@@ -1,0 +1,11 @@
+{
+    "name": "com.peifengcoding.feishuexcel",
+    "displayName": "FeiShuExcel",
+    "version": "1.0.2",
+    "unity": "2021.1",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://blog.peifengcoding.com"
+    },
+    "description": "飞书Excel工具,能够用于和本地Excel 互相同步"
+}

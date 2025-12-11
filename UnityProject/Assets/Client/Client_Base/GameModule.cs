@@ -20,11 +20,6 @@ public class GameModule
     /// 获取配置表模块
     /// </summary>
     public static TableSystem Table => TableSystem.Instance;
-
-    /// <summary>
-    /// 获取实体模块。
-    /// </summary>
-    public static EntityModule Entity =>  EntityModule.Instance;
     
     public static ISaveModule Save => _save??= Get<ISaveModule>();
     private static ISaveModule _save;

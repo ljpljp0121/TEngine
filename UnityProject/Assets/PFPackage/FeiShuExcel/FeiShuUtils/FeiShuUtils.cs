@@ -19,32 +19,41 @@ namespace PFPackage.FeiShuExcel
         public const string URL_GET_ACCESS_TOKEN = "https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal";
         public const string URL_UPDATE_SHEET = "https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/{0}/sheets_batch_update";
         public const string URL_Merge_Cell = "https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/{0}/merge_cells";
-        private static readonly SemaphoreSlim writeSemaphore = new SemaphoreSlim(10);
+        public const string URL_READ_SHEET = "https://open.feishu.cn/open-apis/sheets/v2/spreadsheets/{0}/values/{1}";
+        
+        private static readonly SemaphoreSlim writeOnlineSemaphore = new SemaphoreSlim(10);
+        private static readonly SemaphoreSlim writeLocalSemaphore = new SemaphoreSlim(10);
 
+
+        #region 本地同步到远端
 
         /// <summary>
-        /// 递归同步目录结构到飞书云端
+        /// 递归同步本地目录结构到飞书云端
         /// </summary>
         /// <param name="localPath">本地目录路径</param>
         /// <param name="parentToken">云端父文件夹 token</param>
-        /// <returns>本地路径到云端 token 的映射字典</returns>
-        public static async Task<Dictionary<string, string>> SyncDirectoryStructure(string localPath, string parentToken)
+        /// <returns>
+        /// 本地路径到云端 token 的映射字典
+        /// Key: 本地文件路径
+        /// Value: 云端文件 token
+        /// </returns>
+        public static async Task<Dictionary<string, string>> SyncLocalFileTreeToOnline(string localPath, string parentToken)
         {
-            var pathToTokenMap = new Dictionary<string, string>();
+            Dictionary<string, string> pathToTokenMap = new Dictionary<string, string>();
 
             try
             {
                 // 获取云端当前目录的文件列表
-                var existingFiles = await GetFolderRootCheckList(parentToken);
+                List<FeiShuFileInfo> existingFiles = await GetFolderRootCheckList(parentToken);
 
                 // 云端的所有子文件夹和表格
-                var folders = existingFiles.Where(f => f.Type == "folder").ToDictionary(f => f.Name, f => f.Token);
-                var excels = existingFiles.Where(f => f.Type == "sheet").ToDictionary(f => f.Name, f => f.Token);
+                Dictionary<string, string> folders = existingFiles.Where(f => f.Type == "folder").ToDictionary(f => f.Name, f => f.Token);
+                Dictionary<string, string> excels = existingFiles.Where(f => f.Type == "sheet").ToDictionary(f => f.Name, f => f.Token);
 
                 // 遍历本地目录
-                foreach (var item in Directory.GetFileSystemEntries(localPath))
+                foreach (string item in Directory.GetFileSystemEntries(localPath))
                 {
-                    var name = Path.GetFileNameWithoutExtension(item);
+                    string name = Path.GetFileNameWithoutExtension(item);
 
                     if (name.StartsWith("~")) continue;
 
@@ -53,10 +62,10 @@ namespace PFPackage.FeiShuExcel
                     {
                         if (!folders.TryGetValue(name, out string existingFolderToken))
                         {
-                            await CreateFeiShuFolder(name, parentToken);
+                            existingFolderToken = await CreateFeiShuFolder(name, parentToken);
                         }
-                        var childMap = await SyncDirectoryStructure(item, pathToTokenMap[item]);
-                        foreach (var kvp in childMap)
+                        Dictionary<string, string> childMap = await SyncLocalFileTreeToOnline(item, existingFolderToken);
+                        foreach (KeyValuePair<string, string> kvp in childMap)
                         {
                             pathToTokenMap[kvp.Key] = kvp.Value;
                         }
@@ -111,31 +120,30 @@ namespace PFPackage.FeiShuExcel
                 Debug.Log($"[飞书同步] 开始同步本地目录: {localRootPath}");
                 EditorUtility.DisplayProgressBar("飞书同步", "同步目录结构...", 0.2f);
 
-                var syncResult = await SyncDirectoryStructure(localRootPath, FeiShuExcelSetting.I.FeiShuFolderRootToken);
+                var syncResult = await SyncLocalFileTreeToOnline(localRootPath, FeiShuExcelSetting.I.FeiShuFolderRootToken);
 
                 var excelFiles = syncResult.Count(kvp => IsExcelFile(kvp.Key));
 
                 Debug.Log($"[飞书同步] 开始同步 {excelFiles} 个Excel表");
                 EditorUtility.DisplayProgressBar("飞书同步", $"同步 {excelFiles} 个Excel文件...", 0.5f);
-
-                //最多并发 14 个
+                
                 var excelSyncTasks = syncResult.Select(async pair =>
                 {
-                    await writeSemaphore.WaitAsync();
+                    await writeOnlineSemaphore.WaitAsync();
                     try
                     {
                         await WriteOnlineExcel(pair.Value, pair.Key);
                     }
                     finally
                     {
-                        writeSemaphore.Release();
+                        writeOnlineSemaphore.Release();
                     }
                 }).ToArray();
                 await Task.WhenAll(excelSyncTasks);
                 stopwatch.Stop();
 
                 EditorUtility.DisplayProgressBar("飞书同步", "同步完成！", 0.9f);
-                Debug.Log($"[飞书同步] 同步完成！当前共有 {syncResult.Count} 个文件(包括文件夹)" +
+                Debug.Log($"[飞书同步] 同步完成！当前共有 {syncResult.Count} 个文件" +
                           $" 映射信息：\n{string.Join("\n", syncResult.Select(kvp => $"{kvp.Key} -> {kvp.Value}"))}");
                 Debug.Log($"[飞书同步] 表格同步完成，耗时: {stopwatch.ElapsedMilliseconds}ms");
                 // 清除进度条
@@ -147,5 +155,127 @@ namespace PFPackage.FeiShuExcel
                 Debug.LogError($"[飞书同步] 同步过程中发生错误: {ex.Message}\n{ex.StackTrace}");
             }
         }
+
+        #endregion
+
+        #region 远端同步到本地
+
+        /// <summary>
+        /// 递归同步飞书云端目录结构到本地
+        /// </summary>
+        /// <param name="localPath">本地目录路径</param>
+        /// <param name="parentToken">云端父文件夹 token</param>
+        /// <returns>
+        /// 本地路径到云端 token 的映射字典
+        /// Key: 云端文件 token
+        /// Value: 本地文件路径
+        /// </returns>
+        public static async Task<Dictionary<string, string>> SyncOnlineFileTreeToLocal(string parentToken, string localPath)
+        {
+            var tokenToPathMap = new Dictionary<string, string>();
+
+            try
+            {
+                // 获取云端当前目录的文件列表
+                List<FeiShuFileInfo> existingFiles = await GetFolderRootCheckList(parentToken);
+
+                foreach (var file in existingFiles)
+                {
+                    if (file.Name.StartsWith("~")) continue;
+                    //文件夹
+                    if (file.Type == "folder")
+                    {
+                        string localFolderPath = Path.Combine(localPath, file.Name);
+
+                        var childMap = await SyncOnlineFileTreeToLocal(file.Token, localFolderPath);
+                        foreach (var kvp in childMap)
+                        {
+                            tokenToPathMap[kvp.Key] = kvp.Value;
+                        }
+                    }
+                    else if(file.Type == "sheet")
+                    {
+                        string localFilePath = Path.Combine(localPath, file.Name + ".xlsx");
+
+                        tokenToPathMap[file.Token] = localFilePath;
+
+                        if (!File.Exists(localFilePath))
+                        {
+                            await File.Create(localFilePath).DisposeAsync();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[飞书读表] 同步目录时发生错误: {ex.Message}");
+            }
+            return tokenToPathMap;
+        }
+
+        /// <summary>
+        /// 同步远端配置表到本地(递归)
+        /// </summary>
+        public static async Task SyncOnlineExcelToLocal()
+        {
+            try
+            {
+                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+                string localRootPath = FeiShuExcelSetting.I.LocalRootPath;
+                
+                if (string.IsNullOrEmpty(localRootPath))
+                {
+                    Debug.LogError("[飞书同步] 本地根目录路径未配置");
+                    return;
+                }
+
+                if (!Directory.Exists(localRootPath))
+                {
+                    Debug.LogError($"[飞书同步] 本地根目录不存在: {localRootPath}");
+                    return;
+                }
+                
+                EditorUtility.DisplayProgressBar("飞书同步", "准备同步中...", 0f);
+                Debug.Log($"[飞书同步] 开始同步本地目录: {localRootPath}");
+                EditorUtility.DisplayProgressBar("飞书同步", "同步目录结构...", 0.2f);
+                
+                var syncResult = await SyncOnlineFileTreeToLocal(FeiShuExcelSetting.I.FeiShuFolderRootToken, localRootPath);
+                
+                var excelFiles = syncResult.Count(kvp => IsExcelFile(kvp.Value));
+
+                Debug.Log($"[飞书同步] 开始同步 {excelFiles} 个Excel表");
+                EditorUtility.DisplayProgressBar("飞书同步", $"同步 {excelFiles} 个Excel文件...", 0.5f);
+
+                var excelSyncTasks = syncResult.Select(async pair =>
+                {
+                    await writeOnlineSemaphore.WaitAsync();
+                    try
+                    {
+                        await WriteLocalExcel(pair.Key, pair.Value);
+                    }
+                    finally
+                    {
+                        writeOnlineSemaphore.Release();
+                    }
+                }).ToArray();
+                await Task.WhenAll(excelSyncTasks);
+                stopwatch.Stop();
+                EditorUtility.DisplayProgressBar("飞书同步", "同步完成！", 0.9f);
+                
+                Debug.Log($"[飞书同步] 同步完成！当前共有 {syncResult.Count} 个文件" +
+                          $" 映射信息：\n{string.Join("\n", syncResult.Select(kvp => $"{kvp.Key} -> {kvp.Value}"))}");
+                Debug.Log($"[飞书同步] 表格同步完成，耗时: {stopwatch.ElapsedMilliseconds}ms");
+                // 清除进度条
+                EditorUtility.ClearProgressBar();
+            }
+            catch (Exception ex)
+            {
+                EditorUtility.ClearProgressBar(); // 确保异常时也清除进度条
+                Debug.LogError($"[飞书同步] 同步过程中发生错误: {ex.Message}\n{ex.StackTrace}");
+            }
+        }
+        
+        #endregion
     }
 }

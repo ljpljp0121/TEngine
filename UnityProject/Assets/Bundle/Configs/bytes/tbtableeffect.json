@@ -1,0 +1,2363 @@
+[
+  {
+    "Id": 1001,
+    "Name": "TableCubeName_1001",
+    "Des": "TableCubeDes_1001",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [
+      [
+        0
+      ]
+    ],
+    "TriggerType": 1,
+    "TriggerCount": 1,
+    "EffectType": 2,
+    "Probability": 1000,
+    "EffectParameters": [
+      [
+        30001,
+        3,
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 1002,
+    "Name": "TableCubeName_1002",
+    "Des": "TableCubeDes_1002",
+    "TriggerTime": [
+      [
+        1
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [
+      [
+        0
+      ]
+    ],
+    "TriggerType": -1,
+    "TriggerCount": 0,
+    "EffectType": 2,
+    "Probability": 500,
+    "EffectParameters": [
+      [
+        50004,
+        0,
+        1
+      ]
+    ]
+  },
+  {
+    "Id": 1003,
+    "Name": "TableCubeName_1003",
+    "Des": "TableCubeDes_1003",
+    "TriggerTime": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        3,
+        8,
+        1
+      ]
+    ],
+    "MinValue": [
+      [
+        3,
+        0,
+        1
+      ],
+      [
+        2,
+        500
+      ]
+    ],
+    "MaxValue": [
+      [
+        3,
+        0,
+        1
+      ]
+    ],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 1000,
+    "EffectParameters": [
+      [
+        2,
+        0,
+        0,
+        0,
+        20
+      ]
+    ]
+  },
+  {
+    "Id": 1004,
+    "Name": "TableCubeName_1004",
+    "Des": "TableCubeDes_1004",
+    "TriggerTime": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        3,
+        8,
+        1
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [
+      [
+        3,
+        0,
+        1
+      ],
+      [
+        2,
+        500
+      ]
+    ],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 1000,
+    "EffectParameters": [
+      [
+        20,
+        0,
+        0,
+        0,
+        20
+      ]
+    ]
+  },
+  {
+    "Id": 1005,
+    "Name": "TableCubeName_1005",
+    "Des": "TableCubeDes_1005",
+    "TriggerTime": [
+      [
+        5
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [
+      [
+        0
+      ]
+    ],
+    "TriggerType": -1,
+    "TriggerCount": 0,
+    "EffectType": 3,
+    "Probability": 1000,
+    "EffectParameters": [
+      [
+        3,
+        1,
+        -1
+      ]
+    ]
+  },
+  {
+    "Id": 1006,
+    "Name": "TableCubeName_1006",
+    "Des": "TableCubeDes_1006",
+    "TriggerTime": [
+      [
+        1
+      ]
+    ],
+    "ConditionType": 0,
+    "Condition": [
+      [
+        7,
+        2,
+        1
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [
+      [
+        1,
+        1,
+        1000
+      ]
+    ],
+    "TriggerType": 2,
+    "TriggerCount": 1,
+    "EffectType": 3,
+    "Probability": 1000,
+    "EffectParameters": [
+      [
+        3,
+        -1,
+        -1
+      ]
+    ]
+  },
+  {
+    "Id": 1007,
+    "Name": "TableCubeName_1007",
+    "Des": "TableCubeDes_1007",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        5,
+        3
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [],
+    "TriggerType": 1,
+    "TriggerCount": 1,
+    "EffectType": 2,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1008,
+    "Name": "TableCubeName_1008",
+    "Des": "TableCubeDes_1008",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        5,
+        3
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [],
+    "TriggerType": 1,
+    "TriggerCount": 1,
+    "EffectType": 2,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1009,
+    "Name": "TableCubeName_1009",
+    "Des": "TableCubeDes_1009",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [],
+    "TriggerType": 1,
+    "TriggerCount": 1,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1010,
+    "Name": "TableCubeName_1010",
+    "Des": "TableCubeDes_1010",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1011,
+    "Name": "TableCubeName_1011",
+    "Des": "TableCubeDes_1011",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [
+      [
+        0
+      ]
+    ],
+    "MaxValue": [],
+    "TriggerType": 1,
+    "TriggerCount": 1,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1012,
+    "Name": "TableCubeName_1012",
+    "Des": "TableCubeDes_1012",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1013,
+    "Name": "TableCubeName_1013",
+    "Des": "TableCubeDes_1013",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1014,
+    "Name": "TableCubeName_1014",
+    "Des": "TableCubeDes_1014",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 1,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1015,
+    "Name": "TableCubeName_1015",
+    "Des": "TableCubeDes_1015",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1016,
+    "Name": "TableCubeName_1016",
+    "Des": "TableCubeDes_1016",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1017,
+    "Name": "TableCubeName_1017",
+    "Des": "TableCubeDes_1017",
+    "TriggerTime": [
+      [
+        4
+      ],
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1018,
+    "Name": "TableCubeName_1018",
+    "Des": "TableCubeDes_1018",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1019,
+    "Name": "TableCubeName_1019",
+    "Des": "TableCubeDes_1019",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1020,
+    "Name": "TableCubeName_1020",
+    "Des": "TableCubeDes_1020",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 3,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1021,
+    "Name": "TableCubeName_1021",
+    "Des": "TableCubeDes_1021",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 2,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1022,
+    "Name": "TableCubeName_1022",
+    "Des": "TableCubeDes_1022",
+    "TriggerTime": [
+      [
+        0
+      ],
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1023,
+    "Name": "TableCubeName_1023",
+    "Des": "TableCubeDes_1023",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 1,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1024,
+    "Name": "TableCubeName_1024",
+    "Des": "TableCubeDes_1024",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1025,
+    "Name": "TableCubeName_1025",
+    "Des": "TableCubeDes_1025",
+    "TriggerTime": [
+      [
+        0
+      ],
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10008,
+        2
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1026,
+    "Name": "TableCubeName_1026",
+    "Des": "TableCubeDes_1026",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1027,
+    "Name": "TableCubeName_1027",
+    "Des": "TableCubeDes_1027",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1028,
+    "Name": "TableCubeName_1028",
+    "Des": "TableCubeDes_1028",
+    "TriggerTime": [
+      [
+        1
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        7,
+        2,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1029,
+    "Name": "TableCubeName_1029",
+    "Des": "TableCubeDes_1029",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1030,
+    "Name": "TableCubeName_1030",
+    "Des": "TableCubeDes_1030",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1031,
+    "Name": "TableCubeName_1031",
+    "Des": "TableCubeDes_1031",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1032,
+    "Name": "TableCubeName_1032",
+    "Des": "TableCubeDes_1032",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1033,
+    "Name": "TableCubeName_1033",
+    "Des": "TableCubeDes_1033",
+    "TriggerTime": [
+      [
+        6
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1034,
+    "Name": "TableCubeName_1034",
+    "Des": "TableCubeDes_1034",
+    "TriggerTime": [
+      [
+        6
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1035,
+    "Name": "TableCubeName_1035",
+    "Des": "TableCubeDes_1035",
+    "TriggerTime": [
+      [
+        6
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1036,
+    "Name": "TableCubeName_1036",
+    "Des": "TableCubeDes_1036",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1037,
+    "Name": "TableCubeName_1037",
+    "Des": "TableCubeDes_1037",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1038,
+    "Name": "TableCubeName_1038",
+    "Des": "TableCubeDes_1038",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1039,
+    "Name": "TableCubeName_1039",
+    "Des": "TableCubeDes_1039",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1040,
+    "Name": "TableCubeName_1040",
+    "Des": "TableCubeDes_1040",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1041,
+    "Name": "TableCubeName_1041",
+    "Des": "TableCubeDes_1041",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1042,
+    "Name": "TableCubeName_1042",
+    "Des": "TableCubeDes_1042",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1043,
+    "Name": "TableCubeName_1043",
+    "Des": "TableCubeDes_1043",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1044,
+    "Name": "TableCubeName_1044",
+    "Des": "TableCubeDes_1044",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1045,
+    "Name": "TableCubeName_1045",
+    "Des": "TableCubeDes_1045",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1046,
+    "Name": "TableCubeName_1046",
+    "Des": "TableCubeDes_1046",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1047,
+    "Name": "TableCubeName_1047",
+    "Des": "TableCubeDes_1047",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1048,
+    "Name": "TableCubeName_1048",
+    "Des": "TableCubeDes_1048",
+    "TriggerTime": [
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1049,
+    "Name": "TableCubeName_1049",
+    "Des": "TableCubeDes_1049",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1050,
+    "Name": "TableCubeName_1050",
+    "Des": "TableCubeDes_1050",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1051,
+    "Name": "TableCubeName_1051",
+    "Des": "TableCubeDes_1051",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1052,
+    "Name": "TableCubeName_1052",
+    "Des": "TableCubeDes_1052",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1053,
+    "Name": "TableCubeName_1053",
+    "Des": "TableCubeDes_1053",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10009,
+        0,
+        2,
+        50
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1054,
+    "Name": "TableCubeName_1054",
+    "Des": "TableCubeDes_1054",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1055,
+    "Name": "TableCubeName_1055",
+    "Des": "TableCubeDes_1055",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1056,
+    "Name": "TableCubeName_1056",
+    "Des": "TableCubeDes_1056",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1057,
+    "Name": "TableCubeName_1057",
+    "Des": "TableCubeDes_1057",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1058,
+    "Name": "TableCubeName_1058",
+    "Des": "TableCubeDes_1058",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1059,
+    "Name": "TableCubeName_1059",
+    "Des": "TableCubeDes_1059",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1060,
+    "Name": "TableCubeName_1060",
+    "Des": "TableCubeDes_1060",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1061,
+    "Name": "TableCubeName_1061",
+    "Des": "TableCubeDes_1061",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1062,
+    "Name": "TableCubeName_1062",
+    "Des": "TableCubeDes_1062",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1063,
+    "Name": "TableCubeName_1063",
+    "Des": "TableCubeDes_1063",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1064,
+    "Name": "TableCubeName_1064",
+    "Des": "TableCubeDes_1064",
+    "TriggerTime": [
+      [
+        3
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1065,
+    "Name": "TableCubeName_1065",
+    "Des": "TableCubeDes_1065",
+    "TriggerTime": [
+      [
+        3
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1066,
+    "Name": "TableCubeName_1066",
+    "Des": "TableCubeDes_1066",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1067,
+    "Name": "TableCubeName_1067",
+    "Des": "TableCubeDes_1067",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1068,
+    "Name": "TableCubeName_1068",
+    "Des": "TableCubeDes_1068",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1069,
+    "Name": "TableCubeName_1069",
+    "Des": "TableCubeDes_1069",
+    "TriggerTime": [
+      [
+        2
+      ],
+      [
+        3
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1070,
+    "Name": "TableCubeName_1070",
+    "Des": "TableCubeDes_1070",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1071,
+    "Name": "TableCubeName_1071",
+    "Des": "TableCubeDes_1071",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1072,
+    "Name": "TableCubeName_1072",
+    "Des": "TableCubeDes_1072",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1073,
+    "Name": "TableCubeName_1073",
+    "Des": "TableCubeDes_1073",
+    "TriggerTime": [
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1074,
+    "Name": "TableCubeName_1074",
+    "Des": "TableCubeDes_1074",
+    "TriggerTime": [
+      [
+        3
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1075,
+    "Name": "TableCubeName_1075",
+    "Des": "TableCubeDes_1075",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1076,
+    "Name": "TableCubeName_1076",
+    "Des": "TableCubeDes_1076",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1077,
+    "Name": "TableCubeName_1077",
+    "Des": "TableCubeDes_1077",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1078,
+    "Name": "TableCubeName_1078",
+    "Des": "TableCubeDes_1078",
+    "TriggerTime": [
+      [
+        4
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10001,
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1079,
+    "Name": "TableCubeName_1079",
+    "Des": "TableCubeDes_1079",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1080,
+    "Name": "TableCubeName_1080",
+    "Des": "TableCubeDes_1080",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1081,
+    "Name": "TableCubeName_1081",
+    "Des": "TableCubeDes_1081",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1082,
+    "Name": "TableCubeName_1082",
+    "Des": "TableCubeDes_1082",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1083,
+    "Name": "TableCubeName_1083",
+    "Des": "TableCubeDes_1083",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1084,
+    "Name": "TableCubeName_1084",
+    "Des": "TableCubeDes_1084",
+    "TriggerTime": [
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1085,
+    "Name": "TableCubeName_1085",
+    "Des": "TableCubeDes_1085",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1086,
+    "Name": "TableCubeName_1086",
+    "Des": "TableCubeDes_1086",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10011,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1087,
+    "Name": "TableCubeName_1087",
+    "Des": "TableCubeDes_1087",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1088,
+    "Name": "TableCubeName_1088",
+    "Des": "TableCubeDes_1088",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1089,
+    "Name": "TableCubeName_1089",
+    "Des": "TableCubeDes_1089",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10011,
+        2,
+        17
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1090,
+    "Name": "TableCubeName_1090",
+    "Des": "TableCubeDes_1090",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10004,
+        5
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1091,
+    "Name": "TableCubeName_1091",
+    "Des": "TableCubeDes_1091",
+    "TriggerTime": [
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1092,
+    "Name": "TableCubeName_1092",
+    "Des": "TableCubeDes_1092",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1093,
+    "Name": "TableCubeName_1093",
+    "Des": "TableCubeDes_1093",
+    "TriggerTime": [
+      [
+        0
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        0
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1094,
+    "Name": "TableCubeName_1094",
+    "Des": "TableCubeDes_1094",
+    "TriggerTime": [],
+    "ConditionType": 1,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1095,
+    "Name": "TableCubeName_1095",
+    "Des": "TableCubeDes_1095",
+    "TriggerTime": [
+      [
+        2
+      ]
+    ],
+    "ConditionType": 1,
+    "Condition": [
+      [
+        10003,
+        1
+      ]
+    ],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1096,
+    "Name": "TableCubeName_1096",
+    "Des": "TableCubeDes_1096",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 1,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1097,
+    "Name": "TableCubeName_1097",
+    "Des": "TableCubeDes_1097",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1098,
+    "Name": "TableCubeName_1098",
+    "Des": "TableCubeDes_1098",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1099,
+    "Name": "TableCubeName_1099",
+    "Des": "TableCubeDes_1099",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1100,
+    "Name": "TableCubeName_1100",
+    "Des": "TableCubeDes_1100",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1101,
+    "Name": "TableCubeName_1101",
+    "Des": "TableCubeDes_1101",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1102,
+    "Name": "TableCubeName_1102",
+    "Des": "TableCubeDes_1102",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1103,
+    "Name": "TableCubeName_1103",
+    "Des": "TableCubeDes_1103",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1104,
+    "Name": "TableCubeName_1104",
+    "Des": "TableCubeDes_1104",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1105,
+    "Name": "TableCubeName_1105",
+    "Des": "TableCubeDes_1105",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1106,
+    "Name": "TableCubeName_1106",
+    "Des": "TableCubeDes_1106",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1107,
+    "Name": "TableCubeName_1107",
+    "Des": "TableCubeDes_1107",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1108,
+    "Name": "TableCubeName_1108",
+    "Des": "TableCubeDes_1108",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1109,
+    "Name": "TableCubeName_1109",
+    "Des": "TableCubeDes_1109",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1110,
+    "Name": "TableCubeName_1110",
+    "Des": "TableCubeDes_1110",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1111,
+    "Name": "TableCubeName_1111",
+    "Des": "TableCubeDes_1111",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  },
+  {
+    "Id": 1112,
+    "Name": "TableCubeName_1112",
+    "Des": "TableCubeDes_1112",
+    "TriggerTime": [],
+    "ConditionType": 0,
+    "Condition": [],
+    "MinValue": [],
+    "MaxValue": [],
+    "TriggerType": 0,
+    "TriggerCount": 0,
+    "EffectType": 0,
+    "Probability": 0,
+    "EffectParameters": []
+  }
+]

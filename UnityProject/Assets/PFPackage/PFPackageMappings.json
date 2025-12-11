@@ -1,3 +1,5 @@
 {
-  "com.peifengcoding.pfpackage" : "PFPackageManager"
+  "com.peifengcoding.pfpackage" : "PFPackageManager",
+  "com.peifengcoding.odin" : "Odin",
+  "com.peifengcoding.feishuexcel" : "FeiShuExcel"
 }
