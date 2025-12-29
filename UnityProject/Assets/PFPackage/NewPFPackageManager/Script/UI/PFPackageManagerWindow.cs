@@ -15,18 +15,20 @@ namespace PFPackage
         private Label versionLabel;
         private Label authorLabel;
         private Label packageNameLabel;
-        
+
         private Button installButton;
         private Button updateButton;
         private Button removeButton;
-        
+
         private ToolbarButton descButton;
         private ToolbarButton versionButton;
         private ToolbarButton dependentButton;
-        
+
         private VisualElement descContainer;
         private VisualElement versionContainer;
         private VisualElement dependentContainer;
+
+        private Label descriptionLabel;
 
         private int lastSelectedIndex = 0;
         private int selectDetailIndex = 0;
@@ -46,6 +48,7 @@ namespace PFPackage
                 EditorUtility.ClearProgressBar();
 
                 PFPackageManagerWindow wnd = GetWindow<PFPackageManagerWindow>();
+                wnd.minSize = new Vector2(600, 100);
                 wnd.titleContent = new GUIContent("PFPackageManager");
             }
             catch (System.Exception ex)
@@ -80,7 +83,7 @@ namespace PFPackage
             CreatePackageDetail();
             CreatePackageButton();
             CreateBottomContainer();
-            
+
             //数据刷新
             RefreshPackageList();
         }
@@ -223,7 +226,7 @@ namespace PFPackage
         #endregion
 
         #region 包裹详情
-        
+
         private void CreatePackageDetail()
         {
             mainContainer = root.Q<VisualElement>("MainContainer");
@@ -232,7 +235,7 @@ namespace PFPackage
             authorLabel = mainContainer.Q<Label>("PackageAuthor");
             packageNameLabel = mainContainer.Q<Label>("PackageName");
         }
-        
+
         private void RefreshPackageDetail()
         {
             var selectPackage = packageListView.selectedItem as PackageInfo;
@@ -245,12 +248,15 @@ namespace PFPackage
                 mainContainer.SetEnabled(true);
                 displayNameLabel.text = selectPackage.displayName;
                 versionLabel.text = string.IsNullOrEmpty(selectPackage.localVersion) ? selectPackage.newestVersion : selectPackage.localVersion;
-                authorLabel.text =$"By <a href={selectPackage.authorUrl}>{selectPackage.author}</a>";
+                authorLabel.text = $"By <a href={selectPackage.authorUrl}>{selectPackage.author}</a>";
                 packageNameLabel.text = selectPackage.PackageName;
+                RefreshDescription();
+                RefreshVersion();
+                RefreshDependencies();
                 RefreshSelectDetailView();
             }
         }
-        
+
         private void RefreshSelectDetailView()
         {
             if (selectDetailIndex == 0)
@@ -260,7 +266,7 @@ namespace PFPackage
             else if (selectDetailIndex == 2)
                 OnDependentButtonClick();
         }
-        
+
         #endregion
 
         #region 包裹下载卸载
@@ -353,6 +359,7 @@ namespace PFPackage
         private void CreateDescContainer()
         {
             descContainer = root.Q<VisualElement>("DescContainer");
+            descriptionLabel = descContainer.Q<Label>("Description");
         }
 
         private void CreateVersionContainer()
@@ -364,9 +371,23 @@ namespace PFPackage
         {
             dependentContainer = root.Q<VisualElement>("DependentContainer");
         }
+        
+        private void RefreshDescription()
+        {
+            var selectPackage = packageListView.selectedItem as PackageInfo;
+            descriptionLabel.text = selectPackage?.description;
+        }
+
+        private void RefreshVersion()
+        {
+            
+        }
+
+        private void RefreshDependencies()
+        {
+            
+        }
 
         #endregion
-        
-       
     }
 }
