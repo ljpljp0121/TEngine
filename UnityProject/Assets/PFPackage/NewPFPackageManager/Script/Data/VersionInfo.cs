@@ -7,6 +7,7 @@ namespace PFPackage
     {
         public string version;
         public string publishDate;
+        public string changelog;
         public bool isInstalled;
     }
 }

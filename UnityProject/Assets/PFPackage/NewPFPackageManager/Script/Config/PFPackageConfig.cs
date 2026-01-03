@@ -24,9 +24,11 @@ namespace PFPackage
                 return instance;
             }
         }
-        
+
+        public string InstallPath = "Assets/PFPackage";
         public string RegistryUrl = "";
         public string UserName = "";
-        public string Password = ""; 
+        public string Password = "";
+        public int MaxConcurrency = 10;
     }
 }

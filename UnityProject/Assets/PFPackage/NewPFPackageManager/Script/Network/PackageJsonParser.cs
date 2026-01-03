@@ -29,8 +29,6 @@ namespace PFPackage
                     author = pkg["author"] != null ? pkg["author"]["name"] : "Unknown",
                     authorUrl = pkg["author"] != null ? pkg["author"]["url"] : "",
                     newestVersion = pkg["dist-tags"]["latest"],
-                    isInstalled = false,
-                    hasUpdate = false
                 });
             }
             return packages;
@@ -64,7 +62,7 @@ namespace PFPackage
                 {
                     var versionData = versionsNode[versionKey];
                     var timeNode = root["time"][versionKey];
-
+                    var changelog = versionData["changelog"];
                     // 从最新版本提取 displayName 和 dependencies
                     if (versionKey == latestVersion)
                     {
@@ -88,6 +86,7 @@ namespace PFPackage
                     {
                         version = versionKey,
                         publishDate = timeNode != null ? timeNode.Value : "Unknown",
+                        changelog = changelog != null? changelog.Value : "None changelog"
                     });
                 }
             }

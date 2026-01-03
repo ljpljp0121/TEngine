@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13bd14b7245a4aed8a2476997dd4ea4e, type: 3}
   m_Name: PFPackageConfig
   m_EditorClassIdentifier: 
+  InstallPath: Assets/PFPackage
   RegistryUrl: https://pfpackage.peifengcoding.com
   UserName: peifeng
   Password: ljp2540297235
+  MaxConcurrency: 10

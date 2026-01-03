@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace PFPackage
 {
-    public class PFPackageManagerWindow : EditorWindow
+    public partial class PFPackageManagerWindow : EditorWindow
     {
         private VisualElement root;
         private ListView packageListView;
@@ -20,48 +20,23 @@ namespace PFPackage
         private Button updateButton;
         private Button removeButton;
 
-        private ToolbarButton descButton;
-        private ToolbarButton versionButton;
-        private ToolbarButton dependentButton;
+        private ToggleButtonGroup buttonGroup;
 
         private VisualElement descContainer;
         private VisualElement versionContainer;
-        private VisualElement dependentContainer;
+        private VisualElement dependContainer;
 
         private Label descriptionLabel;
 
         private int lastSelectedIndex = 0;
-        private int selectDetailIndex = 0;
 
 
         [MenuItem("Window/NewPFPackageManager", false, 1500)]
         public static async void ShowWindow()
         {
-            try
-            {
-                PFPackageData.I.OnLoadProgress += OnLoadProgress;
-
-                EditorUtility.DisplayProgressBar("加载包管理器", "正在初始化...", 0f);
-
-                await PFPackageData.I.LoadPackagesFromRegistry();
-
-                EditorUtility.ClearProgressBar();
-
-                PFPackageManagerWindow wnd = GetWindow<PFPackageManagerWindow>();
-                wnd.minSize = new Vector2(600, 100);
-                wnd.titleContent = new GUIContent("PFPackageManager");
-            }
-            catch (System.Exception ex)
-            {
-                EditorUtility.ClearProgressBar();
-                Debug.LogError($"加载包管理器失败: {ex.Message}");
-                EditorUtility.DisplayDialog("错误", $"加载包管理器失败: {ex.Message}", "确定");
-            }
-            finally
-            {
-                // 取消订阅事件
-                PFPackageData.I.OnLoadProgress -= OnLoadProgress;
-            }
+            PFPackageManagerWindow wnd = GetWindow<PFPackageManagerWindow>();
+            wnd.minSize = new Vector2(600, 100);
+            wnd.titleContent = new GUIContent("PFPackageManager");
         }
 
         private static void OnLoadProgress(int current, int total)
@@ -71,21 +46,33 @@ namespace PFPackage
             EditorUtility.DisplayProgressBar("加载包管理器", progressText, progress);
         }
 
-        public void CreateGUI()
+        public async void CreateGUI()
         {
+            try
+            {
+                await PFPackageData.I.LoadPackagesFromRegistry();
+            }
+            catch (System.Exception ex)
+            {
+                PFLog.LogError($"加载包管理器失败: {ex.Message}");
+                EditorUtility.DisplayDialog("错误", $"加载包管理器失败: {ex.Message}", "确定");
+                return;
+            }
+            
             root = rootVisualElement;
             var visualTree = UxmlLoader.LoadWindowUXML<PFPackageManagerWindow>();
             visualTree.CloneTree(root);
 
             //视图创建
-            CreateSearchBar();
-            CreatePackageMenu();
-            CreatePackageDetail();
-            CreatePackageButton();
-            CreateBottomContainer();
+            CreateSearchBar(); //搜索栏
+            CreatePackageMenu(); //包列表
+            CreatePackageDetail(); //包详情
+            CreatePackageButton(); //下载更新卸载按钮
+            CreateBottomContainer(); //详情,版本,依赖
 
             //数据刷新
             RefreshPackageList();
+            buttonGroup.SetSelectedIndex(0); //默认在第一个页签
         }
 
         #region 搜索栏
@@ -190,36 +177,29 @@ namespace PFPackage
         private void BindPackageListViewItem(VisualElement element, int index)
         {
             var package = packageListView.itemsSource[index] as PackageInfo;
+            if (package == null) return;
+
             var textField = element.Q<Label>("PackageName");
-            if (package == null)
-                textField.text = "UnKnow";
-            else
-                textField.text = string.IsNullOrEmpty(package.displayName) ? package.PackageName : package.displayName;
-        }
-
-        private void PackageListViewSelectionChanged(IEnumerable<object> obj)
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
+            textField.text = package.GetDisplayName();
+            var installedIcon = element.Q<Image>("InstalledIcon");
+            var upgradeIcon = element.Q<Image>("UpgradeIcon");
+            if (package.IsInstalled)
             {
-                Debug.LogError("[PFPackageManager] 包裹列表选中项为空");
+                if (package.HasUpdate)
+                {
+                    installedIcon.style.display = DisplayStyle.None;
+                    upgradeIcon.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    installedIcon.style.display = DisplayStyle.Flex;
+                    upgradeIcon.style.display = DisplayStyle.None;
+                }
             }
             else
             {
-                lastSelectedIndex = packageListView.selectedIndex;
-                RefreshPackageDetail();
-            }
-        }
-
-        private void RefreshPackageList()
-        {
-            packageListView.Clear();
-            packageListView.ClearSelection();
-            packageListView.itemsSource = PFPackageData.I.AllPackages;
-            packageListView.Rebuild();
-            if (lastSelectedIndex >= 0 && lastSelectedIndex < packageListView.itemsSource.Count)
-            {
-                packageListView.selectedIndex = lastSelectedIndex;
+                installedIcon.style.display = DisplayStyle.None;
+                upgradeIcon.style.display = DisplayStyle.None;
             }
         }
 
@@ -235,119 +215,6 @@ namespace PFPackage
             authorLabel = mainContainer.Q<Label>("PackageAuthor");
             packageNameLabel = mainContainer.Q<Label>("PackageName");
         }
-
-        private void RefreshPackageDetail()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-            {
-                mainContainer.SetEnabled(false);
-            }
-            else
-            {
-                mainContainer.SetEnabled(true);
-                displayNameLabel.text = selectPackage.displayName;
-                versionLabel.text = string.IsNullOrEmpty(selectPackage.localVersion) ? selectPackage.newestVersion : selectPackage.localVersion;
-                authorLabel.text = $"By <a href={selectPackage.authorUrl}>{selectPackage.author}</a>";
-                packageNameLabel.text = selectPackage.PackageName;
-                RefreshDescription();
-                RefreshVersion();
-                RefreshDependencies();
-                RefreshSelectDetailView();
-            }
-        }
-
-        private void RefreshSelectDetailView()
-        {
-            if (selectDetailIndex == 0)
-                OnDescButtonClick();
-            else if (selectDetailIndex == 1)
-                OnVersionButtonClick();
-            else if (selectDetailIndex == 2)
-                OnDependentButtonClick();
-        }
-
-        #endregion
-
-        #region 包裹下载卸载
-
-        private void CreatePackageButton()
-        {
-            installButton = mainContainer.Q<Button>("InstallButton");
-            updateButton = mainContainer.Q<Button>("UpdateButton");
-            removeButton = mainContainer.Q<Button>("RemoveButton");
-            descButton = mainContainer.Q<ToolbarButton>("DescButton");
-            versionButton = mainContainer.Q<ToolbarButton>("VersionButton");
-            dependentButton = mainContainer.Q<ToolbarButton>("DependentButton");
-
-            installButton.clicked += OnInstallButtonClick;
-            updateButton.clicked += OnUpdateButtonClick;
-            removeButton.clicked += OnRemoveButtonClick;
-            descButton.clicked += OnDescButtonClick;
-            versionButton.clicked += OnVersionButtonClick;
-            dependentButton.clicked += OnDependentButtonClick;
-        }
-
-        private void OnInstallButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            Debug.Log($"[PFPackageManager] 下载包裹{selectPackage.PackageName}");
-        }
-
-        private void OnUpdateButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            Debug.Log($"[PFPackageManager] 更新包裹{selectPackage.PackageName}");
-        }
-
-        private void OnRemoveButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            Debug.Log($"[PFPackageManager] 卸载包裹{selectPackage.PackageName}");
-        }
-
-        private void OnDescButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            descContainer.style.display = DisplayStyle.Flex;
-            versionContainer.style.display = DisplayStyle.None;
-            dependentContainer.style.display = DisplayStyle.None;
-            selectDetailIndex = 0;
-        }
-
-        private void OnVersionButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            versionContainer.style.display = DisplayStyle.Flex;
-            descContainer.style.display = DisplayStyle.None;
-            dependentContainer.style.display = DisplayStyle.None;
-            selectDetailIndex = 1;
-        }
-
-        private void OnDependentButtonClick()
-        {
-            var selectPackage = packageListView.selectedItem as PackageInfo;
-            if (selectPackage == null)
-                return;
-            dependentContainer.style.display = DisplayStyle.Flex;
-            descContainer.style.display = DisplayStyle.None;
-            versionContainer.style.display = DisplayStyle.None;
-            selectDetailIndex = 2;
-        }
-
-        #endregion
-
-        #region Bottom区域
 
         private void CreateBottomContainer()
         {
@@ -369,23 +236,49 @@ namespace PFPackage
 
         private void CreateDependentContainer()
         {
-            dependentContainer = root.Q<VisualElement>("DependentContainer");
+            dependContainer = root.Q<VisualElement>("DependentContainer");
         }
-        
-        private void RefreshDescription()
+
+        #endregion
+
+        #region 包裹下载卸载
+
+        private void CreatePackageButton()
+        {
+            installButton = mainContainer.Q<Button>("InstallButton");
+            updateButton = mainContainer.Q<Button>("UpdateButton");
+            removeButton = mainContainer.Q<Button>("RemoveButton");
+            buttonGroup = mainContainer.Q<ToggleButtonGroup>("DetailButtonGroup");
+
+            installButton.clicked += () => OnInstallButtonClicked();
+            updateButton.clicked += () => OnInstallButtonClicked();
+            removeButton.clicked += OnRemoveButtonOnClicked;
+            buttonGroup.onSelectedIndexChanged += OnDetailButtonClick;
+        }
+
+        private void OnDetailButtonClick(ChangeEvent<int> evt)
         {
             var selectPackage = packageListView.selectedItem as PackageInfo;
-            descriptionLabel.text = selectPackage?.description;
-        }
-
-        private void RefreshVersion()
-        {
-            
-        }
-
-        private void RefreshDependencies()
-        {
-            
+            if (selectPackage == null)
+                return;
+            if (evt.newValue == 0) //Desc
+            {
+                descContainer.style.display = DisplayStyle.Flex;
+                versionContainer.style.display = DisplayStyle.None;
+                dependContainer.style.display = DisplayStyle.None;
+            }
+            else if (evt.newValue == 1) //Version
+            {
+                versionContainer.style.display = DisplayStyle.Flex;
+                descContainer.style.display = DisplayStyle.None;
+                dependContainer.style.display = DisplayStyle.None;
+            }
+            else if (evt.newValue == 2) //Dependence
+            {
+                dependContainer.style.display = DisplayStyle.Flex;
+                descContainer.style.display = DisplayStyle.None;
+                versionContainer.style.display = DisplayStyle.None;
+            }
         }
 
         #endregion

@@ -1,64 +1,48 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 namespace PFPackage
 {
-    public class PFPackageData 
+    public class PFPackageData
     {
         private static PFPackageData instance;
-        public static PFPackageData I
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new PFPackageData();
-                }
-                return instance;
-            }
-        }
+        public static PFPackageData I => instance ??= new PFPackageData();
         
-        private readonly PackageLoader packageLoader = new();
         private List<PackageInfo> allPackages = new List<PackageInfo>();
-
-        // 进度报告事件
-        public event Action<int, int> OnLoadProgress; 
 
         public List<PackageInfo> AllPackages => allPackages;
 
+        /// <summary>
+        /// 获取所有包的信息
+        /// </summary>
         public async Task LoadPackagesFromRegistry()
         {
-            allPackages = await packageLoader.GetAllPackages();
-
-            //TODO UpdateInstalledStatus()
-
-            int completedCount = 0;
-            int totalCount = allPackages.Count;
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
+            allPackages = await PackageLoader.GetAllPackages();
+            var semaphore = new System.Threading.SemaphoreSlim(PFPackageConfig.I.MaxConcurrency);
 
             // 获取所有包的详细信息
             var detailTasks = allPackages.Select(async pkg =>
             {
+                await semaphore.WaitAsync();
                 try
                 {
-                    var detail = await packageLoader.GetPackageDetailAsync(pkg.PackageName);
-                    
-                    // 更新进度
-                    var current = System.Threading.Interlocked.Increment(ref completedCount);
-                    OnLoadProgress?.Invoke(current, totalCount);
-                    
+                    var detail = await PackageLoader.GetPackageDetailAsync(pkg.PackageName);
                     return new { Original = pkg, Detail = detail };
                 }
                 catch (Exception ex)
                 {
-                    // 即使失败也要更新进度
-                    var current = System.Threading.Interlocked.Increment(ref completedCount);
-                    OnLoadProgress?.Invoke(current, totalCount);
-                    
-                    Debug.LogWarning($"加载包 {pkg.PackageName} 详情失败: {ex.Message}");
+                    PFLog.LogError($"加载包 {pkg.PackageName} 详情失败: {ex.Message}");
                     return new { Original = pkg, Detail = (PackageInfo)null };
+                }
+                finally
+                {
+                    semaphore.Release();
                 }
             }).ToArray();
 
@@ -68,8 +52,15 @@ namespace PFPackage
             {
                 MergePackageInfo(result.Original, result.Detail);
             }
+
+            foreach (var pkg in allPackages)
+            {
+                pkg.RefreshStatus();
+            }
+            stopwatch.Stop();
+            PFLog.Log($"加载所有包耗时 {stopwatch.ElapsedMilliseconds} ms");
         }
-        
+
         private void MergePackageInfo(PackageInfo target, PackageInfo source)
         {
             if (target == null || source == null) return;
