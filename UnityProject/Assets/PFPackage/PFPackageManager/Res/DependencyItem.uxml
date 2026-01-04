@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="DependencyItem" style="flex-grow: 0; background-color: rgb(84, 82, 82); height: auto; min-height: auto; width: auto; border-left-width: 0; margin-left: 0; margin-right: 0; margin-top: 10px; margin-bottom: 0; font-size: 18px; border-bottom-width: 0; padding-bottom: 0; flex-direction: row;">
+        <ui:VisualElement name="Left" style="flex-grow: 1; margin-top: 3px; margin-bottom: 3px; margin-left: 5px;">
+            <ui:Label tabindex="-1" text="com.peifengcoding.odin" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PackageName" class="package-link" style="margin-top: 0; margin-bottom: 3px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-left: 0; margin-right: 0; font-size: 20px;" />
+            <ui:Label tabindex="-1" text="1.0.1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="PackageVersion" style="margin-top: 0; margin-bottom: 3px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-left: 0; margin-right: 0; font-size: 14px;" />
+            <ui:Label tabindex="-1" text="1.0.1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Status" style="margin-top: 0; margin-bottom: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-left: 0; margin-right: 0; font-size: 14px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -93,7 +93,7 @@ namespace PFPackage.FeiShuExcel
                     FeiShuExcelSetting.I.ExcelInfoDic[excelToken] = excelInfo;
                 }
                 EditorUtility.SetDirty(FeiShuExcelSetting.I);
-                AssetDatabase.SaveAssets(); 
+                AssetDatabase.SaveAssets();
             }
             catch (Exception ex)
             {

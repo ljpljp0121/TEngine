@@ -1,0 +1,23 @@
+.custom-label {
+    font-size: 20px;
+    -unity-font-style: bold;
+    color: rgb(68, 138, 255);
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.package-link {
+    color: #DCE31F;
+    text-decoration: underline;  /* 默认有下划线 */
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.package-link:hover {
+    color: #357ABD;
+    text-decoration: underline;  /* 悬停时显示下划线 */
+}
+
+.package-link:active {
+    color: #2968A8;
+}
+
