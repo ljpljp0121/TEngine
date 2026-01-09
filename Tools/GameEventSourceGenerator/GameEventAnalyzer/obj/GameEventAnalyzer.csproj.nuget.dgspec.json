@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj": {}
+    "D:\\Unity\\GitHub Project\\DGame\\Tools\\Generata Tools\\SourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj": {}
   },
   "projects": {
-    "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj": {
+    "D:\\Unity\\GitHub Project\\DGame\\Tools\\Generata Tools\\SourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj",
+        "projectUniqueName": "D:\\Unity\\GitHub Project\\DGame\\Tools\\Generata Tools\\SourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj",
         "projectName": "GameEventAnalyzer",
-        "projectPath": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj",
+        "projectPath": "D:\\Unity\\GitHub Project\\DGame\\Tools\\Generata Tools\\SourceGenerator\\GameEventAnalyzer\\GameEventAnalyzer.csproj",
         "packagesPath": "C:\\Users\\QZJ\\.nuget\\packages\\",
-        "outputPath": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\GameEventAnalyzer\\obj\\",
+        "outputPath": "D:\\Unity\\GitHub Project\\DGame\\Tools\\Generata Tools\\SourceGenerator\\GameEventAnalyzer\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Code IDE\\Microsoft\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -57,6 +57,10 @@
               "version": "[3.3.4, )"
             },
             "Microsoft.CodeAnalysis.CSharp": {
+              "target": "Package",
+              "version": "[3.8.0, )"
+            },
+            "Microsoft.CodeAnalysis.CSharp.Workspaces": {
               "target": "Package",
               "version": "[3.8.0, )"
             },
