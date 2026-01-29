@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {}
+    "D:\\UnityProjects\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {}
   },
   "projects": {
-    "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {
+    "D:\\UnityProjects\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
+        "projectUniqueName": "D:\\UnityProjects\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
         "projectName": "SourceGenerator",
-        "projectPath": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
-        "packagesPath": "C:\\Users\\QZJ\\.nuget\\packages\\",
-        "outputPath": "D:\\Unity\\GitHub Project\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\obj\\",
+        "projectPath": "D:\\UnityProjects\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\SourceGenerator.csproj",
+        "packagesPath": "C:\\Users\\Jun\\.nuget\\packages\\",
+        "outputPath": "D:\\UnityProjects\\TEngine\\Tools\\GameEventSourceGenerator\\SourceGenerator\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "D:\\Code IDE\\Microsoft\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\QZJ\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jun\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

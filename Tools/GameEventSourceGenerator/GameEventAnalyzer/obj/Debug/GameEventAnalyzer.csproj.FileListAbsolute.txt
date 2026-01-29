@@ -1,0 +1,11 @@
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\bin\Debug\GameEventAnalyzer.deps.json
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\bin\Debug\GameEventAnalyzer.dll
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\bin\Debug\GameEventAnalyzer.pdb
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.csproj.AssemblyReference.cache
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.GeneratedMSBuildEditorConfig.editorconfig
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.AssemblyInfoInputs.cache
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.AssemblyInfo.cs
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.csproj.CoreCompileInputs.cache
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.sourcelink.json
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.dll
+D:\UnityProjects\TEngine\Tools\GameEventSourceGenerator\GameEventAnalyzer\obj\Debug\GameEventAnalyzer.pdb

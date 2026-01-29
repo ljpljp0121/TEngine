@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("SourceGenerator")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("GameEventAnalyzer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2e833b855d1545763028530332a4068595ca6dcb")]
-[assembly: System.Reflection.AssemblyProductAttribute("SourceGenerator")]
-[assembly: System.Reflection.AssemblyTitleAttribute("SourceGenerator")]
+[assembly: System.Reflection.AssemblyProductAttribute("GameEventAnalyzer")]
+[assembly: System.Reflection.AssemblyTitleAttribute("GameEventAnalyzer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
 // 由 MSBuild WriteCodeFragment 类生成。
