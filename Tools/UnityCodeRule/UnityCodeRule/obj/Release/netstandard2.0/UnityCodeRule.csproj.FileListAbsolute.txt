@@ -1,0 +1,13 @@
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\bin\Release\netstandard2.0\UnityCodeRule.deps.json
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\bin\Release\netstandard2.0\UnityCodeRule.dll
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\bin\Release\netstandard2.0\UnityCodeRule.pdb
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.csproj.AssemblyReference.cache
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.Resources.resources
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.csproj.GenerateResource.cache
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.GeneratedMSBuildEditorConfig.editorconfig
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.AssemblyInfoInputs.cache
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.AssemblyInfo.cs
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.csproj.CoreCompileInputs.cache
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.sourcelink.json
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.dll
+E:\Unity\TEngine\Tools\UnityCodeRule\UnityCodeRule\obj\Release\netstandard2.0\UnityCodeRule.pdb
