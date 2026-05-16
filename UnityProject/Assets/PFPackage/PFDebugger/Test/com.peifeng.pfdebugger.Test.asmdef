@@ -1,0 +1,16 @@
+{
+    "name": "com.peifeng.pfdebugger.Test",
+    "rootNamespace": "",
+    "references": [
+        "GUID:1b93f8f8482a3284a8d81a792bccc326"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

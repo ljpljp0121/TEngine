@@ -16,10 +16,8 @@ namespace GameLogic
     {
         // 核心字段
         private static Transform _instanceRoot = null;          // UI根节点变换组件
-        private bool _enableErrorLog = true;                    // 是否启用错误日志
         private Camera _uiCamera = null;                        // UI专用摄像机
         private readonly List<UIWindow> _uiStack = new List<UIWindow>(128); // 窗口堆栈
-        private ErrorLogger _errorLogger;                       // 错误日志记录器
 
         // 常量定义
         public const int LAYER_DEEP = 2000; 
@@ -65,32 +63,6 @@ namespace GameLogic
             UnityEngine.Object.DontDestroyOnLoad(_instanceRoot.parent != null ? _instanceRoot.parent : _instanceRoot);
 
             _instanceRoot.gameObject.layer = LayerMask.NameToLayer("UI");
-
-            if (Debugger.Instance != null)
-            {
-                switch (Debugger.Instance.ActiveWindowType)
-                {
-                    case DebuggerActiveWindowType.AlwaysOpen:
-                        _enableErrorLog = true;
-                        break;
-
-                    case DebuggerActiveWindowType.OnlyOpenWhenDevelopment:
-                        _enableErrorLog = Debug.isDebugBuild;
-                        break;
-
-                    case DebuggerActiveWindowType.OnlyOpenInEditor:
-                        _enableErrorLog = Application.isEditor;
-                        break;
-
-                    default:
-                        _enableErrorLog = false;
-                        break;
-                }
-                if (_enableErrorLog)
-                {
-                    _errorLogger = new ErrorLogger(this);
-                }   
-            }
         }
 
         /// <summary>
@@ -101,11 +73,6 @@ namespace GameLogic
         /// </summary>
         protected override void OnRelease()
         {
-            if (_errorLogger != null)
-            {
-                _errorLogger.Dispose();
-                _errorLogger = null;
-            }
             CloseAll(isShutDown:true);
             if (_instanceRoot != null && _instanceRoot.parent != null)
             {
