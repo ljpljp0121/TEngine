@@ -1,0 +1,64 @@
+using Luban;
+using UnityEngine;
+
+{{namespace_with_grace_begin __namespace}}
+
+public interface ITable
+{
+    void _LoadData();
+}
+
+public interface IByteBufTableLoader
+{
+    ByteBuf LoadByteBuf(string fileName);
+}
+
+public static partial class {{__name}}
+{
+    private static readonly System.Collections.Generic.Dictionary<System.Type, ITable> tables = new System.Collections.Generic.Dictionary<System.Type, ITable>();
+    private static IByteBufTableLoader byteBufLoader;
+
+    public static void SetByteBufLoader(IByteBufTableLoader loader)
+    {
+        byteBufLoader = loader;
+        Clear();
+    }
+
+    public static T GetTable<T>() where T : ITable, new()
+    {
+        var type = typeof(T);
+        if (tables.TryGetValue(type, out var table))
+        {
+            return (T)table;
+        }
+
+        var newTable = new T();
+        tables.Add(type, newTable);
+        try
+        {
+            newTable._LoadData();
+        }
+        catch (System.Exception e)
+        {
+            tables.Remove(type);
+            Debug.LogError($"load table failed. table:{type.FullName}\n{e}");
+        }
+        return newTable;
+    }
+
+    public static void Clear()
+    {
+        tables.Clear();
+    }
+
+    public static ByteBuf LoadByteBuf(string fileName)
+    {
+        if (byteBufLoader == null)
+        {
+            throw new System.InvalidOperationException("ByteBuf table loader is not set.");
+        }
+        return byteBufLoader.LoadByteBuf(fileName);
+    }
+}
+
+{{namespace_with_grace_end __namespace}}

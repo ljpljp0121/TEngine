@@ -1,0 +1,30 @@
+.VPContent.is-home,
+.VPContent:not(.has-sidebar) {
+  max-width: 1400px !important;
+}
+
+.vp-doc table td,
+.vp-doc table th {
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal !important;
+  min-width: 80px; 
+  max-width: none; 
+  overflow-wrap: break-word;
+}
+
+.vp-doc table {
+  table-layout: auto;
+  width: 100%;
+  display: table;
+}
+
+.vp-doc .vp-table {
+  overflow-x: auto;
+}
+
+.VPSidebarItem .link,
+.VPSidebarItem .text,
+.VPSidebarItem .title {
+  font-size: 16px !important;
+}

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using GameConfig;
 using GameLogic;
 #if ENABLE_OBFUZ
 using Obfuz;
@@ -36,7 +37,7 @@ public partial class GameApp
     private static void StartGameLogic()
     {
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
-        GameModule.UI.ShowUIAsync<BattleMainUI>();
+        Tables.SetJsonLoader(new LubanJsonLoader());
     }
     
     private static void Release()
