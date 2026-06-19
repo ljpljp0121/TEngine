@@ -1,7 +1,6 @@
 # UnityRules asmdef map
 # name path includePlatforms excludePlatforms defineConstraints optionalUnityReferences
 Launcher	Assets/Launcher/Launcher.asmdef				
-com.peifeng.pfgas.Gen	Assets/PFGAS/Generated/com.peifeng.pfgas.Gen.asmdef				
 com.peifeng.pfgas.Runtime	Assets/PFGAS/Runtime/com.peifeng.pfgas.Runtime.asmdef				
 Atom.GraphProcessor	Assets/PFGraph/Examples/Atom.GraphProcessor.asmdef				
 com.peifeng.pfgraph.Runtime	Assets/PFGraph/Runtime/com.peifeng.pfgraph.Runtime.asmdef				
