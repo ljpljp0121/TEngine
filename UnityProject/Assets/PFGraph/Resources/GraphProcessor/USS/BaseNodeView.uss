@@ -1,0 +1,125 @@
+#node-border {
+    /* 深蓝灰色节点体，参考 Shader Graph 配色，避免纯黑 */
+    background-color: rgba(30, 35, 45, 0.92);
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: rgba(60, 70, 90, 0.8);
+}
+
+#selection-border {
+    border-radius: 7px;
+}
+
+#node-border > #title {
+    /* 标题栏：深蓝紫调，与节点体区分，提升层次感 */
+    background-color: rgba(45, 55, 80, 0.95);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    height: 26px;
+}
+
+#node-border > #title > #title-input {
+    align-items: center;
+    height: 100%;
+    width: 25px;
+    padding: 3px;
+}
+
+#node-border > #title > #title-output {
+    align-items: center;
+    height: 100%;
+    width: 25px;
+    padding: 3px;
+}
+
+#node-border > #title > #title-input > .port > #connector {
+    height: 10px;
+    width: 10px;
+}
+
+#node-border > #title > #title-input > .port > #connector > #cap {
+    height: 6px;
+    width: 6px;
+}
+
+#node-border > #title > #title-output > .port > #connector {
+    height: 10px;
+    width: 10px;
+}
+
+#node-border > #title > #title-output > .port > #connector > #cap {
+    height: 6px;
+    width: 6px;
+}
+
+#node-border > #title > #title-icon {
+    width: 12px;
+    height: 12px;
+    margin-left: 5px;
+    align-self: center;
+    -unity-background-scale-mode: scale-to-fit;
+    visibility: hidden;
+    display: none;
+}
+
+#node-border > #title > #title-label {
+    /* 柔和的浅蓝白色，可读性好且不刺眼（替代原来的粉红 #FF6387） */
+    color: rgba(200, 215, 240, 1);
+    padding-left: 6px;
+    padding-right: 5px;
+    margin: 0;
+    align-self: center;
+    flex-wrap: Wrap;
+    flex-grow: 1;
+}
+
+#node-border > #title > #title-button-container {
+    visibility: hidden;
+    display: none;
+}
+
+#node-border > #contents > #top > #input {
+    align-self: flex-start;
+    margin-right: 5px;
+    /* 稍浅的深蓝灰，与节点体形成微妙层次 */
+    background-color: rgba(20, 25, 38, 0.35);
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+#node-border > #contents > #top > #output {
+    align-self: flex-start;
+    margin-left: 5px;
+    background-color: rgba(20, 25, 38, 0.35);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#node-border > #contents > #controls {
+    padding-top: 1px;
+    padding-bottom: 2px;
+    flex-grow: 1;
+}
+
+#node-border > #top-input {
+    height: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgba(78, 89, 113, 0.0);
+    border-color: rgba(40, 50, 70, 0.6);
+}
+
+#node-border > #bottom-input {
+    height: 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    background-color: rgba(78, 89, 113, 0.0);
+    border-color: rgba(40, 50, 70, 0.6);
+}
+
+#divider {
+    /* 柔和的蓝灰分割线，替代原来刺眼的纯橙色 */
+    background-color: rgba(70, 90, 130, 0.9);
+}

@@ -1,0 +1,699 @@
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace PFGraph
+{
+    public class MoveElementsCommand : ICommand
+    {
+        private Dictionary<IGraphElementProcessor_Scope, Rect> oldPos;
+        private Dictionary<IGraphElementProcessor_Scope, Rect> newPos;
+
+        public MoveElementsCommand(Dictionary<IGraphElementProcessor_Scope, Rect> newPos)
+        {
+            this.newPos = newPos;
+        }
+
+        public void Do()
+        {
+            if (oldPos == null)
+                oldPos = new Dictionary<IGraphElementProcessor_Scope, Rect>();
+            else
+                oldPos.Clear();
+
+            foreach (var pair in newPos)
+            {
+                switch (pair.Key)
+                {
+                    case StickyNoteProcessor note:
+                    {
+                        var rect = new Rect(note.Position.ToVector2(), note.Size.ToVector2());
+                        oldPos[pair.Key] = rect;
+                        note.Position = pair.Value.position.ToInternalVector2Int();
+                        note.Size = pair.Value.size.ToInternalVector2Int();
+                        break;
+                    }
+                    case PlacematProcessor placemat:
+                    {
+                        var rect = new Rect(placemat.Position.ToVector2(), placemat.Size.ToVector2());
+                        oldPos[pair.Key] = rect;
+                        placemat.Position = pair.Value.position.ToInternalVector2Int();
+                        placemat.Size = pair.Value.size.ToInternalVector2Int();
+                        break;
+                    }
+                    default:
+                    {
+                        var rect = new Rect(pair.Key.Position.ToVector2(), Vector2.zero);
+                        oldPos[pair.Key] = rect;
+                        pair.Key.Position = pair.Value.position.ToInternalVector2Int();
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            foreach (var pair in oldPos)
+            {
+                switch (pair.Key)
+                {
+                    case StickyNoteProcessor note:
+                    {
+                        note.Position = pair.Value.position.ToInternalVector2Int();
+                        note.Size = pair.Value.size.ToInternalVector2Int();
+                        break;
+                    }
+                    case PlacematProcessor placemat:
+                    {
+                        placemat.Position = pair.Value.position.ToInternalVector2Int();
+                        placemat.Size = pair.Value.size.ToInternalVector2Int();
+                        break;
+                    }
+                    default:
+                    {
+                        pair.Key.Position = pair.Value.position.ToInternalVector2Int();
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public class RemoveElementsCommand : ICommand
+    {
+        private BaseGraphProcessor graph;
+        private List<IGraphElementProcessor> graphElements;
+        private HashSet<IGraphElementProcessor> graphElementsSet = new HashSet<IGraphElementProcessor>();
+        private Dictionary<BaseNodeProcessor, GroupProcessor> nodeGroups =
+            new Dictionary<BaseNodeProcessor, GroupProcessor>();
+
+        public RemoveElementsCommand(BaseGraphProcessor graph, IGraphElementProcessor[] graphElements)
+        {
+            this.graph = graph;
+            this.graphElements = new List<IGraphElementProcessor>(graphElements);
+            foreach (var graphElement in this.graphElements)
+            {
+                graphElementsSet.Add(graphElement);
+            }
+
+            for (int i = 0; i < graphElements.Length; i++)
+            {
+                var graphElement = graphElements[i];
+                switch (graphElement)
+                {
+                    case BaseNodeProcessor node:
+                    {
+                        if (graph.Groups.NodeGroupMap.TryGetValue(node.ID, out var groupProcessor))
+                        {
+                            nodeGroups[node] = groupProcessor;
+                        }
+
+                        foreach (var connection in node.Ports.Values.SelectMany(port => port.connections))
+                        {
+                            if (this.graphElementsSet.Add(connection))
+                            {
+                                this.graphElements.Add(connection);
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            this.graphElements.QuickSort((a, b) => { return GetPriority(a).CompareTo(GetPriority(b)); });
+        }
+
+        public void Do()
+        {
+            // 正向移除
+            for (int i = 0; i < graphElements.Count; i++)
+            {
+                var graphElement = graphElements[i];
+                switch (graphElement)
+                {
+                    case BaseConnectionProcessor connection:
+                    {
+                        graph.Disconnect(connection);
+                        break;
+                    }
+                    case GroupProcessor group:
+                    {
+                        graph.RemoveGroup(group);
+                        break;
+                    }
+                    case BaseNodeProcessor node:
+                    {
+                        graph.RemoveNode(node);
+                        break;
+                    }
+                    case StickyNoteProcessor stickNote:
+                    {
+                        graph.RemoveNote(stickNote.ID);
+                        break;
+                    }
+                    case PlacematProcessor placemat:
+                    {
+                        graph.RemovePlacemat(placemat.ID);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void Undo()
+        {
+            // 反向添加
+            for (int i = graphElements.Count - 1; i >= 0; i--)
+            {
+                var graphElement = graphElements[i];
+                switch (graphElement)
+                {
+                    case BaseNodeProcessor node:
+                    {
+                        graph.AddNode(node);
+                        break;
+                    }
+                    case StickyNoteProcessor stickNote:
+                    {
+                        graph.AddNote(stickNote);
+                        break;
+                    }
+                    case BaseConnectionProcessor connection:
+                    {
+                        graph.RevertDisconnect(connection);
+                        break;
+                    }
+                    case GroupProcessor group:
+                    {
+                        graph.AddGroup(group);
+                        break;
+                    }
+                    case PlacematProcessor placemat:
+                    {
+                        graph.AddPlacemat(placemat);
+                        break;
+                    }
+                }
+            }
+
+            foreach (var pair in nodeGroups)
+            {
+                graph.Groups.AddNodeToGroup(pair.Value, pair.Key);
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public int GetPriority(IGraphElementProcessor graphElement)
+        {
+            switch (graphElement)
+            {
+                case BaseConnectionProcessor:
+                case GroupProcessor:
+                {
+                    return 1;
+                }
+                case BaseNodeProcessor:
+                case StickyNoteProcessor:
+                case PlacematProcessor:
+                {
+                    return 2;
+                }
+            }
+
+            return int.MaxValue;
+        }
+    }
+
+    public class AddNodeCommand : ICommand
+    {
+        BaseGraphProcessor graph;
+        BaseNodeProcessor nodeVM;
+
+        public AddNodeCommand(BaseGraphProcessor graph, Type nodeType, InternalVector2Int position)
+        {
+            this.graph = graph;
+            this.nodeVM = graph.NewNode(nodeType, position);
+        }
+
+        public AddNodeCommand(BaseGraphProcessor graph, BaseNode node)
+        {
+            this.graph = graph;
+            this.nodeVM = ViewModelFactory.ProduceViewModel(node) as BaseNodeProcessor;
+        }
+
+        public AddNodeCommand(BaseGraphProcessor graph, BaseNodeProcessor node)
+        {
+            this.graph = graph;
+            this.nodeVM = node;
+        }
+
+        public void Do()
+        {
+            graph.AddNode(nodeVM);
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            graph.RemoveNode(nodeVM);
+        }
+    }
+
+    public class AddGroupCommand : ICommand
+    {
+        public BaseGraphProcessor graph;
+        public GroupProcessor group;
+
+        public AddGroupCommand(BaseGraphProcessor graph, GroupProcessor group)
+        {
+            this.graph = graph;
+            this.group = group;
+        }
+
+        public AddGroupCommand(BaseGraphProcessor graph, Group group)
+        {
+            this.graph = graph;
+            this.group = ViewModelFactory.ProduceViewModel(group) as GroupProcessor;
+        }
+
+        public void Do()
+        {
+            graph.AddGroup(group);
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            graph.RemoveGroup(group);
+        }
+    }
+
+    public class AddToGroupCommand : ICommand
+    {
+        private BaseGraphProcessor graph;
+        private GroupProcessor group;
+        private BaseNodeProcessor[] nodes;
+
+        public AddToGroupCommand(BaseGraphProcessor graph, GroupProcessor group, BaseNodeProcessor[] nodes)
+        {
+            this.graph = graph;
+            this.group = group;
+            this.nodes = nodes;
+        }
+
+        public void Do()
+        {
+            foreach (var node in nodes)
+            {
+                graph.Groups.AddNodeToGroup(group, node);
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            foreach (var node in nodes)
+            {
+                graph.Groups.RemoveNodeFromGroup(node);
+            }
+        }
+    }
+
+    public class RemoveFromGroupCommand : ICommand
+    {
+        private BaseGraphProcessor graph;
+        private GroupProcessor group;
+        private BaseNodeProcessor[] nodes;
+
+        public RemoveFromGroupCommand(BaseGraphProcessor graph, GroupProcessor group, BaseNodeProcessor[] nodes)
+        {
+            this.graph = graph;
+            this.group = group;
+            this.nodes = nodes;
+        }
+
+        public void Do()
+        {
+            foreach (var node in nodes)
+            {
+                graph.Groups.RemoveNodeFromGroup(node);
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            foreach (var node in nodes)
+            {
+                graph.Groups.AddNodeToGroup(group, node);
+            }
+        }
+    }
+
+    public class RenameGroupCommand : ICommand
+    {
+        public GroupProcessor group;
+        public string oldName;
+        public string newName;
+
+        public RenameGroupCommand(GroupProcessor group, string newName)
+        {
+            this.group = group;
+            this.oldName = group.GroupName;
+            this.newName = newName;
+        }
+
+        public void Do()
+        {
+            group.GroupName = newName;
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            group.GroupName = oldName;
+        }
+    }
+
+    public class ChangeGroupColorCommand : ICommand
+    {
+        public GroupProcessor group;
+        public InternalColor oldColor;
+        public InternalColor newColor;
+
+        public ChangeGroupColorCommand(GroupProcessor group, InternalColor newColor)
+        {
+            this.group = group;
+            this.oldColor = group.BackgroundColor;
+            this.newColor = newColor;
+        }
+
+        public ChangeGroupColorCommand(GroupProcessor group, InternalColor oldColor, InternalColor newColor)
+        {
+            this.group = group;
+            this.oldColor = oldColor;
+            this.newColor = newColor;
+        }
+
+        public void Do()
+        {
+            group.BackgroundColor = newColor;
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            group.BackgroundColor = oldColor;
+        }
+    }
+
+    public class AddPortCommand : ICommand
+    {
+        BaseNodeProcessor node;
+        PortProcessor port;
+        bool successed = false;
+
+        public AddPortCommand(BaseNodeProcessor node, string name, BasePort.Direction direction,
+            BasePort.Capacity capacity, Type type = null)
+        {
+            this.node = node;
+            port = new PortProcessor(name, direction, capacity, type);
+        }
+
+        public void Do()
+        {
+            successed = false;
+            if (!node.Ports.ContainsKey(port.Name))
+            {
+                node.AddPort(port);
+                successed = true;
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            if (!successed)
+            {
+                return;
+            }
+
+            node.RemovePort(port);
+        }
+    }
+
+    public class RemovePortCommand : ICommand
+    {
+        BaseNodeProcessor node;
+        PortProcessor port;
+        bool successed = false;
+
+        public RemovePortCommand(BaseNodeProcessor node, PortProcessor port)
+        {
+            this.node = node;
+            this.port = port;
+        }
+
+        public RemovePortCommand(BaseNodeProcessor node, string name)
+        {
+            this.node = node;
+            node.Ports.TryGetValue(name, out port);
+        }
+
+        public void Do()
+        {
+            successed = false;
+            if (port != null && node.Ports.ContainsKey(port.Name))
+            {
+                node.RemovePort(port);
+                successed = true;
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            if (!successed)
+            {
+                return;
+            }
+
+            node.AddPort(port);
+        }
+    }
+
+    public class ConnectCommand : ICommand
+    {
+        private readonly BaseGraphProcessor graph;
+
+        PortProcessor from;
+        PortProcessor to;
+        BaseConnectionProcessor connectionVM;
+        HashSet<BaseConnectionProcessor> replacedConnections = new HashSet<BaseConnectionProcessor>();
+        bool connected;
+
+        public BaseConnectionProcessor Connection
+        {
+            get { return connected ? connectionVM : null; }
+        }
+
+        public ConnectCommand(BaseGraphProcessor graph, PortProcessor from, PortProcessor to)
+        {
+            this.graph = graph;
+            this.connectionVM = graph.NewConnection(from, to);
+
+            this.from = from;
+            this.to = to;
+        }
+
+        public ConnectCommand(BaseGraphProcessor graph, BaseConnectionProcessor connection)
+        {
+            this.graph = graph;
+            this.connectionVM = connection;
+            this.from = graph.Nodes[connection.FromNodeID].Ports[connection.FromPortName];
+            this.to = graph.Nodes[connection.ToNodeID].Ports[connection.ToPortName];
+        }
+
+        public void Do()
+        {
+            connected = false;
+            replacedConnections.Clear();
+            if (from.Capacity == BasePort.Capacity.Single)
+            {
+                foreach (var connection in from.Connections)
+                {
+                    replacedConnections.Add(connection);
+                }
+            }
+
+            if (to.Capacity == BasePort.Capacity.Single)
+            {
+                foreach (var connection in to.Connections)
+                {
+                    replacedConnections.Add(connection);
+                }
+            }
+
+            foreach (var connection in replacedConnections)
+            {
+                graph.Disconnect(connection);
+            }
+
+            graph.Connect(connectionVM);
+            connected = connectionVM.Owner == graph;
+
+            // 连接未建立时，回滚前置断连，避免出现半成功状态
+            if (!connected)
+            {
+                foreach (var connection in replacedConnections)
+                {
+                    graph.RevertDisconnect(connection);
+                }
+            }
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            if (connected && connectionVM.Owner == graph)
+                graph.Disconnect(connectionVM);
+
+            // 还原
+            foreach (var connection in replacedConnections)
+            {
+                graph.RevertDisconnect(connection);
+            }
+        }
+    }
+
+    public class ReconnectCommand : ICommand
+    {
+        private readonly BaseGraphProcessor graph;
+        private readonly BaseConnectionProcessor oldConnection;
+        private readonly PortProcessor newFrom;
+        private readonly PortProcessor newTo;
+
+        private BaseConnectionProcessor newConnection;
+        private readonly HashSet<BaseConnectionProcessor> replacedConnections = new HashSet<BaseConnectionProcessor>();
+        private readonly bool valid;
+
+        public ReconnectCommand(BaseGraphProcessor graph, BaseConnectionProcessor oldConnection, PortProcessor newFrom,
+            PortProcessor newTo)
+        {
+            this.graph = graph;
+            this.oldConnection = oldConnection;
+            this.newFrom = newFrom;
+            this.newTo = newTo;
+
+            valid = oldConnection != null && newFrom != null && newTo != null &&
+                    !(oldConnection.FromPort == newFrom && oldConnection.ToPort == newTo);
+        }
+
+        public void Do()
+        {
+            if (!valid)
+                return;
+
+            replacedConnections.Clear();
+            if (newFrom.Capacity == BasePort.Capacity.Single)
+            {
+                foreach (var connection in newFrom.Connections)
+                {
+                    if (connection != oldConnection)
+                        replacedConnections.Add(connection);
+                }
+            }
+
+            if (newTo.Capacity == BasePort.Capacity.Single)
+            {
+                foreach (var connection in newTo.Connections)
+                {
+                    if (connection != oldConnection)
+                        replacedConnections.Add(connection);
+                }
+            }
+
+            if (oldConnection.Owner == graph)
+                graph.Disconnect(oldConnection);
+
+            foreach (var connection in replacedConnections)
+            {
+                if (connection.Owner == graph)
+                    graph.Disconnect(connection);
+            }
+
+            if (newConnection == null)
+                newConnection = graph.NewConnection(newFrom, newTo);
+
+            graph.Connect(newConnection);
+        }
+
+        public void Redo()
+        {
+            Do();
+        }
+
+        public void Undo()
+        {
+            if (!valid)
+                return;
+
+            if (newConnection != null && newConnection.Owner == graph)
+                graph.Disconnect(newConnection);
+
+            graph.RevertDisconnect(oldConnection);
+            foreach (var connection in replacedConnections)
+            {
+                graph.RevertDisconnect(connection);
+            }
+        }
+    }
+}

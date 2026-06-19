@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PFGraph 项目结构与扩展审查报告</title>
+  <style>
+    :root {
+      --bg: #10131a;
+      --panel: #181d27;
+      --panel-2: #202635;
+      --panel-3: #252d3d;
+      --line: #334057;
+      --text: #eef2f7;
+      --muted: #aab4c5;
+      --soft: #758197;
+      --blue: #65a3ff;
+      --teal: #55d6be;
+      --green: #78d48b;
+      --amber: #f4c56a;
+      --red: #f27e7e;
+      --violet: #b89bff;
+      --shadow: 0 18px 55px rgba(0,0,0,.32);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 16% 0%, rgba(101,163,255,.12), transparent 32rem),
+        radial-gradient(circle at 86% 12%, rgba(85,214,190,.10), transparent 30rem),
+        var(--bg);
+      color: var(--text);
+      font: 15px/1.72 "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+    header {
+      padding: 70px 0 36px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .kicker {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--teal);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+    h1 {
+      margin: 18px 0 16px;
+      font-size: clamp(32px, 5vw, 60px);
+      line-height: 1.08;
+      letter-spacing: 0;
+      max-width: 980px;
+    }
+    .subtitle {
+      max-width: 850px;
+      color: var(--muted);
+      font-size: 18px;
+    }
+    .meta {
+      margin-top: 26px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.045);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 13px;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(16,19,26,.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    nav .wrap {
+      display: flex;
+      gap: 10px;
+      overflow: auto;
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+    nav a {
+      white-space: nowrap;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 7px;
+      padding: 7px 10px;
+      background: rgba(255,255,255,.025);
+      font-size: 13px;
+    }
+    main { padding: 34px 0 80px; }
+    section { margin: 38px 0; }
+    h2 {
+      margin: 0 0 16px;
+      font-size: 25px;
+      line-height: 1.25;
+    }
+    h3 {
+      margin: 24px 0 10px;
+      color: #dfe7f5;
+      font-size: 18px;
+    }
+    p { margin: 10px 0; color: var(--muted); }
+    strong { color: var(--text); }
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.025));
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .card.flat { box-shadow: none; background: var(--panel); }
+    .score {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+    .score-num {
+      font-size: clamp(44px, 8vw, 86px);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--green);
+    }
+    .score-label { color: var(--muted); margin-top: 8px; }
+    .meter {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .meter > span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--blue)); }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 6px;
+      color: #111722;
+      background: var(--teal);
+    }
+    .tag.warn { background: var(--amber); }
+    .tag.bad { background: var(--red); }
+    .tag.good { background: var(--green); }
+    .tag.info { background: var(--blue); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: var(--panel);
+    }
+    th, td {
+      text-align: left;
+      vertical-align: top;
+      padding: 12px 13px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    th {
+      color: #dfe7f5;
+      background: rgba(255,255,255,.055);
+      font-size: 13px;
+    }
+    td { color: var(--muted); }
+    tr:last-child td { border-bottom: 0; }
+    code, pre {
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 13px;
+    }
+    code {
+      color: #d7e6ff;
+      background: rgba(101,163,255,.12);
+      border: 1px solid rgba(101,163,255,.16);
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+    pre {
+      margin: 14px 0 0;
+      white-space: pre-wrap;
+      color: #cfdaea;
+      background: #0c1017;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 8px;
+      padding: 16px;
+      overflow: auto;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .step {
+      min-height: 96px;
+      border: 1px solid rgba(255,255,255,.11);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 12px;
+      position: relative;
+    }
+    .step b { display: block; margin-bottom: 6px; color: var(--text); }
+    .step small { color: var(--soft); }
+    .note {
+      border-left: 4px solid var(--amber);
+      background: rgba(244,197,106,.10);
+      padding: 12px 14px;
+      border-radius: 0 8px 8px 0;
+      color: #ead8ad;
+    }
+    .ok { color: var(--green); }
+    .warn-text { color: var(--amber); }
+    .bad-text { color: var(--red); }
+    .muted { color: var(--soft); }
+    ul { margin: 10px 0 0 20px; padding: 0; color: var(--muted); }
+    li { margin: 6px 0; }
+    footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 24px 0 40px;
+      color: var(--soft);
+      font-size: 13px;
+    }
+    @media (max-width: 900px) {
+      .grid.cols-2, .grid.cols-3, .score, .flow { grid-template-columns: 1fr; }
+      header { padding-top: 44px; }
+      .wrap { padding-left: 18px; padding-right: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="kicker">PFGraph Code Review</div>
+      <h1>PFGraph 项目结构、扩展方式与图编辑器横向对比</h1>
+      <p class="subtitle">
+        基于本地 <code>Assets/PFPackage/PFGraph</code> 代码审查，整理项目分层、核心模型、扩展路径、使用方式、风险点，并与 xNode、NodeGraphProcessor、Unity Graph Toolkit 做定位对比。
+      </p>
+      <div class="meta">
+        <span class="pill">包名：com.peifeng.pfgraph</span>
+        <span class="pill">版本：1.0.1</span>
+        <span class="pill">Unity：2019.4+</span>
+        <span class="pill">统计：161 个 C# 文件，443 个项目文件</span>
+        <span class="pill">生成日期：2026-05-14</span>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="wrap">
+      <a href="#summary">结论</a>
+      <a href="#structure">项目结构</a>
+      <a href="#architecture">架构链路</a>
+      <a href="#extension">扩展方式</a>
+      <a href="#usage">使用方式</a>
+      <a href="#comparison">工具对比</a>
+      <a href="#risks">风险与改进</a>
+      <a href="#roadmap">建议路线</a>
+      <a href="#sources">资料来源</a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="summary">
+      <div class="score">
+        <div class="card">
+          <h2>总体判断</h2>
+          <div class="score-num">8.1<span style="font-size:34px;color:var(--muted)">/10</span></div>
+          <p class="score-label">作为“Unity 编辑器内的可视化图框架”，PFGraph 的结构完整度很高。它不是轻量玩具，而是已经具备 MVVM、命令系统、端口求值、黑板、子图入口、复制粘贴、分组、便签、垫板、MiniMap、Inspector 等能力的框架。</p>
+          <div class="meter"><span style="width:81%"></span></div>
+        </div>
+        <div class="card">
+          <h2>一句话</h2>
+          <p><strong>PFGraph 更像一个“自研版 NodeGraphProcessor 基础框架”，而不是 xNode 那种低样板、字段驱动的小框架。</strong></p>
+          <p>优点是架构边界清楚、编辑器体验可控、二次开发空间大；代价是学习成本更高，GraphView 实验 API、Odin 依赖、运行时执行引擎缺失等问题需要补齐。</p>
+          <div style="margin-top:16px">
+            <span class="tag good">适合</span> 技能编辑器、行为树编辑器、数据流/配置图、自研工具链<br>
+            <span class="tag warn">谨慎</span> 需要开箱即用执行引擎、强社区生态、低维护成本的项目
+          </div>
+        </div>
+      </div>
+
+      <div class="grid cols-3" style="margin-top:16px">
+        <div class="card flat">
+          <h3>最强点</h3>
+          <p>Model / ViewModel / View 分层清晰，Model 数据很薄，端口与行为集中在 Processor。后续扩业务时不会太快变成一团编辑器脚本。</p>
+        </div>
+        <div class="card flat">
+          <h3>最大短板</h3>
+          <p>PFGraph 当前是编辑器框架，不是运行时图执行引擎。它有 pull 式端口求值，但没有完整的拓扑执行、状态机、异步节点、调度器。</p>
+        </div>
+        <div class="card flat">
+          <h3>首要修复</h3>
+          <p>补齐 Odin 依赖声明或去掉 Odin；整理 package.json；修复 Blackboard 的 HashCode 比较；明确 GraphView/Unity 版本策略。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="structure">
+      <h2>1. 项目结构</h2>
+      <p>PFGraph 的目录基本按 Unity Package 分层组织，Runtime 和 Editor 分开，有 asmdef，Resources 下放 UXML/USS/纹理，Examples 下放三类示例。</p>
+      <table>
+        <thead>
+          <tr><th>目录</th><th>定位</th><th>关键内容</th><th>评价</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>Runtime/Common</code></td>
+            <td>通用基础设施</td>
+            <td>ViewModel、Bindable、EventStation、Blackboard、CommandDispatcher、ObjectPool、反射缓存、Snowflake ID</td>
+            <td>基础设施偏完整，但部分通用代码与图框架耦合度可以再收敛。</td>
+          </tr>
+          <tr>
+            <td><code>Runtime/Core</code></td>
+            <td>图核心模型与处理器</td>
+            <td>BaseGraph、BaseNode、BasePort、BaseConnection、BaseGraphProcessor、BaseNodeProcessor、PortProcessor、命令、属性</td>
+            <td>项目的主心骨。Model 很轻，Processor 承担行为，是可维护性来源。</td>
+          </tr>
+          <tr>
+            <td><code>Runtime/Graph</code></td>
+            <td>Unity 集成层</td>
+            <td>IGraphAsset、IGraphAssetOwner、GraphAssetOwner、GraphRuntimeUtil、GraphValidationUtil</td>
+            <td>资产与运行时对象之间的桥。适合继续扩成运行时执行入口。</td>
+          </tr>
+          <tr>
+            <td><code>Editor/Scripts/Graph</code></td>
+            <td>编辑器图 UI</td>
+            <td>BaseGraphWindow、BaseGraphView、BaseNodeView、BasePortView、NodeMenuWindow、Inspector、默认 View</td>
+            <td>功能面已经超过基础 GraphView 示例，包含工具栏、Inspector、ItemLibrary、MiniMap、复制粘贴等。</td>
+          </tr>
+          <tr>
+            <td><code>Resources/GraphProcessor</code></td>
+            <td>编辑器 UI 资源</td>
+            <td>GraphWindow.uxml、BasicStyle.uss、节点/端口/连接/便签/分组样式、纹理、Skin</td>
+            <td>把视觉资源从代码拆出去是正确方向。</td>
+          </tr>
+          <tr>
+            <td><code>Examples</code></td>
+            <td>样例与验证</td>
+            <td>MathExample、FlowExample、PerfTest</td>
+            <td>覆盖数据流、流程图、性能测试。问题是示例依赖 Sirenix/Odin，但 package.json 未声明。</td>
+          </tr>
+          <tr>
+            <td><code>Documentation~</code></td>
+            <td>包文档</td>
+            <td>架构、使用指南、GAS 扩展、ShaderGraph 扩展、设计审查</td>
+            <td>文档量很足，是这个项目的加分项。</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <pre>PFGraph/
+├─ Runtime/
+│  ├─ Common/        # MVVM、事件、命令、黑板、工具
+│  ├─ Core/          # 图 Model、Processor、Port、Connection、Commands
+│  └─ Graph/         # GraphAsset / Owner / Validation / Runtime 工具
+├─ Editor/
+│  └─ Scripts/
+│     ├─ Common/     # Inspector、IMGUI、EditorCoroutine
+│     └─ Graph/      # GraphWindow / GraphView / NodeView / PortView
+├─ Resources/        # UXML / USS / Textures / Skin
+├─ Examples/         # Math / Flow / PerfTest
+├─ Documentation~/   # 架构与扩展文档
+└─ package.json</pre>
+    </section>
+
+    <section id="architecture">
+      <h2>2. 架构链路</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <span class="tag info">Model</span>
+          <h3>BaseGraph / BaseNode / BaseConnection</h3>
+          <p>负责序列化数据：画布 zoom/pan、节点列表、连线列表、分组、便签、垫板。节点只内置 <code>id</code> 和 <code>position</code>，业务字段由节点子类追加。</p>
+        </div>
+        <div class="card">
+          <span class="tag good">ViewModel</span>
+          <h3>BaseGraphProcessor / BaseNodeProcessor / PortProcessor</h3>
+          <p>负责节点创建、连线校验、端口求值、黑板、事件、诊断、Undo/Redo 命令接入。端口在 Processor 构造里动态创建。</p>
+        </div>
+        <div class="card">
+          <span class="tag warn">View</span>
+          <h3>BaseGraphWindow / BaseGraphView / BaseNodeView</h3>
+          <p>基于 <code>UnityEditor.Experimental.GraphView</code> 和 UI Toolkit。负责绘制、菜单、拖拽、选择、复制粘贴、Inspector、MiniMap。</p>
+        </div>
+      </div>
+
+      <h3>核心数据流</h3>
+      <div class="flow">
+        <div class="step"><b>1. 创建资产</b><small>ScriptableObject 实现 IGraphAsset，保存 BaseGraph 子类。</small></div>
+        <div class="step"><b>2. 打开窗口</b><small>BaseGraphWindow.Open(asset) 根据 GraphType 找 CustomView 窗口。</small></div>
+        <div class="step"><b>3. 生成 VM</b><small>ViewModelFactory 扫描 [ViewModel]，把 Model 包装成 Processor。</small></div>
+        <div class="step"><b>4. 生成 View</b><small>GraphProcessorEditorUtil 扫描 [CustomView]，创建对应 UI。</small></div>
+        <div class="step"><b>5. 命令修改</b><small>CommandDispatcher 执行 Add/Move/Connect/Remove 并支持 Undo。</small></div>
+      </div>
+
+      <h3>设计亮点</h3>
+      <ul>
+        <li><strong>端口动态化：</strong>端口不写死在 Model 字段中，而是在 Processor 中用 <code>AddPort</code> 创建，这让同一节点可按配置生成不同端口。</li>
+        <li><strong>连接有校验：</strong><code>TryValidateConnection</code> 检查空端口、方向、同端口自连、类型兼容，优于很多裸 GraphView 教程。</li>
+        <li><strong>求值有防护：</strong><code>PortProcessor.GetConnectionValue&lt;T&gt;</code> 带 ThreadStatic evaluation stack/cache，可发现循环依赖并减少重复求值。</li>
+        <li><strong>资产保存策略清楚：</strong>编辑时克隆 Graph，保存时写回 IGraphAsset，避免打开编辑器窗口时直接污染资产。</li>
+        <li><strong>扩展点集中：</strong><code>[NodeMenu]</code>、<code>[NodeTitle]</code>、<code>[ViewModel]</code>、<code>[CustomView]</code> 四类属性基本覆盖节点注册、业务、展示。</li>
+      </ul>
+
+      <div class="note">
+        这套分层比 xNode 的字段端口方式更重，但更适合做大型工具。它的维护关键是继续保持“Model 只存数据，Processor 管逻辑，View 管交互”的边界，不要为了赶功能把业务塞回 View。
+      </div>
+    </section>
+
+    <section id="extension">
+      <h2>3. 扩展方式</h2>
+      <p>PFGraph 的标准扩展路径是“Graph Model + Graph Asset + Graph Window/View + Node Model + Node Processor + 可选 Node View”。最小闭环如下。</p>
+
+      <h3>A. 新建一种 Graph</h3>
+      <pre><code>using System;
+using PFGraph;
+using UnityEngine;
+
+[Serializable]
+public class SkillGraph : BaseGraph
+{
+    public string graphVersion = "1.0";
+}
+
+[CreateAssetMenu(menuName = "PFGraph/Skill Graph")]
+public class SkillGraphAsset : ScriptableObject, IGraphAsset
+{
+    [SerializeField] private SkillGraph data = new SkillGraph();
+
+    public Type GraphType =&gt; typeof(SkillGraph);
+    public BaseGraph LoadGraph() =&gt; data;
+    public void SaveGraph(BaseGraph graph) =&gt; data = (SkillGraph)graph;
+}</code></pre>
+
+      <h3>B. 绑定编辑器窗口</h3>
+      <pre><code>using PFGraph;
+
+[CustomView(typeof(SkillGraph))]
+public class SkillGraphWindow : BaseGraphWindow
+{
+    protected override BaseGraphView NewGraphView()
+    {
+        return new SkillGraphView();
+    }
+}
+
+public class SkillGraphView : DefaultGraphView
+{
+    protected override bool IsCompatible(BasePortView from, BasePortView to, NodeAdapter adapter)
+    {
+        return base.IsCompatible(from, to, adapter);
+    }
+}</code></pre>
+
+      <h3>C. 定义节点与 Processor</h3>
+      <pre><code>using PFGraph;
+
+[NodeMenu("Skill/Apply Damage")]
+[NodeTitle("Apply Damage")]
+[NodeTooltip("Apply a damage value to the target")]
+public class ApplyDamageNode : BaseNode
+{
+    public float defaultDamage = 10f;
+}
+
+[ViewModel(typeof(ApplyDamageNode))]
+public class ApplyDamageNodeProcessor : BaseNodeProcessor, IGetPortValue&lt;float&gt;
+{
+    public ApplyDamageNodeProcessor(BaseNode model) : base(model)
+    {
+        AddPort(new PortProcessor("Target", BasePort.Direction.Left, BasePort.Capacity.Single, typeof(object)));
+        AddPort(new PortProcessor("Damage", BasePort.Direction.Left, BasePort.Capacity.Single, typeof(float)));
+        AddPort(new PortProcessor("Out", BasePort.Direction.Right, BasePort.Capacity.Multi, typeof(float)));
+    }
+
+    public float GetValue(string portName)
+    {
+        var model = (ApplyDamageNode)Model;
+        return Ports["Damage"].GetConnectionValue&lt;float&gt;() is var value && value != 0f
+            ? value
+            : model.defaultDamage;
+    }
+}</code></pre>
+
+      <h3>D. 可选自定义节点 View</h3>
+      <pre><code>using PFGraph;
+using UnityEngine.UIElements;
+
+[CustomView(typeof(ApplyDamageNode))]
+public class ApplyDamageNodeView : DefaultNodeView
+{
+    protected override void DoInit()
+    {
+        var label = new Label("Damage");
+        controls.Add(label);
+    }
+}</code></pre>
+
+      <table>
+        <thead><tr><th>扩展目标</th><th>推荐扩展点</th><th>注意事项</th></tr></thead>
+        <tbody>
+          <tr><td>新增节点类型</td><td><code>BaseNode</code> + <code>[NodeMenu]</code> + <code>[ViewModel]</code></td><td>端口名必须唯一；端口在 Processor 构造中创建。</td></tr>
+          <tr><td>新增节点 UI</td><td><code>[CustomView(typeof(MyNode))]</code> + <code>BaseNodeView</code></td><td>使用 <code>controls</code> / container 添加 UI，并监听 ViewModel 变化。</td></tr>
+          <tr><td>限制可连接端口</td><td>重写 <code>BaseGraphView.IsCompatible</code></td><td>运行时连接也会走 <code>BaseGraphProcessor.TryValidateConnection</code>。</td></tr>
+          <tr><td>新增图级变量</td><td><code>BaseGraph</code> 子类字段或 <code>Blackboard</code></td><td>需要考虑序列化和 Undo/Redo。</td></tr>
+          <tr><td>做运行时执行</td><td>新增 <code>IGraphExecutor</code> / 节点执行接口</td><td>当前框架只提供编辑与 pull 求值，不提供完整调度器。</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="usage">
+      <h2>4. 使用方式</h2>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3>编辑器内使用</h3>
+          <ul>
+            <li>创建实现 <code>IGraphAsset</code> 的 ScriptableObject 资产。</li>
+            <li>双击资产会进入 <code>BaseGraphWindow.OnOpen</code>，自动打开对应窗口。</li>
+            <li>右键空白处创建节点，拖拽端口创建连接。</li>
+            <li>用 Ctrl+Z/Ctrl+Y 撤销重做，Ctrl+S 保存。</li>
+            <li>Inspector 面板查看图统计、诊断、选中元素和 Blackboard。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>代码内使用</h3>
+          <ul>
+            <li>通过 <code>ViewModelFactory.ProduceViewModel(graph)</code> 得到 <code>BaseGraphProcessor</code>。</li>
+            <li>通过 <code>AddNodeCommand</code>、<code>ConnectCommand</code>、<code>RemoveElementsCommand</code> 修改图结构。</li>
+            <li>通过 <code>Ports["X"].GetConnectionValue&lt;T&gt;()</code> 做数据流求值。</li>
+            <li>通过 <code>GraphValidationUtil.Repair</code> 修复丢失节点、失效连线等历史数据。</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>当前示例</h3>
+      <table>
+        <thead><tr><th>示例</th><th>说明</th><th>可学习点</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>MathExample</code></td>
+            <td>Float、Add、Sub、Log 等节点组成简单数据流。</td>
+            <td>学习 <code>IGetPortValue&lt;float&gt;</code>、自定义 NodeView、资产双击打开。</td>
+          </tr>
+          <tr>
+            <td><code>FlowExample</code></td>
+            <td>行为开始节点、动画状态节点，偏行为树/流程图风格。</td>
+            <td>学习流端口、节点菜单过滤、自定义保存/复制逻辑。</td>
+          </tr>
+          <tr>
+            <td><code>PerfTest</code></td>
+            <td>批量节点、求值、连接、复制等性能测试。</td>
+            <td>学习大图性能压力点和端口求值缓存。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="comparison">
+      <h2>5. 与常见图编辑器工具对比</h2>
+      <p>这里对比的是定位，不是简单“谁更好”。xNode 更轻，NodeGraphProcessor 更成熟，Unity Graph Toolkit 更官方，PFGraph 更适合你掌控全套编辑体验。</p>
+      <table>
+        <thead>
+          <tr>
+            <th>维度</th>
+            <th>PFGraph</th>
+            <th>xNode</th>
+            <th>NodeGraphProcessor</th>
+            <th>Unity Graph Toolkit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>定位</td>
+            <td>自研通用图编辑器框架</td>
+            <td>轻量 Unity 节点图框架</td>
+            <td>数据处理图框架</td>
+            <td>Unity 官方前端框架</td>
+          </tr>
+          <tr>
+            <td>UI 技术</td>
+            <td>UI Toolkit + Experimental GraphView</td>
+            <td>IMGUI/自研编辑器体系</td>
+            <td>UIElements + GraphView</td>
+            <td>Unity 官方 Graph Toolkit</td>
+          </tr>
+          <tr>
+            <td>端口模型</td>
+            <td>Processor 动态 <code>AddPort</code></td>
+            <td>字段标记 <code>[Input]</code>/<code>[Output]</code></td>
+            <td>字段属性 + PortData + 自定义端口行为</td>
+            <td>官方工具模型，偏前端框架</td>
+          </tr>
+          <tr>
+            <td>样板代码</td>
+            <td>中高</td>
+            <td>低</td>
+            <td>中</td>
+            <td>中高</td>
+          </tr>
+          <tr>
+            <td>运行时执行</td>
+            <td>无完整执行引擎，只有 pull 求值</td>
+            <td>通常由用户实现节点逻辑</td>
+            <td>内置 graph processor / dependency order</td>
+            <td>支持编译到 runtime model，但不含 runtime execution backend</td>
+          </tr>
+          <tr>
+            <td>编辑器能力</td>
+            <td>MiniMap、Inspector、ItemLibrary、Blackboard、Group、Note、Placemat、Copy/Paste</td>
+            <td>轻量、易上手，扩展较直接</td>
+            <td>参数、组、便签、Relay、Stack、菜单、Inspector 等更成熟</td>
+            <td>官方交互与 UX 规范，适合新 Unity 版本</td>
+          </tr>
+          <tr>
+            <td>风险</td>
+            <td>依赖实验 GraphView、Odin 未声明、生态少</td>
+            <td>最新 Release 较老，复杂工具要自己补很多</td>
+            <td>第三方依赖，框架范式较固定</td>
+            <td>Unity 版本要求高，仍需自建业务逻辑/执行后端</td>
+          </tr>
+          <tr>
+            <td>最适合</td>
+            <td>想自控架构和 UI 的团队内部工具</td>
+            <td>快速做对话、FSM、简单可视化配置</td>
+            <td>数据处理、依赖图、复杂编辑器工具</td>
+            <td>Unity 6.x 以后，希望走官方路线的新工具</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>PFGraph 相对 xNode 的优缺点</h3>
+      <div class="grid cols-2">
+        <div class="card">
+          <h3 class="ok">优势</h3>
+          <ul>
+            <li>MVVM 分层更明确，复杂编辑器不会很快失控。</li>
+            <li>端口可以动态构造，适合技能、条件、复合节点、可变输入。</li>
+            <li>编辑器功能更多，内置 Inspector、ItemLibrary、Blackboard、Placemat 等。</li>
+            <li>CommandDispatcher 对 Undo/Redo 的统一性更好。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3 class="warn-text">劣势</h3>
+          <ul>
+            <li>学习曲线更陡，创建一个节点通常要写 Model + Processor，必要时还要 View。</li>
+            <li>社区生态远弱于 xNode，踩坑基本靠自己。</li>
+            <li>基于 Experimental GraphView，Unity 版本升级风险更高。</li>
+            <li>示例和编辑器代码实际依赖 Odin，但包声明没有说明。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="risks">
+      <h2>6. 风险与改进点</h2>
+      <table>
+        <thead><tr><th>优先级</th><th>问题</th><th>证据</th><th>建议</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><span class="tag bad">P0</span></td>
+            <td>Sirenix/Odin 依赖未声明</td>
+            <td><code>BaseGraphInspector</code>、<code>ObjectInspector</code>、Examples 多处使用 <code>Sirenix.*</code>；<code>package.json</code> dependencies 为空。</td>
+            <td>要么声明 Odin 依赖与安装前提，要么把核心 Editor 的 Odin 依赖抽到可选 asmdef。</td>
+          </tr>
+          <tr>
+            <td><span class="tag bad">P0</span></td>
+            <td>package.json 仍有模板字段</td>
+            <td><code>author.url</code> 是 <code>https://github.com/Your_Name</code>，keywords/description 是占位内容。</td>
+            <td>补全包描述、作者、关键字、依赖、samples/documentation 声明。</td>
+          </tr>
+          <tr>
+            <td><span class="tag warn">P1</span></td>
+            <td>基于 Experimental GraphView</td>
+            <td>大量引用 <code>UnityEditor.Experimental.GraphView</code>。</td>
+            <td>锁定支持 Unity 版本；若面向 Unity 6.x，新项目评估迁移 Graph Toolkit。</td>
+          </tr>
+          <tr>
+            <td><span class="tag warn">P1</span></td>
+            <td>Blackboard 用 GetHashCode 判断值是否变化</td>
+            <td><code>Blackboard.IDataContainer.cs</code> 中比较 <code>v.GetHashCode() == value.GetHashCode()</code>。</td>
+            <td>改为 <code>EqualityComparer&lt;TValue&gt;.Default.Equals(v, value)</code>，并处理 null。</td>
+          </tr>
+          <tr>
+            <td><span class="tag warn">P1</span></td>
+            <td><code>ISetPortValue</code> 方法名疑似错误</td>
+            <td>接口名是 Set，但方法为 <code>GetValue(string portName, object value)</code>。</td>
+            <td>保留兼容接口并标 Obsolete，迁移到已有的 <code>IWritePortValue.SetValue</code>。</td>
+          </tr>
+          <tr>
+            <td><span class="tag warn">P1</span></td>
+            <td>运行时执行语义缺失</td>
+            <td>现有 <code>GetConnectionValue</code> 是即时 pull 求值，没有统一 graph executor。</td>
+            <td>按业务建立 DataFlowExecutor / FlowExecutor / AbilityExecutor。</td>
+          </tr>
+          <tr>
+            <td><span class="tag info">P2</span></td>
+            <td>子图只有导航，没有端口暴露协议</td>
+            <td><code>OpenSubgraph</code> 和面包屑已具备，但没有输入/输出映射模型。</td>
+            <td>增加 SubgraphInput / SubgraphOutput 节点或 exposed port mapping。</td>
+          </tr>
+          <tr>
+            <td><span class="tag info">P2</span></td>
+            <td>Samples~ 为空</td>
+            <td>真正示例在 <code>Examples</code>，不是 UPM 标准 Samples。</td>
+            <td>将 Math/Flow/Perf 整理成 Samples~，让 Package Manager 可导入。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="roadmap">
+      <h2>7. 建议路线</h2>
+      <div class="grid cols-3">
+        <div class="card">
+          <span class="tag bad">先做</span>
+          <h3>包可用性</h3>
+          <ul>
+            <li>整理 package.json。</li>
+            <li>明确 Odin 依赖策略。</li>
+            <li>把 Examples 转成 Samples~。</li>
+            <li>加最小编译验证场景。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag warn">再做</span>
+          <h3>框架稳定性</h3>
+          <ul>
+            <li>修复 Blackboard 比较。</li>
+            <li>统一端口类型注册与颜色。</li>
+            <li>补充连接验证测试。</li>
+            <li>完善诊断面板。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="tag good">后做</span>
+          <h3>业务能力</h3>
+          <ul>
+            <li>实现运行时 Executor。</li>
+            <li>补子图端口映射。</li>
+            <li>增加代码生成/导出接口。</li>
+            <li>按 GAS/ShaderGraph 场景沉淀模板。</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>推荐定位</h3>
+      <p>
+        如果这个包是给团队内部长期使用，我建议继续投入 PFGraph：它的结构底子不错，适合沉淀成内部技能编辑器、行为树编辑器、关卡逻辑图、数值管线图。
+        如果目标是快速上线一个简单对话/FSM 工具，xNode 成本更低。如果目标是稳定的数据处理图，NodeGraphProcessor 值得参考甚至直接采用。如果新项目锁定 Unity 6.4+，Unity Graph Toolkit 是更值得评估的官方方向。
+      </p>
+    </section>
+
+    <section id="sources">
+      <h2>8. 资料来源</h2>
+      <div class="grid cols-2">
+        <div class="card flat">
+          <h3>本地代码证据</h3>
+          <ul>
+            <li><code>Assets/PFPackage/PFGraph/package.json</code></li>
+            <li><code>Runtime/Core/Models/BaseGraph.cs</code></li>
+            <li><code>Runtime/Core/ViewModels/BaseGraphProcessor*.cs</code></li>
+            <li><code>Runtime/Core/ViewModels/BaseNodeProcessor.cs</code></li>
+            <li><code>Runtime/Core/ViewModels/PortProcessor.cs</code></li>
+            <li><code>Editor/Scripts/Graph/Views/BaseGraphWindow.cs</code></li>
+            <li><code>Editor/Scripts/Graph/Views/Internals/BaseGraphView.Internal.cs</code></li>
+            <li><code>Examples/MathExample</code>、<code>Examples/FlowExample</code>、<code>Examples/PerfTest</code></li>
+          </ul>
+        </div>
+        <div class="card flat">
+          <h3>外部对比资料</h3>
+          <ul>
+            <li><a href="https://github.com/Siccity/xNode" target="_blank" rel="noreferrer">Siccity/xNode GitHub</a>：README 描述 xNode 的轻量、低样板、Unity 5.3+、MIT、Release 1.8.0 信息。</li>
+            <li><a href="https://github.com/alelievr/NodeGraphProcessor" target="_blank" rel="noreferrer">NodeGraphProcessor GitHub</a>：README 描述 GraphView/UIElements、数据处理、执行顺序、参数、组、便签等特性。</li>
+            <li><a href="https://docs.unity.cn/6000.4/Documentation/Manual/gtk/gtk-index.html" target="_blank" rel="noreferrer">Unity Graph Toolkit Manual</a>：官方说明 Graph Toolkit 是前端框架，支持 runtime model 编译但不包含 runtime execution backend。</li>
+            <li><a href="https://docs.unity.cn/ScriptReference/Experimental.GraphView.GraphView.html" target="_blank" rel="noreferrer">Unity GraphView API</a>：官方 API 页面标注 GraphView 为 Experimental。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      PFGraph Review HTML generated for local project inspection. 建议用浏览器直接打开本文件，或在 Unity Project 面板中定位到 <code>Assets/PFPackage/PFGraph/PFGraph-Review.html</code>。
+    </div>
+  </footer>
+</body>
+</html>

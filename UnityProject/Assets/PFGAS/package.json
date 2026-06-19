@@ -1,0 +1,18 @@
+{
+    "name": "com.peifeng.pfgas",
+    "displayName": "PFGAS",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://github.com/Your_Name"
+    },
+    "keywords": [
+        "gameplay-ability-system",
+        "abilities",
+        "attributes",
+        "effects"
+    ],
+    "version": "1.1.0",
+    "unity": "2019.4",
+    "description": "A lightweight Unity gameplay ability system package with abilities, attributes, gameplay effects, tags, cues, and runtime ability tasks.",
+    "dependencies": {}
+}

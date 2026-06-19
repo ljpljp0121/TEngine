@@ -1,0 +1,120 @@
+.port {
+    flex-direction: row;
+    align-items: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    /* 暖金黄色端口，保留原有色调但稍微柔和 */
+    --port-color: rgba(255, 185, 50, 1);
+}
+
+.port > #type {
+    /* 浅蓝白色端口类型标签，与节点标题色呼应 */
+    color: rgba(180, 200, 230, 1);
+}
+
+.port.vertical {
+    height: 15px;
+}
+
+.port.port-compatible > #connector {
+    border-color: rgba(100, 220, 170, 0.95);
+    box-shadow: 0 0 0 1px rgba(100, 220, 170, 0.35);
+}
+
+.port.port-compatible > #connector > #cap {
+    background-color: rgba(100, 220, 170, 1);
+}
+
+.port.port-source > #connector {
+    border-color: rgba(255, 205, 85, 1);
+    box-shadow: 0 0 0 1px rgba(255, 205, 85, 0.45);
+}
+
+#input > .port.capacity-Single > #connector.connectorBox {
+    border-radius: 1px;
+}
+
+#input > .port.capacity-Multi > #connector.connectorBox {
+    border-radius: 8px;
+}
+
+#input > .port.capacity-Single > #connector.connectorBox > #cap.connectorCap {
+    border-radius: 0px;
+}
+
+#input > .port.capacity-Multi > #connector.connectorBox > #cap.connectorCap {
+    border-radius: 4px;
+}
+
+#output > .port.capacity-Single > #connector.connectorBox {
+    border-radius: 1px;
+}
+
+#output > .port.capacity-Multi > #connector.connectorBox {
+    border-radius: 8px;
+}
+
+#output > .port.capacity-Single > #connector.connectorBox > #cap.connectorCap {
+    border-radius: 0px;
+}
+
+#output > .port.capacity-Multi > #connector.connectorBox > #cap.connectorCap {
+    border-radius: 4px;
+}
+
+#title-output > .port {
+    /* 柔和的冰蓝色，替代刺眼的纯青 #00FFFF */
+    --port-color: rgba(80, 190, 230, 1);
+}
+
+#title-input > .port {
+    --port-color: rgba(80, 190, 230, 1);
+}
+
+#title-input > .port > #type {
+    display: none;
+}
+
+#title-output > .port > #type {
+    display: none;
+}
+
+#title-input > .port > #connector {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#title-output > .port > #connector {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#title-input > .port > #connector > #cap {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#title-output > .port > #connector > #cap {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+/*#title-input > .port.rl > #connector {*/
+/*    border-top-right-radius: 0px;*/
+/*    border-bottom-right-radius: 0px;*/
+/*}*/
+
+/*#title-output > .port.rl > #connector {*/
+/*    border-top-right-radius: 0px;*/
+/*    border-bottom-right-radius: 0px;*/
+/*}*/
+
+/*#title-input > .port.rl > #connector > #cap {*/
+/*    border-top-right-radius: 0px;*/
+/*    border-bottom-right-radius: 0px;*/
+/*}*/
+
+/*#title-output > .port.rl > #connector > #cap {*/
+/*    border-top-right-radius: 0px;*/
+/*    border-bottom-right-radius: 0px;*/
+/*}*/

@@ -1,0 +1,16 @@
+{
+    "name": "com.peifeng.pfdebugger",
+    "displayName": "PFDebugger",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://github.com/ljpljp0121"
+    },
+    "keywords": [
+        "Debugger",
+        "GM"
+    ],
+    "version": "1.0.5",
+    "unity": "2021.3",
+    "description": "一个拓展简单的 日志Debugger工具, UI界面和功能界面了 InGameDebugConsole, 并且集成了 RuntimeInspector",
+    "dependencies": {}
+}

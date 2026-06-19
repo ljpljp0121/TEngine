@@ -1,0 +1,16 @@
+{
+    "name": "com.peifeng.pfgraph",
+    "displayName": "PFGraph",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://github.com/Your_Name"
+    },
+    "keywords": [
+        "keyword1",
+        "keyword2"
+    ],
+    "version": "1.0.1",
+    "unity": "2019.4",
+    "description": "Some description",
+    "dependencies": {}
+}

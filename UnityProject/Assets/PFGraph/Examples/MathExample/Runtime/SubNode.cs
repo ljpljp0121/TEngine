@@ -1,0 +1,36 @@
+using System.Collections.Generic;
+using PFGraph;
+
+[NodeMenu("Sub")]
+public class SubNode : BaseNode
+{
+    public List<string> ports = new List<string>();
+}
+
+[ViewModel(typeof(SubNode))]
+public class SubNodeProcessor : BaseNodeProcessor, IGetPortValue, IGetPortValue<float>
+{
+    public SubNodeProcessor(BaseNode model) : base(model)
+    {
+        AddPort(new PortProcessor("InputA", BasePort.Direction.Left, BasePort.Capacity.Single, typeof(float)));
+        AddPort(new PortProcessor("InputB", BasePort.Direction.Left, BasePort.Capacity.Single, typeof(float)));
+        AddPort(new PortProcessor(ConstValues.FLOW_OUT_PORT_NAME, BasePort.Direction.Right, BasePort.Capacity.Multi, typeof(float))
+        {
+            HideLabel = true
+        });
+    }
+
+    public object GetValue(string port)
+    {
+        var inputAValue = Ports["InputA"].GetConnectionValue<float>();
+        var inputBValue = Ports["InputB"].GetConnectionValue<float>();
+        return inputAValue - inputBValue;
+    }
+
+    float IGetPortValue<float>.GetValue(string port)
+    {
+        var inputAValue = Ports["InputA"].GetConnectionValue<float>();
+        var inputBValue = Ports["InputB"].GetConnectionValue<float>();
+        return inputAValue - inputBValue;
+    }
+}

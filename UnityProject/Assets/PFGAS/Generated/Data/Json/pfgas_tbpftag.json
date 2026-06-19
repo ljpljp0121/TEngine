@@ -1,0 +1,50 @@
+[
+  {
+    "Id": 0,
+    "ParentId": -1,
+    "Name": "State",
+    "Desc": "状态根标签"
+  },
+  {
+    "Id": 1,
+    "ParentId": 0,
+    "Name": "Buff",
+    "Desc": "增益状态"
+  },
+  {
+    "Id": 2,
+    "ParentId": 0,
+    "Name": "DeBuff",
+    "Desc": "减益状态"
+  },
+  {
+    "Id": 5,
+    "ParentId": 2,
+    "Name": "Du",
+    "Desc": "中毒减益"
+  },
+  {
+    "Id": 6,
+    "ParentId": 2,
+    "Name": "Fire",
+    "Desc": "灼烧减益"
+  },
+  {
+    "Id": 7,
+    "ParentId": 2,
+    "Name": "Ice",
+    "Desc": "冰冻减益"
+  },
+  {
+    "Id": 3,
+    "ParentId": -1,
+    "Name": "Life",
+    "Desc": "生命根标签"
+  },
+  {
+    "Id": 4,
+    "ParentId": 3,
+    "Name": "HP",
+    "Desc": "生命值"
+  }
+]

@@ -1,0 +1,50 @@
+.unity-text-element {
+    -unity-font-style: bold;
+}
+
+.unity-toolbar {
+    border-width: 0px;
+}
+
+.unity-toolbar #ToolbarCenter {
+    flex-grow: 1;
+}
+
+.unity-toolbar > ToolbarButton {
+    width: 80px;
+    -unity-text-align: middle-center;
+}
+
+#MainContainer {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+#GraphViewContainer {
+    flex-grow: 1;
+}
+
+#InspectorView {
+    border-left-width: 1px;
+    border-left-color: rgba(120, 140, 170, 0.25);
+    background-color: rgba(20, 24, 32, 0.92);
+}
+
+.unity-toolbar #ToolbarLeft > ToolbarButton {
+    border-left-width: 0;
+}
+
+.unity-toolbar #ToolbarRight > ToolbarButton {
+    border-right-width: 0;
+}
+
+.hidden {
+    display: none;
+    visibility: hidden;
+}
+
+.highlight {
+    /* 柔和的冰蓝高亮，替代刺眼的纯青 */
+    background-color: rgba(60, 180, 220, 0.85);
+    border-radius: 7px
+}

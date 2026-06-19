@@ -1,0 +1,19 @@
+{
+    "name": "com.peifeng.pfgas.Editor",
+    "rootNamespace": "",
+    "references": [
+        "com.peifeng.pfgas.Runtime",
+        "com.peifeng.pftreeview.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

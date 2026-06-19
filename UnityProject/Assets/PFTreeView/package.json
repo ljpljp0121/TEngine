@@ -1,0 +1,16 @@
+{
+    "name": "com.peifeng.pftreeview",
+    "displayName": "PFTreeView",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://blog.peifengcoding.com/"
+    },
+    "keywords": [
+        "treeview",
+        "editor"
+    ],
+    "version": "1.0.4",
+    "unity": "2021.2",
+    "description": "基于 Unity Editor TreeView 的树状视图",
+    "dependencies": {}
+}

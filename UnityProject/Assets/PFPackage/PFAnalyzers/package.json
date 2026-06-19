@@ -1,0 +1,15 @@
+{
+    "name": "com.peifeng.pfanalyzers",
+    "displayName": "PFAnalyzers",
+    "author": {
+        "name": "PeiFeng Coding",
+        "url": "https://blog.peifengcoding.com/"
+    },
+    "keywords": [
+        "Analyzers"
+    ],
+    "version": "1.0.1",
+    "unity": "2021.2",
+    "description": "通用分析器，提供一些通用的分析器，方便开发者使用。",
+    "dependencies": {}
+}

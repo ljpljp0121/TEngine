@@ -1,0 +1,20 @@
+{
+    "name": "Atom.GraphProcessor",
+    "rootNamespace": "",
+    "references": [
+        "UnityEditor.UI",
+        "UnityEngine.UI",
+        "Atom.Lib",
+        "com.peifeng.pfgraph.Runtime",
+        "com.peifeng.pfgraph.Editor"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

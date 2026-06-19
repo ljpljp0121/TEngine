@@ -1,0 +1,38 @@
+# UnityRules asmdef map
+# name path includePlatforms excludePlatforms defineConstraints optionalUnityReferences
+Launcher	Assets/Launcher/Launcher.asmdef				
+com.peifeng.pfgas.Gen	Assets/PFGAS/Generated/com.peifeng.pfgas.Gen.asmdef				
+com.peifeng.pfgas.Runtime	Assets/PFGAS/Runtime/com.peifeng.pfgas.Runtime.asmdef				
+Atom.GraphProcessor	Assets/PFGraph/Examples/Atom.GraphProcessor.asmdef				
+com.peifeng.pfgraph.Runtime	Assets/PFGraph/Runtime/com.peifeng.pfgraph.Runtime.asmdef				
+TEngine.Editor	Assets/TEngine/Editor/TEngine.Editor.asmdef	Editor			
+TEngine.Runtime	Assets/TEngine/Runtime/TEngine.Runtime.asmdef				
+GameLogic	Assets/GameScripts/HotFix/GameLogic/GameLogic.asmdef				
+GameProto	Assets/GameScripts/HotFix/GameProto/GameProto.asmdef				
+com.peifeng.pfgas.Editor	Assets/PFGAS/Editor/Scripts/com.peifeng.pfgas.Editor.asmdef	Editor			
+com.peifeng.pfgas.Tests	Assets/PFGAS/Tests/Runtime/com.peifeng.pfgas.Tests.asmdef			UNITY_INCLUDE_TESTS	
+com.peifeng.pfgraph.Editor	Assets/PFGraph/Editor/Scripts/com.peifeng.pfgraph.Editor.asmdef	Editor			
+ToolbarExtender	Assets/PFPackage/EditorEnhance/ToolbarExtender/ToolbarExtender.asmdef	Editor			
+VFolders	Assets/PFPackage/EditorEnhance/vFolders/VFolders.asmdef	Editor			
+VHierarchy	Assets/PFPackage/EditorEnhance/vHierarchy/VHierarchy.asmdef	Editor			
+VInspector	Assets/PFPackage/EditorEnhance/vInspector/VInspector.asmdef				
+com.peifeng.pfdebugger.Runtime	Assets/PFPackage/PFDebugger/Runtime/com.peifeng.pfdebugger.Runtime.asmdef				
+com.peifeng.pfdebugger.Test	Assets/PFPackage/PFDebugger/Test/com.peifeng.pfdebugger.Test.asmdef				
+com.peifeng.pftreeview.Editor	Assets/PFTreeView/Editor/Scripts/com.peifeng.pftreeview.Editor.asmdef	Editor			
+com.peifeng.pfdebugger.Editor	Assets/PFPackage/PFDebugger/Editor/Scripts/com.peifeng.pfdebugger.Editor.asmdef	Editor			
+RuntimeInspector.Runtime	Assets/PFPackage/PFDebugger/Plugin/RuntimeInspector/RuntimeInspector.Runtime.asmdef				
+Sirenix.OdinInspector.Modules.UnityMathematics	Assets/Plugins/Sirenix/Odin Inspector/Modules/Unity.Mathematics/Sirenix.OdinInspector.Modules.UnityMathematics.asmdef	Editor			
+MCPForUnity.Editor	Packages/MCPForUnity/Editor/MCPForUnity.Editor.asmdef	Editor			
+MCPForUnity.Runtime	Packages/MCPForUnity/Runtime/MCPForUnity.Runtime.asmdef				
+UniTask.Editor	Packages/UniTask/Editor/UniTask.Editor.asmdef	Editor			
+UniTask	Packages/UniTask/Runtime/UniTask.asmdef				
+YooAsset.Editor	Packages/YooAsset/Editor/YooAsset.Editor.asmdef	Editor			
+YooAsset.EditorExtension	Packages/YooAsset/EditorExtension/YooAsset.EditorExtension.asmdef	Editor			
+YooAsset	Packages/YooAsset/Runtime/YooAsset.asmdef				
+YooAsset.RuntimeExtension	Packages/YooAsset/RuntimeExtension/YooAsset.RuntimeExtension.asmdef				
+UniTask.Linq	Packages/UniTask/Runtime/Linq/UniTask.Linq.asmdef				
+YooAsset.MiniGame	Packages/YooAsset/Mini Game/Runtime/YooAsset.MiniGame.asmdef				
+UniTask.Addressables	Packages/UniTask/Runtime/External/Addressables/UniTask.Addressables.asmdef				
+UniTask.DOTween	Packages/UniTask/Runtime/External/DOTween/UniTask.DOTween.asmdef				
+UniTask.TextMeshPro	Packages/UniTask/Runtime/External/TextMeshPro/UniTask.TextMeshPro.asmdef				
+UniTask.YooAsset	Packages/UniTask/Runtime/External/YooAsset/UniTask.YooAsset.asmdef				
