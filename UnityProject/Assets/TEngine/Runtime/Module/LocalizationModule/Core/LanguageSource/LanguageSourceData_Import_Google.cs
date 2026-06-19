@@ -1,7 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Text;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;

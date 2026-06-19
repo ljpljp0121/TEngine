@@ -1,6 +1,8 @@
-﻿using System;
+using System;
 using TMPro;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 #if TextMeshPro
