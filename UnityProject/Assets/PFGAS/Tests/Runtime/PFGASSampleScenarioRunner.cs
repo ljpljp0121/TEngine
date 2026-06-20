@@ -9,11 +9,14 @@ namespace PFGAS.Runtime.Tests
     {
         [SerializeField] private bool runOnStart = true;
         [SerializeField] private bool showButtons = true;
+        [SerializeField] private bool showRiskyDynamicExamples;
         [SerializeField] private float tickSeconds = 1f;
         [SerializeField] private List<string> lastResults = new List<string>();
 
         private readonly PFGASSampleLifecycleCounters unitACounters = new PFGASSampleLifecycleCounters();
         private readonly PFGASSampleLifecycleCounters unitBCounters = new PFGASSampleLifecycleCounters();
+        private readonly List<ActiveGameplayEffect> activeEffectDetails =
+            new List<ActiveGameplayEffect>();
 
         private PFGASSampleUnitFactory duelFactory;
         private CombatUnit unitA;
@@ -83,7 +86,7 @@ namespace PFGAS.Runtime.Tests
                 Mathf.Max(360f, Screen.width - 32f),
                 Mathf.Max(320f, Screen.height - 32f));
 
-            GUILayout.BeginArea(panel, "PFGAS Tag 示例", GUI.skin.window);
+            GUILayout.BeginArea(panel, "PFGAS 示例场景", GUI.skin.window);
 
             var contentHeight = Mathf.Max(260f, panel.height - 36f);
             var leftWidth = Mathf.Max(430f, panel.width * 0.56f);
@@ -109,7 +112,6 @@ namespace PFGAS.Runtime.Tests
             GUILayout.EndScrollView();
 
             GUILayout.EndHorizontal();
-
             GUILayout.EndArea();
         }
 
@@ -136,67 +138,177 @@ namespace PFGAS.Runtime.Tests
             EnsureTagsRegistered();
 
             lastResults.Clear();
-            var burning = PFGASSamples.RunBurningDot();
-            var aura = PFGASSamples.RunLeadershipAura();
-            var poison = PFGASSamples.RunStackingPoison();
-            var shield = PFGASSamples.RunTargetLocalShield();
-            var lifecycle = PFGASSamples.RunLifecycleEvent();
-
-            lastResults.Add("灼烧 DoT：HP " + burning.HpAfterApply + " -> " + burning.HpAfterExpiry);
-            lastResults.Add("队长光环：目标 MaxHP " + aura.FrontInitialMaxHp + " -> " + aura.FrontAfterSourceFlush);
-            lastResults.Add("毒层叠加：层数 " + poison.SourceAStackCount + "，HP " + poison.HpAfterBothSourcesPeriod);
-            lastResults.Add("生命护盾：HP " + shield.HpAfterApply + " -> " + shield.HpAfterMaxHpChange);
-            lastResults.Add("生命周期事件：事件 " + lifecycle.EventCountAfterCleanup + "，激活效果 " + lifecycle.ActiveEffectCountAfterCleanup);
+            var summaries = PFGASSamples.RunAllSampleSummaries();
+            for (var i = 0; i < summaries.Count; i++)
+            {
+                AppendLog(summaries[i]);
+            }
 
             Debug.Log("PFGAS 示例运行完成，请查看此组件的 LastResults。", this);
+        }
+
+        public void StrikeAToB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateInstantDamage(25f), "A 攻击 B");
+        }
+
+        public void StrikeBToA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateInstantDamage(25f), "B 攻击 A");
+        }
+
+        public void HealA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateInstantHeal(20f), "A 治疗自己");
+        }
+
+        public void HealB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateInstantHeal(20f), "B 治疗自己");
         }
 
         public void CastBurningAToB()
         {
             EnsureDuel();
-            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateBurningDot(), "A 对 B 施加灼烧 DoT");
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateBurningDot(), "A 对 B 施加快照灼烧");
         }
 
         public void CastBurningBToA()
         {
             EnsureDuel();
-            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateBurningDot(), "B 对 A 施加灼烧 DoT");
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateBurningDot(), "B 对 A 施加快照灼烧");
+        }
+
+        public void CastScalingBurningAToB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateScalingBurningDot(), "A 对 B 施加动态周期灼烧");
+        }
+
+        public void CastScalingBurningBToA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateScalingBurningDot(), "B 对 A 施加动态周期灼烧");
         }
 
         public void CastPoisonAToB()
         {
             EnsureDuel();
-            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateStackingPoison(), "A 对 B 叠加毒层");
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateStackingPoison(), "A 对 B 叠加中毒");
         }
 
         public void CastPoisonBToA()
         {
             EnsureDuel();
-            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateStackingPoison(), "B 对 A 叠加毒层");
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateStackingPoison(), "B 对 A 叠加中毒");
+        }
+
+        public void CastDuCengAToB()
+        {
+            CastPoisonAToB();
+        }
+
+        public void CastDuCengBToA()
+        {
+            CastPoisonBToA();
+        }
+
+        public void CastBleedAToB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateIndependentBleed(), "A 对 B 施加独立流血");
+        }
+
+        public void CastBleedBToA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateIndependentBleed(), "B 对 A 施加独立流血");
+        }
+
+        public void CastSnapshotAuraAToB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateSnapshotLeadershipAura(), "A 给 B 添加快照光环");
+        }
+
+        public void CastSnapshotAuraBToA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateSnapshotLeadershipAura(), "B 给 A 添加快照光环");
         }
 
         public void CastLeadershipAuraAToB()
         {
-            EnsureDuel();
-            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateLeadershipAura(), "A 给 B 添加队长光环");
+            CastSnapshotAuraAToB();
         }
 
         public void CastLeadershipAuraBToA()
         {
+            CastSnapshotAuraBToA();
+        }
+
+        public void CastRiskyDynamicAuraAToB()
+        {
             EnsureDuel();
-            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateLeadershipAura(), "B 给 A 添加队长光环");
+            ApplyEffect(unitA, unitB, PFGASSampleEffects.CreateRiskyDynamicLeadershipAura(), "A 给 B 添加危险动态光环");
+        }
+
+        public void CastRiskyDynamicAuraBToA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitA, PFGASSampleEffects.CreateRiskyDynamicLeadershipAura(), "B 给 A 添加危险动态光环");
         }
 
         public void CastShieldA()
         {
             EnsureDuel();
-            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateTargetLocalShield(), "A 给自己施加生命护盾");
+            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateTargetLocalShield(), "A 获得目标本地护盾");
         }
 
         public void CastShieldB()
         {
             EnsureDuel();
-            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateTargetLocalShield(), "B 给自己施加生命护盾");
+            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateTargetLocalShield(), "B 获得目标本地护盾");
+        }
+
+        public void CastRegenA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateRefreshRegen(), "A 获得刷新型再生");
+        }
+
+        public void CastRegenB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateRefreshRegen(), "B 获得刷新型再生");
+        }
+
+        public void CastWeakFortifyA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateReplaceFortify(15f), "A 获得弱强化");
+        }
+
+        public void CastWeakFortifyB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateReplaceFortify(15f), "B 获得弱强化");
+        }
+
+        public void CastStrongFortifyA()
+        {
+            EnsureDuel();
+            ApplyEffect(unitA, unitA, PFGASSampleEffects.CreateReplaceFortify(40f), "A 获得强强化");
+        }
+
+        public void CastStrongFortifyB()
+        {
+            EnsureDuel();
+            ApplyEffect(unitB, unitB, PFGASSampleEffects.CreateReplaceFortify(40f), "B 获得强强化");
         }
 
         public void ActivateLifecycleA()
@@ -206,7 +318,7 @@ namespace PFGAS.Runtime.Tests
                 unitA,
                 unitA,
                 PFGASSampleEffects.CreatePersistentLifecycleEvent(unitACounters),
-                "A 开启持续生命周期监听");
+                "A 开启生命周期监听");
         }
 
         public void ActivateLifecycleB()
@@ -216,21 +328,21 @@ namespace PFGAS.Runtime.Tests
                 unitB,
                 unitB,
                 PFGASSampleEffects.CreatePersistentLifecycleEvent(unitBCounters),
-                "B 开启持续生命周期监听");
+                "B 开启生命周期监听");
         }
 
         public void PublishHitAToB()
         {
             EnsureDuel();
             unitB.GameplayEventBus.Publish(PFGASSamples.LifecycleEventName, unitA, unitB);
-            AppendLog("A 命中 B，B 事件计数 = " + unitBCounters.EventCount);
+            AppendLog("A 发布命中事件给 B，B 事件计数=" + unitBCounters.EventCount);
         }
 
         public void PublishHitBToA()
         {
             EnsureDuel();
             unitA.GameplayEventBus.Publish(PFGASSamples.LifecycleEventName, unitB, unitA);
-            AppendLog("B 命中 A，A 事件计数 = " + unitACounters.EventCount);
+            AppendLog("B 发布命中事件给 A，A 事件计数=" + unitACounters.EventCount);
         }
 
         public void TickDuel()
@@ -238,7 +350,7 @@ namespace PFGAS.Runtime.Tests
             EnsureDuel();
             var tickStep = GetTickStep();
             TickDuelInternal(tickStep, tickStep);
-            AppendLog("手动推进 " + FormatValue(tickStep) + " 秒。");
+            AppendLog("手动 Tick +" + FormatValue(tickStep) + " 秒。");
         }
 
         public void AdvanceAutoTick(float deltaSeconds)
@@ -270,6 +382,27 @@ namespace PFGAS.Runtime.Tests
         {
             EnsureDuel();
             IncreaseMaxHp(unitB, "B");
+        }
+
+        public void LowerAHP()
+        {
+            EnsureDuel();
+            AddHpBase(unitA, "A", -20f);
+        }
+
+        public void LowerBHP()
+        {
+            EnsureDuel();
+            AddHpBase(unitB, "B", -20f);
+        }
+
+        public void RestoreBaseAttributes()
+        {
+            EnsureDuel();
+            ResetUnitBaseAttributes(unitA);
+            ResetUnitBaseAttributes(unitB);
+            TickDuelInternal(0f, 0f);
+            AppendLog("已将 A/B 的 Base HP 和 MaxHP 恢复为 100。");
         }
 
         public void RemoveAllEffects()
@@ -310,12 +443,12 @@ namespace PFGAS.Runtime.Tests
             RemoveLooseTag(unitA, PFGASTestTagIds.State_Buff, "A");
         }
 
-        public void AddPoisonTagToB()
+        public void AddDuTagToB()
         {
             AddLooseTag(unitB, PFGASTestTagIds.State_DeBuff_Du, "B");
         }
 
-        public void RemovePoisonTagFromB()
+        public void RemoveDuTagFromB()
         {
             RemoveLooseTag(unitB, PFGASTestTagIds.State_DeBuff_Du, "B");
         }
@@ -325,7 +458,7 @@ namespace PFGAS.Runtime.Tests
             EnsureDuel();
             unitA.Tags.Clear();
             unitB.Tags.Clear();
-            AppendLog("已清空 A/B 所有 Tag。");
+            AppendLog("已清空 A/B 所有松散 Tag 和来源 Tag。");
         }
 
         public void CleanupDuel()
@@ -356,13 +489,13 @@ namespace PFGAS.Runtime.Tests
         {
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label("启动状态");
-            GUILayout.Label("Tag 注册：" + (TagHelper.IsRegistered ? "已注册" : "未注册"));
-            GUILayout.Label(startupStatus);
-            GUILayout.Label("Runner 会等 TagHelper.IsRegistered 为 true 后再创建示例单位。");
+            DrawMetric("Tag 注册", TagHelper.IsRegistered ? "已注册" : "未注册");
+            DrawMetric("状态", startupStatus);
             DrawMetric("自动 Tick", "每帧 Update");
             DrawMetric("手动 Tick 步长", FormatValue(GetTickStep()) + " 秒");
             DrawMetric("已运行时间", FormatValue(elapsedDuelTime) + " 秒");
             DrawMetric("帧 Tick 次数", frameTickCount.ToString());
+            GUILayout.Label("设计约定：默认示例避开跨单位 SourceAttribute + DynamicWhileActive 互相光环循环。");
             GUILayout.EndVertical();
         }
 
@@ -390,24 +523,25 @@ namespace PFGAS.Runtime.Tests
                     return;
                 }
 
-                DrawMetric("HP", FormatValue(unit.Attributes.GetCurrentValue(PFAttributeId.HP)));
-                DrawMetric("MaxHP", FormatValue(unit.Attributes.GetCurrentValue(PFAttributeId.MaxHP)));
+                DrawMetric("HP Base/Current", FormatValue(unit.Attributes.GetBaseValue(PFAttributeId.HP)) + " / " + FormatValue(unit.Attributes.GetCurrentValue(PFAttributeId.HP)));
+                DrawMetric("MaxHP Base/Current", FormatValue(unit.Attributes.GetBaseValue(PFAttributeId.MaxHP)) + " / " + FormatValue(unit.Attributes.GetCurrentValue(PFAttributeId.MaxHP)));
                 DrawMetric("激活效果", unit.Effects.ActiveEffectCount.ToString());
+                DrawMetric("效果详情", FormatActiveEffects(unit));
 
                 if (!TagHelper.IsRegistered)
                 {
-                    GUILayout.Label("等待 GameApp 注册 PFGAS Tag 后显示 Tag 详情。");
+                    GUILayout.Label("等待 Tag 注册后显示 Tag 详情。");
                     return;
                 }
 
                 DrawMetric("松散 Tag", FormatTags(unit.Tags.GetLooseTagsSnapshot()));
                 DrawMetric("来源 Tag", FormatTags(unit.Tags.GetSourceTagsSnapshot()));
-                DrawMetric("全部 Tags", FormatTags(unit.Tags.GetTagsSnapshot()));
+                DrawMetric("全部 Tag", FormatTags(unit.Tags.GetTagsSnapshot()));
                 DrawMetric("拥有 State", FormatBool(unit.Tags.HasTag(PFGASTestTagIds.State)));
-                DrawMetric("拥有增益", FormatBool(unit.Tags.HasTag(PFGASTestTagIds.State_Buff)));
-                DrawMetric("拥有减益", FormatBool(unit.Tags.HasTag(PFGASTestTagIds.State_DeBuff)));
-                DrawMetric("精确拥有 Fire", FormatBool(unit.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Fire)));
-                DrawMetric("精确拥有 Ice", FormatBool(unit.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice)));
+                DrawMetric("拥有 Buff", FormatBool(unit.Tags.HasTag(PFGASTestTagIds.State_Buff)));
+                DrawMetric("拥有 Debuff", FormatBool(unit.Tags.HasTag(PFGASTestTagIds.State_DeBuff)));
+                DrawMetric("精确 Fire", FormatBool(unit.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Fire)));
+                DrawMetric("精确 Ice", FormatBool(unit.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice)));
                 DrawMetric("生命周期事件", counters.EventCount.ToString());
             }
             catch (Exception ex)
@@ -427,19 +561,19 @@ namespace PFGAS.Runtime.Tests
 
             if (!TagHelper.IsRegistered)
             {
-                GUILayout.Label("PFGAS Tag 尚未注册，请先通过 GameApp 启动。");
+                GUILayout.Label("PFGAS Tag 尚未注册。");
                 GUILayout.EndVertical();
                 return;
             }
 
-            DrawMetric("灼烧属于减益", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_DeBuff_Fire, PFGASTestTagIds.State_DeBuff)));
-            DrawMetric("灼烧属于 State", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_DeBuff_Fire, PFGASTestTagIds.State)));
+            DrawMetric("Fire 属于 Debuff", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_DeBuff_Fire, PFGASTestTagIds.State_DeBuff)));
+            DrawMetric("Fire 属于 State", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_DeBuff_Fire, PFGASTestTagIds.State)));
             DrawMetric("Life.HP 属于 Life", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.Life_HP, PFGASTestTagIds.Life)));
-            DrawMetric("增益属于减益", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_Buff, PFGASTestTagIds.State_DeBuff)));
+            DrawMetric("Buff 属于 Debuff", FormatBool(TagHelper.IsOrUnder(PFGASTestTagIds.State_Buff, PFGASTestTagIds.State_DeBuff)));
             DrawMetric("已知 State", FormatTag(PFGASTestTagIds.State));
-            DrawMetric("已知增益", FormatTag(PFGASTestTagIds.State_Buff));
-            DrawMetric("已知灼烧", FormatTag(PFGASTestTagIds.State_DeBuff_Fire));
-            DrawMetric("已知冰冻", FormatTag(PFGASTestTagIds.State_DeBuff_Ice));
+            DrawMetric("已知 Buff", FormatTag(PFGASTestTagIds.State_Buff));
+            DrawMetric("已知 Fire", FormatTag(PFGASTestTagIds.State_DeBuff_Fire));
+            DrawMetric("已知 Ice", FormatTag(PFGASTestTagIds.State_DeBuff_Ice));
             GUILayout.EndVertical();
         }
 
@@ -447,29 +581,52 @@ namespace PFGAS.Runtime.Tests
         {
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label("操作");
-
-            DrawMetric("自动 Tick", "每帧 Update");
-            DrawMetric("手动 Tick 步长", FormatValue(GetTickStep()) + " 秒");
-            DrawButtonRow(("重置", ResetDuel), ("运行示例", RunAll));
+            DrawButtonRow(("重置", ResetDuel), ("运行全部示例", RunAll));
             DrawButtonRow(("手动 Tick +" + FormatValue(GetTickStep()) + " 秒", TickDuel));
             DrawButtonRow(("清理效果", RemoveAllEffects), ("清空 Tag", ClearAllTags));
+            DrawButtonRow(("恢复基础属性", RestoreBaseAttributes));
 
             GUILayout.Space(6f);
-            GUILayout.Label("效果操作（会改变 HP / 属性 / Tag）");
-            DrawButtonRow(("A 对 B 施加灼烧", CastBurningAToB), ("B 对 A 施加灼烧", CastBurningBToA));
-            DrawButtonRow(("A 对 B 施加毒", CastPoisonAToB), ("B 对 A 施加毒", CastPoisonBToA));
-            DrawButtonRow(("A 给 B 光环", CastLeadershipAuraAToB), ("B 给 A 光环", CastLeadershipAuraBToA));
-            DrawButtonRow(("A 给自己护盾", CastShieldA), ("B 给自己护盾", CastShieldB));
-            DrawButtonRow(("A 监听", ActivateLifecycleA), ("B 监听", ActivateLifecycleB));
-            DrawButtonRow(("A 命中 B", PublishHitAToB), ("B 命中 A", PublishHitBToA));
+            GUILayout.Label("瞬时效果");
+            DrawButtonRow(("A 打 B", StrikeAToB), ("B 打 A", StrikeBToA));
+            DrawButtonRow(("治疗 A", HealA), ("治疗 B", HealB));
+            DrawButtonRow(("A HP -20", LowerAHP), ("B HP -20", LowerBHP));
+
+            GUILayout.Space(6f);
+            GUILayout.Label("周期效果");
+            DrawButtonRow(("A 快照灼烧 B", CastBurningAToB), ("B 快照灼烧 A", CastBurningBToA));
+            DrawButtonRow(("A 动态灼烧 B", CastScalingBurningAToB), ("B 动态灼烧 A", CastScalingBurningBToA));
+            DrawButtonRow(("A 中毒 B", CastPoisonAToB), ("B 中毒 A", CastPoisonBToA));
+            DrawButtonRow(("A 流血 B", CastBleedAToB), ("B 流血 A", CastBleedBToA));
+            DrawButtonRow(("再生 A", CastRegenA), ("再生 B", CastRegenB));
+
+            GUILayout.Space(6f);
+            GUILayout.Label("持续效果");
+            DrawButtonRow(("A 快照光环 B", CastSnapshotAuraAToB), ("B 快照光环 A", CastSnapshotAuraBToA));
+            DrawButtonRow(("护盾 A", CastShieldA), ("护盾 B", CastShieldB));
+            DrawButtonRow(("弱强化 A", CastWeakFortifyA), ("强强化 A", CastStrongFortifyA));
+            DrawButtonRow(("弱强化 B", CastWeakFortifyB), ("强强化 B", CastStrongFortifyB));
             DrawButtonRow(("A MaxHP +50", IncreaseAMaxHp), ("B MaxHP +50", IncreaseBMaxHp));
 
+            if (showRiskyDynamicExamples)
+            {
+                GUILayout.Space(6f);
+                GUILayout.Label("危险动态来源光环");
+                GUILayout.Label("只建议单向使用；双向只用于刻意观察反馈循环。");
+                DrawButtonRow(("A 动态光环 B", CastRiskyDynamicAuraAToB), ("B 动态光环 A", CastRiskyDynamicAuraBToA));
+            }
+
             GUILayout.Space(6f);
-            GUILayout.Label("手动 Tag（只改 Tag，不触发伤害）");
-            DrawButtonRow(("A +灼烧 Tag", AddFireTagToA), ("A -灼烧 Tag", RemoveFireTagFromA));
-            DrawButtonRow(("B +冰冻 Tag", AddIceTagToB), ("B -冰冻 Tag", RemoveIceTagFromB));
-            DrawButtonRow(("A +增益 Tag", AddBuffTagToA), ("A -增益 Tag", RemoveBuffTagFromA));
-            DrawButtonRow(("B +中毒 Tag", AddPoisonTagToB), ("B -中毒 Tag", RemovePoisonTagFromB));
+            GUILayout.Label("生命周期事件");
+            DrawButtonRow(("A 监听", ActivateLifecycleA), ("B 监听", ActivateLifecycleB));
+            DrawButtonRow(("A 命中事件 B", PublishHitAToB), ("B 命中事件 A", PublishHitBToA));
+
+            GUILayout.Space(6f);
+            GUILayout.Label("手动 Tag");
+            DrawButtonRow(("A +灼烧", AddFireTagToA), ("A -灼烧", RemoveFireTagFromA));
+            DrawButtonRow(("B +冰冻", AddIceTagToB), ("B -冰冻", RemoveIceTagFromB));
+            DrawButtonRow(("A +增益", AddBuffTagToA), ("A -增益", RemoveBuffTagFromA));
+            DrawButtonRow(("B +中毒", AddDuTagToB), ("B -中毒", RemoveDuTagFromB));
 
             GUILayout.EndVertical();
         }
@@ -500,7 +657,23 @@ namespace PFGAS.Runtime.Tests
                 return;
             }
 
-            AppendLog(description + " 成功，句柄=" + result.Value.Handle.Value);
+            if (target.Effects.TryGetActiveEffect(result.Value.Handle, out var activeEffect))
+            {
+                AppendLog(
+                    description +
+                    " -> 激活 " +
+                    activeEffect.Effect.EffectId +
+                    " 句柄=" + result.Value.Handle.Value +
+                    " 层数=" + activeEffect.StackCount +
+                    " 剩余=" + FormatRemainingTime(activeEffect));
+                return;
+            }
+
+            AppendLog(
+                description +
+                " -> 瞬时变更=" + result.Value.AttributeChanges.Count +
+                "，目标 HP=" + FormatValue(target.Attributes.GetBaseValue(PFAttributeId.HP)) +
+                "/" + FormatValue(target.Attributes.GetCurrentValue(PFAttributeId.HP)));
         }
 
         private void IncreaseMaxHp(CombatUnit unit, string label)
@@ -508,7 +681,21 @@ namespace PFGAS.Runtime.Tests
             EnsureDuel();
             unit.Attributes.AddBaseValue(PFAttributeId.MaxHP, 50f);
             TickDuelInternal(0f, 0f);
-            AppendLog(label + " MaxHP +50，并刷新动态来源修饰器。");
+            AppendLog(label + " MaxHP Base +50，并刷新动态目标/来源修饰器。");
+        }
+
+        private void AddHpBase(CombatUnit unit, string label, float delta)
+        {
+            EnsureDuel();
+            unit.Attributes.AddBaseValue(PFAttributeId.HP, delta);
+            TickDuelInternal(0f, 0f);
+            AppendLog(label + " HP Base " + (delta >= 0f ? "+" : string.Empty) + FormatValue(delta) + ".");
+        }
+
+        private static void ResetUnitBaseAttributes(CombatUnit unit)
+        {
+            unit.Attributes.SetBaseValue(PFAttributeId.MaxHP, 100f);
+            unit.Attributes.SetBaseValue(PFAttributeId.HP, 100f);
         }
 
         private void TickDuelInternal(float deltaSeconds, float unscaledDeltaSeconds)
@@ -557,7 +744,7 @@ namespace PFGAS.Runtime.Tests
             if (!TagHelper.IsRegistered)
             {
                 throw new InvalidOperationException(
-                    "PFGAS Tag 尚未注册。请先让 GameApp 初始化 PFGASTagGenerated.RegisterFromLubanTable()，再使用 PFGASSampleScenarioRunner。");
+                    "PFGAS Tag 尚未注册。请先初始化 PFGASTagGenerated.RegisterFromLubanTable()，再使用 PFGASSampleScenarioRunner。");
             }
         }
 
@@ -596,7 +783,7 @@ namespace PFGAS.Runtime.Tests
         private void AppendLog(string message)
         {
             lastResults.Add(message);
-            if (lastResults.Count > 14)
+            if (lastResults.Count > 18)
             {
                 lastResults.RemoveAt(0);
             }
@@ -634,7 +821,7 @@ namespace PFGAS.Runtime.Tests
         private static void DrawMetric(string label, string value)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(160f));
+            GUILayout.Label(label, GUILayout.Width(150f));
             GUILayout.Label(value);
             GUILayout.EndHorizontal();
         }
@@ -653,6 +840,38 @@ namespace PFGAS.Runtime.Tests
             }
 
             return string.Join(", ", names);
+        }
+
+        private string FormatActiveEffects(CombatUnit unit)
+        {
+            activeEffectDetails.Clear();
+            unit.Effects.GetActiveEffects(activeEffectDetails);
+            if (activeEffectDetails.Count == 0)
+            {
+                return "无";
+            }
+
+            var parts = new string[activeEffectDetails.Count];
+            for (var i = 0; i < activeEffectDetails.Count; i++)
+            {
+                var activeEffect = activeEffectDetails[i];
+                parts[i] =
+                    activeEffect.Effect.EffectId +
+                    " x" +
+                    activeEffect.StackCount +
+                    " (" +
+                    FormatRemainingTime(activeEffect) +
+                    ")";
+            }
+
+            return string.Join(", ", parts);
+        }
+
+        private static string FormatRemainingTime(ActiveGameplayEffect activeEffect)
+        {
+            return activeEffect.IsInfinite
+                ? "无限"
+                : FormatValue(activeEffect.RemainingTime) + " 秒";
         }
 
         private static string FormatTag(PFTagId tagId)
@@ -679,3 +898,4 @@ namespace PFGAS.Runtime.Tests
         }
     }
 }
+

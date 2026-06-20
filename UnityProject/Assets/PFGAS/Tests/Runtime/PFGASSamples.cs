@@ -44,13 +44,59 @@ namespace PFGAS.Runtime.Tests
         }
     }
 
+    internal static class PFGASTestTagIds
+    {
+        public static readonly PFTagId State = new PFTagId(0);
+        public static readonly PFTagId State_Buff = new PFTagId(1);
+        public static readonly PFTagId State_DeBuff = new PFTagId(2);
+        public static readonly PFTagId Life = new PFTagId(3);
+        public static readonly PFTagId Life_HP = new PFTagId(4);
+        public static readonly PFTagId State_DeBuff_Du = new PFTagId(5);
+        public static readonly PFTagId State_DeBuff_Fire = new PFTagId(6);
+        public static readonly PFTagId State_DeBuff_Ice = new PFTagId(7);
+        public static readonly PFTagId Life_MP = new PFTagId(8);
+    }
+
     public static class PFGASSampleEffects
     {
-        // 灼烧：Duration + Period，每次周期重新读取 source MaxHP，并给目标挂上火焰 Tag。
+        public const string LifecycleEventName = "PFGAS.Sample.Hit";
+
+        public static GameplayEffect CreateInstantDamage(float amount = 25f)
+        {
+            return new GameplayEffect(
+                "Sample.InstantDamage",
+                GameplayEffectLifetime.Instant,
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Instant,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(-Mathf.Abs(amount)),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                });
+        }
+
+        public static GameplayEffect CreateInstantHeal(float amount = 20f)
+        {
+            return new GameplayEffect(
+                "Sample.InstantHeal",
+                GameplayEffectLifetime.Instant,
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Instant,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(Mathf.Abs(amount)),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                });
+        }
+
         public static GameplayEffect CreateBurningDot()
         {
             return new GameplayEffect(
-                "Sample_BurningDot",
+                "Sample.BurningDot",
                 GameplayEffectLifetime.ForDuration(3f, period: 1f),
                 new[]
                 {
@@ -58,19 +104,98 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectModifierPhase.Periodic,
                         PFAttributeId.HP,
                         GEOperation.Add,
-                        GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, -0.1f),
+                        GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, -0.08f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                tags: new GameplayEffectTagRequirements(
+                    blockedTargetTags: new[] { PFGASTestTagIds.State_DeBuff_Ice }),
+                stacking: GameplayEffectStackingPolicy.Refresh(),
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Fire });
+        }
+
+        public static GameplayEffect CreateScalingBurningDot()
+        {
+            return new GameplayEffect(
+                "Sample.ScalingBurningDot",
+                GameplayEffectLifetime.ForDuration(3f, period: 1f),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Periodic,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, -0.06f),
                         GameplayEffectCapturePolicy.ReevaluateOnPeriod),
                 },
                 tags: new GameplayEffectTagRequirements(
                     blockedTargetTags: new[] { PFGASTestTagIds.State_DeBuff_Ice }),
+                stacking: GameplayEffectStackingPolicy.Refresh(),
                 grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Fire });
         }
 
-        // 队长光环：Ongoing modifier 动态读取 source MaxHP，适合一名 source 增益多个目标。
-        public static GameplayEffect CreateLeadershipAura()
+        public static GameplayEffect CreateStackingPoison()
         {
             return new GameplayEffect(
-                "Sample_LeadershipAura",
+                "Sample.Poison",
+                GameplayEffectLifetime.ForDuration(4f, period: 1f),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Periodic,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, -0.04f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply,
+                        scaleByStackCount: true),
+                },
+                stacking: GameplayEffectStackingPolicy.Stack(
+                    5,
+                    GameplayEffectStackingScope.ByTarget,
+                    refreshDurationOnStack: true,
+                    overflowPolicy: GameplayEffectOverflowPolicy.Refresh),
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Du });
+        }
+
+        public static GameplayEffect CreateIndependentBleed()
+        {
+            return new GameplayEffect(
+                "Sample.Bleed",
+                GameplayEffectLifetime.ForDuration(4f, period: 1f),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Periodic,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(-3f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                stacking: GameplayEffectStackingPolicy.Independent(),
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff });
+        }
+
+        public static GameplayEffect CreateSnapshotLeadershipAura()
+        {
+            return new GameplayEffect(
+                "Sample.SnapshotLeadershipAura",
+                GameplayEffectLifetime.Infinite(),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Ongoing,
+                        PFAttributeId.MaxHP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, 0.2f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                stacking: GameplayEffectStackingPolicy.Refresh(),
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
+        }
+
+        public static GameplayEffect CreateRiskyDynamicLeadershipAura()
+        {
+            return new GameplayEffect(
+                "Sample.RiskyDynamicLeadershipAura",
                 GameplayEffectLifetime.Infinite(),
                 new[]
                 {
@@ -81,37 +206,14 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, 0.2f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
+                stacking: GameplayEffectStackingPolicy.Refresh(),
                 grantedTags: new[] { PFGASTestTagIds.State_Buff });
         }
 
-        // 毒层：同一 source/target 叠层到上限，周期伤害按 StackCount 缩放，溢出明确忽略。
-        public static GameplayEffect CreateStackingPoison()
-        {
-            return new GameplayEffect(
-                "Sample_StackingPoison",
-                GameplayEffectLifetime.ForDuration(4f, period: 1f),
-                new[]
-                {
-                    new GameplayEffectModifierSpec(
-                        GameplayEffectModifierPhase.Periodic,
-                        PFAttributeId.HP,
-                        GEOperation.Add,
-                        GameplayEffectMagnitudeSpec.Fixed(-4f),
-                        GameplayEffectCapturePolicy.ReevaluateOnPeriod,
-                        scaleByStackCount: true),
-                },
-                stacking: GameplayEffectStackingPolicy.Stack(
-                    3,
-                    GameplayEffectStackingScope.BySourceAndTarget,
-                    overflowPolicy: GameplayEffectOverflowPolicy.Ignore),
-                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Du });
-        }
-
-        // 生命护盾：target-local magnitude 进入 AttributeGraph，MaxHP 变化会自动重算护盾值。
         public static GameplayEffect CreateTargetLocalShield()
         {
             return new GameplayEffect(
-                "Sample_TargetLocalShield",
+                "Sample.TargetLocalShield",
                 GameplayEffectLifetime.ForDuration(5f),
                 new[]
                 {
@@ -124,13 +226,49 @@ namespace PFGAS.Runtime.Tests
                             0.5f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
+                stacking: GameplayEffectStackingPolicy.Replace(),
                 grantedTags: new[] { PFGASTestTagIds.State_Buff });
         }
 
-        // 生命周期：Execution 记录 apply/remove，Trigger 只在 active 期间订阅 GameplayEventBus。
+        public static GameplayEffect CreateRefreshRegen()
+        {
+            return new GameplayEffect(
+                "Sample.RefreshRegen",
+                GameplayEffectLifetime.ForDuration(5f, period: 1f, executePeriodicOnApply: true),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Periodic,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(6f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                stacking: GameplayEffectStackingPolicy.Refresh(),
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
+        }
+
+        public static GameplayEffect CreateReplaceFortify(float maxHpBonus)
+        {
+            return new GameplayEffect(
+                "Sample.ReplaceFortify",
+                GameplayEffectLifetime.ForDuration(8f),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Ongoing,
+                        PFAttributeId.MaxHP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(maxHpBonus),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                stacking: GameplayEffectStackingPolicy.Replace(),
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
+        }
+
         public static GameplayEffect CreateLifecycleEvent(
             PFGASSampleLifecycleCounters counters,
-            string eventName = PFGASSamples.LifecycleEventName)
+            string eventName = LifecycleEventName)
         {
             return CreateLifecycleEvent(
                 counters,
@@ -138,10 +276,9 @@ namespace PFGAS.Runtime.Tests
                 GameplayEffectLifetime.ForDuration(2f));
         }
 
-        // 场景按钮用的持续监听版本：不会自动过期，方便手动点击命中观察事件计数。
         public static GameplayEffect CreatePersistentLifecycleEvent(
             PFGASSampleLifecycleCounters counters,
-            string eventName = PFGASSamples.LifecycleEventName)
+            string eventName = LifecycleEventName)
         {
             return CreateLifecycleEvent(
                 counters,
@@ -155,7 +292,7 @@ namespace PFGAS.Runtime.Tests
             GameplayEffectLifetime lifetime)
         {
             return new GameplayEffect(
-                "Sample_LifecycleEvent",
+                "Sample.LifecycleEvent",
                 lifetime,
                 grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 executions: new[]
@@ -176,428 +313,253 @@ namespace PFGAS.Runtime.Tests
 
     public static class PFGASSamples
     {
-        public const string LifecycleEventName = "PFGAS.Sample.Hit";
+        public const string LifecycleEventName = PFGASSampleEffects.LifecycleEventName;
 
-        public static BurningDotSampleResult RunBurningDot()
+        public static IReadOnlyList<string> RunAllSampleSummaries()
+        {
+            return new[]
+            {
+                RunInstantDamageAndHeal(),
+                RunBurningDot(),
+                RunScalingBurningDot(),
+                RunStackingPoison(),
+                RunIndependentBleed(),
+                RunSnapshotLeadershipAura(),
+                RunTargetLocalShield(),
+                RunRefreshRegen(),
+                RunReplaceFortify(),
+                RunLifecycleEvent(),
+                RunRiskyDynamicAuraOneWay(),
+            };
+        }
+
+        public static string RunInstantDamageAndHeal()
         {
             using (var factory = new PFGASSampleUnitFactory())
             {
-                var source = factory.CreateUnit("SampleBurningSource");
+                var source = factory.CreateUnit("SampleInstantSource");
+                var target = factory.CreateUnit("SampleInstantTarget");
+
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateInstantDamage(25f), source));
+                var afterDamage = target.Attributes.GetBaseValue(PFAttributeId.HP);
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateInstantHeal(10f), source));
+
+                return "瞬时伤害/治疗：HP 100 -> " + Format(afterDamage) + " -> " +
+                       Format(target.Attributes.GetBaseValue(PFAttributeId.HP)) +
+                       "，激活效果=" + target.Effects.ActiveEffectCount;
+            }
+        }
+
+        public static string RunBurningDot()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleBurningSource", maxHp: 100f);
                 var target = factory.CreateUnit("SampleBurningTarget");
                 var iceTarget = factory.CreateUnit("SampleBurningIceTarget");
-                var burning = PFGASSampleEffects.CreateBurningDot();
 
                 iceTarget.Tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Ice);
-                var blockedApply = iceTarget.Effects.ApplyToSelf(burning, source);
+                var blocked = iceTarget.Effects.ApplyToSelf(PFGASSampleEffects.CreateBurningDot(), source);
 
-                var apply = RequireSuccess(
-                    target.Effects.ApplyToSelf(burning, source),
-                    "Burning sample apply failed.");
-
-                var hpAfterApply = target.Attributes.GetBaseValue(PFAttributeId.HP);
-                var fireTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire);
-
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateBurningDot(), source));
                 target.Effects.Tick(1f);
-                var hpAfterFirstPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
-
+                var firstTick = target.Attributes.GetBaseValue(PFAttributeId.HP);
                 source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
                 target.Effects.Tick(1f);
-                var hpAfterSecondPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
-
+                var secondTick = target.Attributes.GetBaseValue(PFAttributeId.HP);
                 target.Effects.Tick(1f);
-                return new BurningDotSampleResult(
-                    blockedApply.Failed,
-                    blockedApply.Failure.Reason,
-                    iceTarget.Attributes.GetBaseValue(PFAttributeId.HP),
-                    hpAfterApply,
-                    hpAfterFirstPeriod,
-                    hpAfterSecondPeriod,
-                    target.Attributes.GetBaseValue(PFAttributeId.HP),
-                    fireTagWhileActive,
-                    target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire),
-                    target.Effects.ActiveEffectCount,
-                    apply.Handle.IsValid);
+
+                return "快照灼烧 DoT：冰冻阻挡=" + blocked.Failed +
+                       "，周期后 HP=" + Format(firstTick) + "/" + Format(secondTick) +
+                       "，已过期=" + (target.Effects.ActiveEffectCount == 0);
             }
         }
 
-        public static LeadershipAuraSampleResult RunLeadershipAura()
+        public static string RunScalingBurningDot()
         {
             using (var factory = new PFGASSampleUnitFactory())
             {
-                var source = factory.CreateUnit("SampleLeader");
-                var frontTarget = factory.CreateUnit("SampleAuraFrontTarget");
-                var backTarget = factory.CreateUnit("SampleAuraBackTarget");
-                var aura = PFGASSampleEffects.CreateLeadershipAura();
+                var source = factory.CreateUnit("SampleScalingBurningSource", maxHp: 100f);
+                var target = factory.CreateUnit("SampleScalingBurningTarget");
 
-                var frontApply = RequireSuccess(
-                    frontTarget.Effects.ApplyToSelf(aura, source),
-                    "Leadership aura front apply failed.");
-                var backApply = RequireSuccess(
-                    backTarget.Effects.ApplyToSelf(aura, source),
-                    "Leadership aura back apply failed.");
-
-                var frontInitialMaxHp = frontTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-                var backInitialMaxHp = backTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateScalingBurningDot(), source));
+                target.Effects.Tick(1f);
+                var firstTick = target.Attributes.GetBaseValue(PFAttributeId.HP);
                 source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
-                var frontBeforeFlush = frontTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-                frontTarget.Effects.Tick(0f);
-                backTarget.Effects.Tick(0f);
-                var frontAfterFlush = frontTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-                var backAfterFlush = backTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
+                target.Effects.Tick(1f);
+                var secondTick = target.Attributes.GetBaseValue(PFAttributeId.HP);
 
-                RequireSuccess(
-                    frontTarget.Effects.Remove(frontApply.Handle),
-                    "Leadership aura front remove failed.");
-                source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 300f);
-                frontTarget.Effects.Tick(0f);
-                backTarget.Effects.Tick(0f);
-
-                var frontAfterRemoveAndSourceChange =
-                    frontTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-                var backWhileStillActive =
-                    backTarget.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
-
-                RequireSuccess(
-                    backTarget.Effects.Remove(backApply.Handle),
-                    "Leadership aura back remove failed.");
-
-                return new LeadershipAuraSampleResult(
-                    frontInitialMaxHp,
-                    backInitialMaxHp,
-                    frontBeforeFlush,
-                    frontAfterFlush,
-                    backAfterFlush,
-                    frontAfterRemoveAndSourceChange,
-                    backWhileStillActive,
-                    frontTarget.Effects.ActiveEffectCount,
-                    backTarget.Effects.ActiveEffectCount,
-                    frontTarget.Tags.HasTag(PFGASTestTagIds.State_Buff),
-                    backTarget.Tags.HasTag(PFGASTestTagIds.State_Buff));
+                return "动态周期 DoT：来源 MaxHP 改变后，周期 HP=" +
+                       Format(firstTick) + "/" + Format(secondTick);
             }
         }
 
-        public static StackingPoisonSampleResult RunStackingPoison()
+        public static string RunStackingPoison()
         {
             using (var factory = new PFGASSampleUnitFactory())
             {
-                var sourceA = factory.CreateUnit("SamplePoisonSourceA");
-                var sourceB = factory.CreateUnit("SamplePoisonSourceB");
+                var sourceA = factory.CreateUnit("SamplePoisonSourceA", maxHp: 100f);
+                var sourceB = factory.CreateUnit("SamplePoisonSourceB", maxHp: 200f);
                 var target = factory.CreateUnit("SamplePoisonTarget");
                 var poison = PFGASSampleEffects.CreateStackingPoison();
 
-                var firstApply = RequireSuccess(
-                    target.Effects.ApplyToSelf(poison, sourceA),
-                    "Poison first stack failed.");
-                RequireSuccess(target.Effects.ApplyToSelf(poison, sourceA), "Poison second stack failed.");
-                RequireSuccess(target.Effects.ApplyToSelf(poison, sourceA), "Poison third stack failed.");
-                var overflowApply = RequireSuccess(
-                    target.Effects.ApplyToSelf(poison, sourceA),
-                    "Poison overflow apply failed.");
-
-                target.Effects.TryGetActiveEffect(firstApply.Handle, out var sourceAActive);
-                var sourceAStackCount = sourceAActive != null ? sourceAActive.StackCount : 0;
-                var overflowReturnedExisting = overflowApply.Handle.Equals(firstApply.Handle);
+                var firstApply = RequireSuccess(target.Effects.ApplyToSelf(poison, sourceA));
+                RequireSuccess(target.Effects.ApplyToSelf(poison, sourceB));
+                RequireSuccess(target.Effects.ApplyToSelf(poison, sourceA));
+                target.Effects.TryGetActiveEffect(firstApply.Handle, out var active);
 
                 target.Effects.Tick(1f);
-                var hpAfterSourceAFirstPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
+                var afterTick = target.Attributes.GetBaseValue(PFAttributeId.HP);
 
-                var sourceBApply = RequireSuccess(
-                    target.Effects.ApplyToSelf(poison, sourceB),
-                    "Poison source B apply failed.");
-                target.Effects.TryGetActiveEffect(sourceBApply.Handle, out var sourceBActive);
-                var sourceBStackCount = sourceBActive != null ? sourceBActive.StackCount : 0;
-                var activeEffectsAfterSecondSource = target.Effects.ActiveEffectCount;
-
-                target.Effects.Tick(1f);
-                var hpAfterBothSourcesPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
-                var poisonTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Du);
-
-                target.Effects.RemoveAll();
-
-                return new StackingPoisonSampleResult(
-                    sourceAStackCount,
-                    sourceBStackCount,
-                    activeEffectsAfterSecondSource,
-                    overflowReturnedExisting,
-                    hpAfterSourceAFirstPeriod,
-                    hpAfterBothSourcesPeriod,
-                    poisonTagWhileActive,
-                    target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Du),
-                    target.Effects.ActiveEffectCount);
+                return "中毒按 EffectId/目标叠层：激活效果=" + target.Effects.ActiveEffectCount +
+                       "，层数=" + (active != null ? active.StackCount : 0) +
+                       "，HP=" + Format(afterTick);
             }
         }
 
-        public static TargetLocalShieldSampleResult RunTargetLocalShield()
+        public static string RunIndependentBleed()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleBleedSource");
+                var target = factory.CreateUnit("SampleBleedTarget");
+
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateIndependentBleed(), source));
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateIndependentBleed(), source));
+                target.Effects.Tick(1f);
+
+                return "独立流血：激活效果=" + target.Effects.ActiveEffectCount +
+                       "，HP=" + Format(target.Attributes.GetBaseValue(PFAttributeId.HP));
+            }
+        }
+
+        public static string RunSnapshotLeadershipAura()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleAuraSource", maxHp: 100f);
+                var target = factory.CreateUnit("SampleAuraTarget");
+
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateSnapshotLeadershipAura(), source));
+                var beforeSourceChange = target.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
+                source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 300f);
+                target.Effects.Tick(0f);
+
+                return "快照光环：目标 MaxHP 保持 " +
+                       Format(beforeSourceChange) + " -> " +
+                       Format(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP));
+            }
+        }
+
+        public static string RunTargetLocalShield()
         {
             using (var factory = new PFGASSampleUnitFactory())
             {
                 var source = factory.CreateUnit("SampleShieldSource");
                 var target = factory.CreateUnit("SampleShieldTarget", hp: 0f, maxHp: 100f);
-                var shield = PFGASSampleEffects.CreateTargetLocalShield();
 
-                var apply = RequireSuccess(
-                    target.Effects.ApplyToSelf(shield, source),
-                    "Target local shield apply failed.");
-
-                var hpAfterApply = target.Attributes.GetCurrentValue(PFAttributeId.HP);
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateTargetLocalShield(), source));
+                var afterApply = target.Attributes.GetCurrentValue(PFAttributeId.HP);
                 target.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
-                var hpAfterMaxHpChange = target.Attributes.GetCurrentValue(PFAttributeId.HP);
+                var afterMaxHpChange = target.Attributes.GetCurrentValue(PFAttributeId.HP);
 
-                target.Effects.Tick(5f);
-
-                return new TargetLocalShieldSampleResult(
-                    hpAfterApply,
-                    hpAfterMaxHpChange,
-                    target.Attributes.GetCurrentValue(PFAttributeId.HP),
-                    target.Effects.ActiveEffectCount,
-                    target.Tags.HasTag(PFGASTestTagIds.State_Buff),
-                    apply.Handle.IsValid);
+                return "目标本地护盾：HP 当前值 " +
+                       Format(afterApply) + " -> " + Format(afterMaxHpChange);
             }
         }
 
-        public static LifecycleEventSampleResult RunLifecycleEvent()
+        public static string RunRefreshRegen()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleRegenSource");
+                var target = factory.CreateUnit("SampleRegenTarget", hp: 40f, maxHp: 100f);
+                var regen = PFGASSampleEffects.CreateRefreshRegen();
+
+                var firstApply = RequireSuccess(target.Effects.ApplyToSelf(regen, source));
+                target.Effects.Tick(2f);
+                var hpBeforeRefresh = target.Attributes.GetBaseValue(PFAttributeId.HP);
+                RequireSuccess(target.Effects.ApplyToSelf(regen, source));
+                target.Effects.TryGetActiveEffect(firstApply.Handle, out var active);
+
+                return "刷新型再生：HP=" + Format(hpBeforeRefresh) +
+                       "，激活效果=" + target.Effects.ActiveEffectCount +
+                       "，刷新后剩余时间=" + Format(active != null ? active.RemainingTime : 0f);
+            }
+        }
+
+        public static string RunReplaceFortify()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleFortifySource");
+                var target = factory.CreateUnit("SampleFortifyTarget");
+
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateReplaceFortify(15f), source));
+                var weakMaxHp = target.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateReplaceFortify(40f), source));
+
+                return "替换型强化：MaxHP " + Format(weakMaxHp) +
+                       " -> " + Format(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP)) +
+                       "，激活效果=" + target.Effects.ActiveEffectCount;
+            }
+        }
+
+        public static string RunLifecycleEvent()
         {
             using (var factory = new PFGASSampleUnitFactory())
             {
                 var source = factory.CreateUnit("SampleLifecycleSource");
                 var target = factory.CreateUnit("SampleLifecycleTarget");
                 var counters = new PFGASSampleLifecycleCounters();
-                var effect = PFGASSampleEffects.CreateLifecycleEvent(counters);
 
-                var apply = RequireSuccess(
-                    target.Effects.ApplyToSelf(effect, source),
-                    "Lifecycle event apply failed.");
-
+                RequireSuccess(target.Effects.ApplyToSelf(
+                    PFGASSampleEffects.CreateLifecycleEvent(counters),
+                    source));
                 target.GameplayEventBus.Publish(LifecycleEventName, source, target);
-                var eventCountWhileActive = counters.EventCount;
-                var hasEventKeyWhileActive = target.GameplayEventBus.HasEvent(LifecycleEventName);
-                var hasGrantedTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_Buff);
-
                 target.Effects.Tick(2f);
-                var eventCountBeforeCleanupPublish = counters.EventCount;
                 target.GameplayEventBus.Publish(LifecycleEventName, source, target);
 
-                return new LifecycleEventSampleResult(
-                    counters.ApplyCount,
-                    counters.RemoveCount,
-                    eventCountWhileActive,
-                    counters.EventCount,
-                    counters.DeactivateCount,
-                    hasEventKeyWhileActive,
-                    counters.EventCount == eventCountBeforeCleanupPublish,
-                    hasGrantedTagWhileActive,
-                    target.Tags.HasTag(PFGASTestTagIds.State_Buff),
-                    target.Effects.ActiveEffectCount,
-                    apply.Handle.IsValid);
+                return "生命周期：应用/移除/事件/停用=" +
+                       counters.ApplyCount + "/" + counters.RemoveCount + "/" +
+                       counters.EventCount + "/" + counters.DeactivateCount;
+            }
+        }
+
+        public static string RunRiskyDynamicAuraOneWay()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("SampleRiskyAuraSource", maxHp: 100f);
+                var target = factory.CreateUnit("SampleRiskyAuraTarget");
+
+                RequireSuccess(target.Effects.ApplyToSelf(PFGASSampleEffects.CreateRiskyDynamicLeadershipAura(), source));
+                var first = target.Attributes.GetCurrentValue(PFAttributeId.MaxHP);
+                source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
+                target.Effects.Tick(0f);
+
+                return "危险动态光环单向示例：MaxHP " +
+                       Format(first) + " -> " +
+                       Format(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP)) +
+                       "（不要配置成双向来源循环）";
             }
         }
 
         private static GameplayEffectApplyResult RequireSuccess(
-            GASResult<GameplayEffectApplyResult> result,
-            string message)
+            GASResult<GameplayEffectApplyResult> result)
         {
             if (result.Failed)
             {
-                throw new InvalidOperationException(message + " " + result.Failure);
+                throw new InvalidOperationException(result.Failure.ToString());
             }
 
             return result.Value;
         }
 
-        private static void RequireSuccess(GASResult result, string message)
+        private static string Format(float value)
         {
-            if (result.Failed)
-            {
-                throw new InvalidOperationException(message + " " + result.Failure);
-            }
+            return value.ToString("0.##");
         }
-    }
-
-
-
-    public readonly struct BurningDotSampleResult
-    {
-        public BurningDotSampleResult(
-            bool iceTargetBlocked,
-            string blockedFailureReason,
-            float iceTargetHp,
-            float hpAfterApply,
-            float hpAfterFirstPeriod,
-            float hpAfterSecondPeriod,
-            float hpAfterExpiry,
-            bool fireTagWhileActive,
-            bool fireTagAfterExpiry,
-            int activeEffectCountAfterExpiry,
-            bool activeHandleCreated)
-        {
-            IceTargetBlocked = iceTargetBlocked;
-            BlockedFailureReason = blockedFailureReason;
-            IceTargetHp = iceTargetHp;
-            HpAfterApply = hpAfterApply;
-            HpAfterFirstPeriod = hpAfterFirstPeriod;
-            HpAfterSecondPeriod = hpAfterSecondPeriod;
-            HpAfterExpiry = hpAfterExpiry;
-            FireTagWhileActive = fireTagWhileActive;
-            FireTagAfterExpiry = fireTagAfterExpiry;
-            ActiveEffectCountAfterExpiry = activeEffectCountAfterExpiry;
-            ActiveHandleCreated = activeHandleCreated;
-        }
-
-        public bool IceTargetBlocked { get; }
-        public string BlockedFailureReason { get; }
-        public float IceTargetHp { get; }
-        public float HpAfterApply { get; }
-        public float HpAfterFirstPeriod { get; }
-        public float HpAfterSecondPeriod { get; }
-        public float HpAfterExpiry { get; }
-        public bool FireTagWhileActive { get; }
-        public bool FireTagAfterExpiry { get; }
-        public int ActiveEffectCountAfterExpiry { get; }
-        public bool ActiveHandleCreated { get; }
-    }
-
-    public readonly struct LeadershipAuraSampleResult
-    {
-        public LeadershipAuraSampleResult(
-            float frontInitialMaxHp,
-            float backInitialMaxHp,
-            float frontBeforeSourceFlush,
-            float frontAfterSourceFlush,
-            float backAfterSourceFlush,
-            float frontAfterRemoveAndSourceChange,
-            float backWhileStillActive,
-            int frontActiveEffectCountAfterCleanup,
-            int backActiveEffectCountAfterCleanup,
-            bool frontBuffTagAfterCleanup,
-            bool backBuffTagAfterCleanup)
-        {
-            FrontInitialMaxHp = frontInitialMaxHp;
-            BackInitialMaxHp = backInitialMaxHp;
-            FrontBeforeSourceFlush = frontBeforeSourceFlush;
-            FrontAfterSourceFlush = frontAfterSourceFlush;
-            BackAfterSourceFlush = backAfterSourceFlush;
-            FrontAfterRemoveAndSourceChange = frontAfterRemoveAndSourceChange;
-            BackWhileStillActive = backWhileStillActive;
-            FrontActiveEffectCountAfterCleanup = frontActiveEffectCountAfterCleanup;
-            BackActiveEffectCountAfterCleanup = backActiveEffectCountAfterCleanup;
-            FrontBuffTagAfterCleanup = frontBuffTagAfterCleanup;
-            BackBuffTagAfterCleanup = backBuffTagAfterCleanup;
-        }
-
-        public float FrontInitialMaxHp { get; }
-        public float BackInitialMaxHp { get; }
-        public float FrontBeforeSourceFlush { get; }
-        public float FrontAfterSourceFlush { get; }
-        public float BackAfterSourceFlush { get; }
-        public float FrontAfterRemoveAndSourceChange { get; }
-        public float BackWhileStillActive { get; }
-        public int FrontActiveEffectCountAfterCleanup { get; }
-        public int BackActiveEffectCountAfterCleanup { get; }
-        public bool FrontBuffTagAfterCleanup { get; }
-        public bool BackBuffTagAfterCleanup { get; }
-    }
-
-    public readonly struct StackingPoisonSampleResult
-    {
-        public StackingPoisonSampleResult(
-            int sourceAStackCount,
-            int sourceBStackCount,
-            int activeEffectsAfterSecondSource,
-            bool overflowReturnedExisting,
-            float hpAfterSourceAFirstPeriod,
-            float hpAfterBothSourcesPeriod,
-            bool poisonTagWhileActive,
-            bool poisonTagAfterCleanup,
-            int activeEffectCountAfterCleanup)
-        {
-            SourceAStackCount = sourceAStackCount;
-            SourceBStackCount = sourceBStackCount;
-            ActiveEffectsAfterSecondSource = activeEffectsAfterSecondSource;
-            OverflowReturnedExisting = overflowReturnedExisting;
-            HpAfterSourceAFirstPeriod = hpAfterSourceAFirstPeriod;
-            HpAfterBothSourcesPeriod = hpAfterBothSourcesPeriod;
-            PoisonTagWhileActive = poisonTagWhileActive;
-            PoisonTagAfterCleanup = poisonTagAfterCleanup;
-            ActiveEffectCountAfterCleanup = activeEffectCountAfterCleanup;
-        }
-
-        public int SourceAStackCount { get; }
-        public int SourceBStackCount { get; }
-        public int ActiveEffectsAfterSecondSource { get; }
-        public bool OverflowReturnedExisting { get; }
-        public float HpAfterSourceAFirstPeriod { get; }
-        public float HpAfterBothSourcesPeriod { get; }
-        public bool PoisonTagWhileActive { get; }
-        public bool PoisonTagAfterCleanup { get; }
-        public int ActiveEffectCountAfterCleanup { get; }
-    }
-
-    public readonly struct TargetLocalShieldSampleResult
-    {
-        public TargetLocalShieldSampleResult(
-            float hpAfterApply,
-            float hpAfterMaxHpChange,
-            float hpAfterExpiry,
-            int activeEffectCountAfterExpiry,
-            bool buffTagAfterExpiry,
-            bool activeHandleCreated)
-        {
-            HpAfterApply = hpAfterApply;
-            HpAfterMaxHpChange = hpAfterMaxHpChange;
-            HpAfterExpiry = hpAfterExpiry;
-            ActiveEffectCountAfterExpiry = activeEffectCountAfterExpiry;
-            BuffTagAfterExpiry = buffTagAfterExpiry;
-            ActiveHandleCreated = activeHandleCreated;
-        }
-
-        public float HpAfterApply { get; }
-        public float HpAfterMaxHpChange { get; }
-        public float HpAfterExpiry { get; }
-        public int ActiveEffectCountAfterExpiry { get; }
-        public bool BuffTagAfterExpiry { get; }
-        public bool ActiveHandleCreated { get; }
-    }
-
-    public readonly struct LifecycleEventSampleResult
-    {
-        public LifecycleEventSampleResult(
-            int applyCount,
-            int removeCount,
-            int eventCountWhileActive,
-            int eventCountAfterCleanup,
-            int deactivateCount,
-            bool hasEventKeyWhileActive,
-            bool eventIgnoredAfterCleanup,
-            bool buffTagWhileActive,
-            bool buffTagAfterCleanup,
-            int activeEffectCountAfterCleanup,
-            bool activeHandleCreated)
-        {
-            ApplyCount = applyCount;
-            RemoveCount = removeCount;
-            EventCountWhileActive = eventCountWhileActive;
-            EventCountAfterCleanup = eventCountAfterCleanup;
-            DeactivateCount = deactivateCount;
-            HasEventKeyWhileActive = hasEventKeyWhileActive;
-            EventIgnoredAfterCleanup = eventIgnoredAfterCleanup;
-            BuffTagWhileActive = buffTagWhileActive;
-            BuffTagAfterCleanup = buffTagAfterCleanup;
-            ActiveEffectCountAfterCleanup = activeEffectCountAfterCleanup;
-            ActiveHandleCreated = activeHandleCreated;
-        }
-
-        public int ApplyCount { get; }
-        public int RemoveCount { get; }
-        public int EventCountWhileActive { get; }
-        public int EventCountAfterCleanup { get; }
-        public int DeactivateCount { get; }
-        public bool HasEventKeyWhileActive { get; }
-        public bool EventIgnoredAfterCleanup { get; }
-        public bool BuffTagWhileActive { get; }
-        public bool BuffTagAfterCleanup { get; }
-        public int ActiveEffectCountAfterCleanup { get; }
-        public bool ActiveHandleCreated { get; }
     }
 
     public sealed class PFGASSampleLifecycleCounters
@@ -657,6 +619,7 @@ namespace PFGAS.Runtime.Tests
                     counters.EventCount++;
                 }
             };
+
             context.Target.GameplayEventBus.Subscribe(eventName, handler);
             return GASResult.Success();
         }
@@ -674,3 +637,4 @@ namespace PFGAS.Runtime.Tests
         }
     }
 }
+
