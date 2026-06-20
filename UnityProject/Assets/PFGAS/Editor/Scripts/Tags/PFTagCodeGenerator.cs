@@ -9,71 +9,55 @@ using UnityEngine;
 namespace PFGAS.Editor
 {
     /// <summary>
-    /// 根据编辑器 Tag 配置生成 PFTag 常量和注册代码。
+    /// 从 Luban Tag Excel 生成 Luban 注册适配层。
     /// </summary>
     public static class PFTagCodeGenerator
     {
-        private const string FileName = "PFTagGenerated.cs";
+        private const string AdapterFolder = "Assets/GameScripts/HotFix/PFGASGenerated/PFGAS";
+        private const string AdapterAsmdefPath = "Assets/GameScripts/HotFix/PFGASGenerated/PFGASGenerated.asmdef";
+        private const string AdapterFileName = "PFGASTagGenerated.cs";
 
         public static void GenerateCode()
         {
-            var config = AssetDatabase.LoadAssetAtPath<PFTagConfig>(PFTagTreeWindow.ConfigPath);
-            if (config == null)
-            {
-                Debug.LogError("未找到 PFTagConfig，请先在编辑器中配置 Tag 树");
-                return;
-            }
-
-            string outputPath = GetOutputPath(config);
-            GenerateFile(config, outputPath);
-
+            var document = new PFTagExcelService().Read();
+            GenerateCode(document.Rows);
             AssetDatabase.Refresh();
-            Debug.Log($"Tag 代码生成完成！输出路径：{outputPath}");
+            Debug.Log("PFGAS Tag 适配代码生成完成。");
         }
 
-        private static string GetOutputPath(PFTagConfig config)
+        public static void GenerateCode(IReadOnlyList<PFTagExcelRow> rows)
         {
-            if (!string.IsNullOrWhiteSpace(config.CodeGenPath))
+            var validation = new PFTagExcelValidator().Validate(rows);
+            if (!validation.IsValid)
             {
-                return NormalizeOutputPath(config.CodeGenPath);
+                throw new InvalidOperationException("Tag 数据校验失败，无法生成适配代码：\n" + validation.FormatErrors());
             }
 
-            return GetDefaultOutputPath();
+            Directory.CreateDirectory(ToAbsoluteAssetPath(AdapterFolder));
+
+            WriteIfChanged(Path.Combine(ToAbsoluteAssetPath(AdapterFolder), AdapterFileName), GenerateAdapterSource(rows));
+            WriteIfChanged(ToAbsoluteAssetPath(AdapterAsmdefPath), GenerateAsmdefSource());
         }
 
-        public static string GetDefaultOutputPath()
+        private static string ToAbsoluteAssetPath(string assetPath)
         {
-            var guids = AssetDatabase.FindAssets("t:Script PFTagContainer");
-            if (guids.Length > 0)
-            {
-                return NormalizeOutputPath(Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(guids[0])));
-            }
-
-            return "Assets/PFPackage/PFTagSystem/Runtime";
+            return Path.GetFullPath(Path.Combine(Application.dataPath, "..", assetPath));
         }
 
-        private static string NormalizeOutputPath(string path)
+        private static void WriteIfChanged(string path, string content)
         {
-            return string.IsNullOrWhiteSpace(path)
-                ? string.Empty
-                : path.Trim().Replace("\\", "/").TrimEnd('/');
-        }
-
-        private static int GetTagId(PFTagNodeConfig node)
-        {
-            return node.TagId > 0 ? node.TagId : node.Id;
-        }
-
-        private static void GenerateFile(PFTagConfig config, string outputPath)
-        {
-            var validNodes = config.Nodes.Where(n => n.Depth >= 0).ToList();
-            if (validNodes.Count == 0)
+            content = content.Replace("\r\n", "\n").Replace("\n", "\r\n");
+            if (File.Exists(path) && File.ReadAllText(path, Encoding.UTF8) == content)
             {
                 return;
             }
 
-            var childMap = BuildChildMap(validNodes);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllText(path, content, new UTF8Encoding(false));
+        }
 
+        private static string GenerateAdapterSource(IReadOnlyList<PFTagExcelRow> rows)
+        {
             var sb = new StringBuilder();
             sb.AppendLine("///////////////////////////////////");
             sb.AppendLine("//// This is a generated file. ////");
@@ -82,158 +66,106 @@ namespace PFGAS.Editor
             sb.AppendLine();
             sb.AppendLine("using System;");
             sb.AppendLine("using System.Collections.Generic;");
+            sb.AppendLine("using System.Linq;");
+            sb.AppendLine("using GameConfig;");
+            sb.AppendLine("using PFGAS.Runtime;");
+            sb.AppendLine("using LubanTag = GameConfig.PFGAS.PFTag;");
+            sb.AppendLine("using RuntimeTag = PFGAS.Runtime.PFTag;");
             sb.AppendLine();
-            sb.AppendLine("namespace PFGAS.Runtime");
+            sb.AppendLine("namespace PFGAS.Generated");
             sb.AppendLine("{");
-            sb.AppendLine("    public enum PFTagId");
+            sb.AppendLine("    public static class PFGASTagGenerated");
             sb.AppendLine("    {");
-
-            foreach (var node in validNodes)
-            {
-                int tagId = GetTagId(node);
-                string enumName = GetEnumName(config, node);
-                sb.AppendLine($"        {enumName} = {tagId},");
-            }
-
-            sb.AppendLine("    }");
-            sb.AppendLine();
-            sb.AppendLine("    /// <summary>");
-            sb.AppendLine("    /// Registers generated PFTag hierarchy and display names.");
-            sb.AppendLine("    /// </summary>");
-            sb.AppendLine("    public static class PFTagGenerated");
-            sb.AppendLine("    {");
-            sb.AppendLine("        static PFTagGenerated()");
+            sb.AppendLine("        public static void RegisterFromLubanTable()");
             sb.AppendLine("        {");
-            sb.AppendLine("            TagHelper.Register(new Dictionary<PFTagId, PFTag>");
-            sb.AppendLine("            {");
-
-            foreach (var node in validNodes)
-            {
-                string enumName = GetEnumName(config, node);
-                string parents = FormatTagArray(GetParentTagNames(node, config));
-                string children = FormatTagArray(
-                    childMap.TryGetValue(node.Id, out var c)
-                        ? c.Select(id => GetEnumName(config, config.Nodes.First(n => n.Id == id))).ToArray()
-                        : Array.Empty<string>());
-                string tagKey = FormatTagKey(enumName);
-                sb.AppendLine($"                {{ {tagKey}, new PFTag({tagKey}, {parents}, {children}) }},");
-            }
-
-            sb.AppendLine("            });");
+            sb.AppendLine("            RegisterFromLubanRows(Tables.GetTable<GameConfig.PFGAS.TbPFTag>().DataList);");
+            sb.AppendLine("        }");
             sb.AppendLine();
-            sb.AppendLine("            TagHelper.RegisterNames(new Dictionary<PFTagId, string>");
+            sb.AppendLine("        public static void RegisterFromLubanRows(IEnumerable<LubanTag> rows)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            if (rows == null)");
             sb.AppendLine("            {");
-
-            foreach (var node in validNodes)
-            {
-                string enumName = GetEnumName(config, node);
-                string pathName = GetPathName(config, node);
-                sb.AppendLine($"                {{ {FormatTagKey(enumName)}, \"{pathName}\" }},");
-            }
-
-            sb.AppendLine("            });");
+            sb.AppendLine("                throw new ArgumentNullException(nameof(rows));");
+            sb.AppendLine("            }");
+            sb.AppendLine();
+            sb.AppendLine("            var rowList = rows.ToList();");
+            sb.AppendLine("            var byId = rowList.ToDictionary(r => r.Id);");
+            sb.AppendLine("            var childMap = rowList");
+            sb.AppendLine("                .GroupBy(r => r.ParentId)");
+            sb.AppendLine("                .ToDictionary(g => g.Key, g => g.Select(r => r.Id).ToArray());");
+            sb.AppendLine("            var tags = new Dictionary<PFTagId, RuntimeTag>();");
+            sb.AppendLine("            var names = new Dictionary<PFTagId, string>();");
+            sb.AppendLine();
+            sb.AppendLine("            foreach (var row in rowList)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                var tagId = new PFTagId(row.Id);");
+            sb.AppendLine("                tags[tagId] = new RuntimeTag(");
+            sb.AppendLine("                    tagId,");
+            sb.AppendLine("                    GetParentIds(row, byId),");
+            sb.AppendLine("                    childMap.TryGetValue(row.Id, out var children)");
+            sb.AppendLine("                        ? children.Select(id => new PFTagId(id)).ToArray()");
+            sb.AppendLine("                        : Array.Empty<PFTagId>());");
+            sb.AppendLine("                names[tagId] = GetFullPath(row, byId);");
+            sb.AppendLine("            }");
+            sb.AppendLine();
+            sb.AppendLine("            TagHelper.Clear();");
+            sb.AppendLine("            TagHelper.Register(tags);");
+            sb.AppendLine("            TagHelper.RegisterNames(names);");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        private static PFTagId[] GetParentIds(LubanTag row, IReadOnlyDictionary<int, LubanTag> byId)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            var result = new List<PFTagId>();");
+            sb.AppendLine("            var parentId = row.ParentId;");
+            sb.AppendLine("            while (parentId != -1 && byId.TryGetValue(parentId, out var parent))");
+            sb.AppendLine("            {");
+            sb.AppendLine("                result.Add(new PFTagId(parent.Id));");
+            sb.AppendLine("                parentId = parent.ParentId;");
+            sb.AppendLine("            }");
+            sb.AppendLine();
+            sb.AppendLine("            return result.ToArray();");
+            sb.AppendLine("        }");
+            sb.AppendLine();
+            sb.AppendLine("        private static string GetFullPath(LubanTag row, IReadOnlyDictionary<int, LubanTag> byId)");
+            sb.AppendLine("        {");
+            sb.AppendLine("            var segments = new List<string>();");
+            sb.AppendLine("            var current = row;");
+            sb.AppendLine("            while (current != null)");
+            sb.AppendLine("            {");
+            sb.AppendLine("                segments.Insert(0, current.Name);");
+            sb.AppendLine("                if (current.ParentId == -1 || !byId.TryGetValue(current.ParentId, out current))");
+            sb.AppendLine("                {");
+            sb.AppendLine("                    break;");
+            sb.AppendLine("                }");
+            sb.AppendLine("            }");
+            sb.AppendLine();
+            sb.AppendLine("            return string.Join(\".\", segments);");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
             sb.AppendLine("}");
-
-            Directory.CreateDirectory(outputPath);
-            File.WriteAllText(Path.Combine(outputPath, FileName), sb.ToString());
+            return sb.ToString();
         }
 
-        private static Dictionary<int, List<int>> BuildChildMap(List<PFTagNodeConfig> nodes)
+        private static string GenerateAsmdefSource()
         {
-            var map = new Dictionary<int, List<int>>();
-            foreach (var node in nodes)
-            {
-                if (node.ParentId < 0)
-                {
-                    continue;
-                }
-
-                if (!map.TryGetValue(node.ParentId, out var list))
-                {
-                    list = new List<int>();
-                    map[node.ParentId] = list;
-                }
-
-                list.Add(node.Id);
-            }
-
-            return map;
-        }
-
-        private static string[] GetParentTagNames(PFTagNodeConfig node, PFTagConfig config)
-        {
-            var parents = new List<string>();
-            int parentId = node.ParentId;
-            while (parentId >= 0)
-            {
-                var parent = config.Nodes.FirstOrDefault(n => n.Id == parentId);
-                if (parent == null)
-                {
-                    break;
-                }
-
-                parents.Add(GetEnumName(config, parent));
-                parentId = parent.ParentId;
-            }
-
-            return parents.ToArray();
-        }
-
-        private static string FormatTagArray(string[] tags)
-        {
-            if (tags.Length == 0)
-            {
-                return "Array.Empty<PFTagId>()";
-            }
-
-            return "new[] { " + string.Join(", ", tags.Select(FormatTagKey)) + " }";
-        }
-
-        private static string FormatTagKey(string enumName)
-        {
-            return $"PFTagId.{enumName}";
-        }
-
-        public static string GetEnumName(PFTagConfig config, PFTagNodeConfig node)
-        {
-            var names = new List<string> { node.Name };
-            int parentId = node.ParentId;
-
-            while (parentId >= 0)
-            {
-                var parent = config.Nodes.FirstOrDefault(n => n.Id == parentId);
-                if (parent == null)
-                {
-                    break;
-                }
-
-                names.Insert(0, parent.Name);
-                parentId = parent.ParentId;
-            }
-
-            return string.Join("_", names);
-        }
-
-        private static string GetPathName(PFTagConfig config, PFTagNodeConfig node)
-        {
-            var names = new List<string> { node.Name };
-            int parentId = node.ParentId;
-
-            while (parentId >= 0)
-            {
-                var parent = config.Nodes.FirstOrDefault(n => n.Id == parentId);
-                if (parent == null)
-                {
-                    break;
-                }
-
-                names.Insert(0, parent.Name);
-                parentId = parent.ParentId;
-            }
-
-            return string.Join(".", names);
+            return @"{
+    ""name"": ""PFGASGenerated"",
+    ""rootNamespace"": """",
+    ""references"": [
+        ""com.peifeng.pfgas.Runtime"",
+        ""GameProto""
+    ],
+    ""includePlatforms"": [],
+    ""excludePlatforms"": [],
+    ""allowUnsafeCode"": false,
+    ""overrideReferences"": false,
+    ""precompiledReferences"": [],
+    ""autoReferenced"": true,
+    ""defineConstraints"": [],
+    ""versionDefines"": [],
+    ""noEngineReferences"": false
+}
+";
         }
     }
 }

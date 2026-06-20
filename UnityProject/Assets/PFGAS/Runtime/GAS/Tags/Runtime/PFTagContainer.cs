@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using PFGAS;
 
 namespace PFGAS.Runtime
 {
@@ -11,11 +9,6 @@ namespace PFGAS.Runtime
     public sealed class PFTagContainer
     {
         private readonly HashSet<PFTagId> tagIds = new HashSet<PFTagId>();
-
-        static PFTagContainer()
-        {
-            RuntimeHelpers.RunClassConstructor(typeof(PFTagGenerated).TypeHandle);
-        }
 
         public PFTagContainer()
         {
@@ -44,7 +37,7 @@ namespace PFGAS.Runtime
 
         public bool AddTag(int tagId)
         {
-            return AddTag((PFTagId)tagId);
+            return AddTag(new PFTagId(tagId));
         }
 
         public bool AddTag(PFTag tag)
@@ -85,7 +78,7 @@ namespace PFGAS.Runtime
 
         public bool RemoveTag(int tagId)
         {
-            return RemoveTag((PFTagId)tagId);
+            return RemoveTag(new PFTagId(tagId));
         }
 
         public bool RemoveTag(PFTag tag)
@@ -100,7 +93,7 @@ namespace PFGAS.Runtime
 
         public bool HasExactTag(int tagId)
         {
-            return HasExactTag((PFTagId)tagId);
+            return HasExactTag(new PFTagId(tagId));
         }
 
         public bool HasExactTag(PFTag tag)
@@ -123,7 +116,7 @@ namespace PFGAS.Runtime
 
         public bool HasTag(int tagId)
         {
-            return HasTag((PFTagId)tagId);
+            return HasTag(new PFTagId(tagId));
         }
 
         public bool HasTag(PFTag tag)

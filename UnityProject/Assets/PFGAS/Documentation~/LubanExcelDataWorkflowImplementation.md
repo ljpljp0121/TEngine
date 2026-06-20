@@ -70,7 +70,7 @@ Assets/
       pfgas_tbcombatunitpreset.json
     PFGAS/
       PFGASGeneratedData.gen.cs       # 配置装配入口
-      PFTagGenerated.cs               # Tag 常量和注册
+      PFGASTagGenerated.cs               # Luban Tag 注册适配
       PFAttributeGenerated.cs         # Attribute 常量
       PFAbilityGenerated.cs           # Ability 常量
       PFGASGenerated.asmdef
@@ -130,7 +130,6 @@ Game/PFGAS/配置数据/导入 Luban 配置模板
 Game/PFGAS/配置数据/打开配置工程目录
 Game/PFGAS/配置数据/导出 Luban 数据
 Game/PFGAS/配置数据/生成 PFGAS 适配代码
-Game/PFGAS/配置数据/一键保存并导出
 ```
 
 ## Excel 规范
@@ -169,8 +168,8 @@ Desc    string  描述
 
 生成：
 
-- `PFTagId` 枚举。
-- `PFTagGenerated` 注册层级和显示名。
+- Runtime `PFTagId` 值类型。
+- `PFGASTagGenerated` 从 Luban 表注册层级和显示名。
 - Editor 下拉选择项。
 
 校验：
@@ -463,7 +462,6 @@ PFGASCombatUnitPresetExcelWindow
 保存到 Excel
 校验
 导出 Luban
-保存并导出
 ```
 
 保存流程：
@@ -537,16 +535,16 @@ new GameplayEffect(...)
 当前 PFGAS 已有两类 ScriptableObject 源：
 
 ```text
-Editor/Scripts/Tags/PFTagConfig.asset
+旧 Tag ScriptableObject 资产
 Editor/Scripts/Attribute/PFAttributeConfig.asset
 ```
 
 迁移步骤：
 
-1. 写一次性迁移工具，把 `PFTagConfig.asset` 导出到 `#pfgas.gameplayTags.xlsx`。
+1. 写一次性迁移工具，把 `旧 Tag ScriptableObject 资产` 导出到 `#pfgas.gameplayTags.xlsx`。
 2. 写一次性迁移工具，把 `PFAttributeConfig.asset` 导出到 `#pfgas.attribute.xlsx`。
 3. 用 Luban 导出 JSON 和表类。
-4. 用新生成器生成 `PFTagGenerated.cs` 和 `PFAttributeGenerated.cs`。
+4. 用新生成器生成 `PFGASTagGenerated.cs` 和 `PFAttributeGenerated.cs`。
 5. 对比旧生成文件和新生成文件的 ID 是否一致。
 6. 标记旧窗口为 Legacy，只允许查看或导出，不再作为权威源。
 7. 稳定后删除或隐藏旧 ScriptableObject 编辑入口。
@@ -581,7 +579,7 @@ Editor/Scripts/Attribute/PFAttributeConfig.asset
 
 - 实现 Tag/Attribute Excel 读写窗口。
 - 实现旧 ScriptableObject 到 Excel 的迁移。
-- 生成新的 `PFTagGenerated.cs` 和 `PFAttributeGenerated.cs`。
+- 生成新的 `PFGASTagGenerated.cs` 和 `PFAttributeGenerated.cs`。
 - Runtime 使用新生成文件仍能通过现有测试。
 
 验收：
@@ -629,7 +627,7 @@ Editor/Scripts/Attribute/PFAttributeConfig.asset
 - 所有窗口统一按钮、校验、备份、刷新逻辑。
 - 下拉项从 Excel 读取，不从 JSON 读取。
 - 保存失败时提示 Excel 文件锁定。
-- 加入“一键保存并导出”。
+- 保持保存、导出、生成适配代码为单一职责入口。
 
 验收：
 
@@ -714,7 +712,7 @@ Editor/Scripts/Attribute/PFAttributeConfig.asset
 Tag Excel
 Attribute Excel
 Luban 导出
-生成 PFTagGenerated / PFAttributeGenerated
+生成 PFGASTagGenerated / PFAttributeGenerated
 Editor 读写 Tag / Attribute Excel
 禁用旧 ScriptableObject 编辑入口
 ```

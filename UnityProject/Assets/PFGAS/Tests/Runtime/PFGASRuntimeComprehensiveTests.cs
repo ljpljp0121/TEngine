@@ -218,22 +218,22 @@ namespace PFGAS.Runtime.Tests
             var sourceA = new object();
             var sourceB = new object();
 
-            Assert.That(tags.AddLooseTag(PFTagId.State_DeBuff_Fire), Is.True);
-            Assert.That(tags.AddLooseTag(PFTagId.State_DeBuff_Fire), Is.False);
-            Assert.That(tags.HasTag(PFTagId.State_DeBuff), Is.True);
-            Assert.That(tags.HasExactTag(PFTagId.State_DeBuff_Fire), Is.True);
+            Assert.That(tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Fire), Is.True);
+            Assert.That(tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Fire), Is.False);
+            Assert.That(tags.HasTag(PFGASTestTagIds.State_DeBuff), Is.True);
+            Assert.That(tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Fire), Is.True);
 
-            tags.AddSourceTags(sourceA, PFTagId.State_DeBuff_Ice);
-            tags.AddSourceTags(sourceB, PFTagId.State_DeBuff_Ice);
+            tags.AddSourceTags(sourceA, PFGASTestTagIds.State_DeBuff_Ice);
+            tags.AddSourceTags(sourceB, PFGASTestTagIds.State_DeBuff_Ice);
             Assert.That(tags.SourceCount, Is.EqualTo(2));
-            Assert.That(tags.HasExactTag(PFTagId.State_DeBuff_Ice), Is.True);
+            Assert.That(tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice), Is.True);
 
             tags.RemoveSourceTags(sourceA);
-            Assert.That(tags.HasExactTag(PFTagId.State_DeBuff_Ice), Is.True);
+            Assert.That(tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice), Is.True);
             tags.RemoveSourceTags(sourceB);
-            Assert.That(tags.HasExactTag(PFTagId.State_DeBuff_Ice), Is.False);
+            Assert.That(tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice), Is.False);
 
-            tags.RemoveLooseTag(PFTagId.State_DeBuff_Fire);
+            tags.RemoveLooseTag(PFGASTestTagIds.State_DeBuff_Fire);
             Assert.That(tags.IsEmpty, Is.True);
         }
 
@@ -386,7 +386,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(10f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff });
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
 
             var result = target.Effects.ApplyToSelf(effect, target);
             AssertSuccess(result);
@@ -394,12 +394,12 @@ namespace PFGAS.Runtime.Tests
 
             Assert.That(target.Effects.ActiveEffectCount, Is.EqualTo(1));
             AssertNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 110f);
-            Assert.That(target.Tags.HasTag(PFTagId.State_Buff), Is.True);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.True);
 
             Assert.That(target.Effects.Remove(result.Value.Handle).Succeeded, Is.True);
             Assert.That(target.Effects.ActiveEffectCount, Is.EqualTo(0));
             AssertNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f);
-            Assert.That(target.Tags.HasTag(PFTagId.State_Buff), Is.False);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.False);
         }
 
         [Test]
@@ -414,13 +414,13 @@ namespace PFGAS.Runtime.Tests
 
             AssertSuccess(firstApply);
             AssertSuccess(secondApply);
-            Assert.That(target.Tags.HasTag(PFTagId.State_DeBuff_Fire), Is.True);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), Is.True);
 
             Assert.That(target.Effects.Remove(firstApply.Value.Handle).Succeeded, Is.True);
-            Assert.That(target.Tags.HasTag(PFTagId.State_DeBuff_Fire), Is.True);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), Is.True);
 
             Assert.That(target.Effects.Remove(secondApply.Value.Handle).Succeeded, Is.True);
-            Assert.That(target.Tags.HasTag(PFTagId.State_DeBuff_Fire), Is.False);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), Is.False);
         }
 
         [Test]
@@ -601,14 +601,14 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(10f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 triggers: new[] { new GameplayEffectTriggerSpec(new FailingTrigger()) });
 
             var result = target.Effects.ApplyToSelf(effect, target);
 
             Assert.That(result.Failed, Is.True);
             Assert.That(target.Effects.ActiveEffectCount, Is.EqualTo(0));
-            Assert.That(target.Tags.HasTag(PFTagId.State_Buff), Is.False);
+            Assert.That(target.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.False);
             AssertNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f);
         }
 
@@ -716,7 +716,7 @@ namespace PFGAS.Runtime.Tests
             return new GameplayEffect(
                 name,
                 GameplayEffectLifetime.ForDuration(10f),
-                grantedTags: new[] { PFTagId.State_DeBuff_Fire });
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Fire });
         }
 
         private CombatUnit CreateUnit(string name)

@@ -2,7 +2,7 @@
     <bean name="PFTag" alias="标签" comment="定义 PFGAS 运行时使用的标签节点。">
         <var name="Id" type="int" alias="ID" comment="全局唯一 Tag ID。"/>
         <var name="ParentId" type="int" alias="父级ID" comment="父级 Tag ID；根节点填 -1。"/>
-        <var name="Name" type="string" alias="短名" comment="同一父级下唯一，用于生成完整路径和 PFTagId 枚举名片段。"/>
+        <var name="Name" type="string" alias="短名" comment="同一父级下唯一，用于生成完整路径。"/>
         <var name="Desc" type="string" alias="说明" comment="Tag 的用途说明，供编辑器和文档展示。"/>
     </bean>
 

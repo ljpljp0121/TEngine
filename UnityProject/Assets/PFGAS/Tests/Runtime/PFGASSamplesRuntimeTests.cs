@@ -119,8 +119,8 @@ namespace PFGAS.Runtime.Tests
 
                 Assert.That(runner.UnitA.Effects.ActiveEffectCount, Is.EqualTo(0));
                 Assert.That(runner.UnitB.Effects.ActiveEffectCount, Is.EqualTo(0));
-                Assert.That(runner.UnitA.Tags.HasTag(PFTagId.State_Buff), Is.False);
-                Assert.That(runner.UnitB.Tags.HasTag(PFTagId.State_Buff), Is.False);
+                Assert.That(runner.UnitA.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.False);
+                Assert.That(runner.UnitB.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.False);
             }
             finally
             {

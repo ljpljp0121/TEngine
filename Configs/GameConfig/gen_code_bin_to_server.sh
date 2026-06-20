@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 echo "当前目录: $(pwd)"
 
 export WORKSPACE="$(realpath ../../)"
-export LUBAN_DLL="${WORKSPACE}/Tools/Luban/Luban.dll"
+export LUBAN_DLL="${WORKSPACE}/Configs/Luban/Luban.dll"
 export CONF_ROOT="$(pwd)"
 export DATA_OUTPATH="${WORKSPACE}/Server/GameConfig"
 export CODE_OUTPATH="${WORKSPACE}/Server/Hotfix/Config/GameConfig"

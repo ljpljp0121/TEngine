@@ -1,14 +1,15 @@
 {
-    "name": "com.peifeng.pfgas.Tests",
+    "name": "com.peifeng.pfgas.Editor.Tests",
     "rootNamespace": "",
     "references": [
         "com.peifeng.pfgas.Runtime",
-        "PFGASGenerated",
-        "GameProto",
+        "com.peifeng.pfgas.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using PFGAS;
 
 namespace PFGAS.Runtime
 {
@@ -15,11 +13,6 @@ namespace PFGAS.Runtime
             new Dictionary<object, HashSet<PFTagId>>();
         private readonly Dictionary<PFTagId, int> sourceTagCounts =
             new Dictionary<PFTagId, int>();
-
-        static GameplayTagAggregator()
-        {
-            RuntimeHelpers.RunClassConstructor(typeof(PFTagGenerated).TypeHandle);
-        }
 
         public event Action TagsChanged;
 
@@ -43,7 +36,7 @@ namespace PFGAS.Runtime
 
         public bool AddLooseTag(int tagId)
         {
-            return AddLooseTag((PFTagId)tagId);
+            return AddLooseTag(new PFTagId(tagId));
         }
 
         public bool AddLooseTag(PFTag tag)
@@ -91,7 +84,7 @@ namespace PFGAS.Runtime
 
         public bool RemoveLooseTag(int tagId)
         {
-            return RemoveLooseTag((PFTagId)tagId);
+            return RemoveLooseTag(new PFTagId(tagId));
         }
 
         public bool RemoveLooseTag(PFTag tag)
@@ -242,7 +235,7 @@ namespace PFGAS.Runtime
 
         public bool HasExactTag(int tagId)
         {
-            return HasExactTag((PFTagId)tagId);
+            return HasExactTag(new PFTagId(tagId));
         }
 
         public bool HasExactTag(PFTag tag)
@@ -273,7 +266,7 @@ namespace PFGAS.Runtime
 
         public bool HasTag(int tagId)
         {
-            return HasTag((PFTagId)tagId);
+            return HasTag(new PFTagId(tagId));
         }
 
         public bool HasTag(PFTag tag)
@@ -430,7 +423,7 @@ namespace PFGAS.Runtime
             var tagIds = new PFTagId[tags.Length];
             for (var i = 0; i < tags.Length; i++)
             {
-                tagIds[i] = (PFTagId)tags[i];
+                tagIds[i] = new PFTagId(tags[i]);
             }
 
             return tagIds;

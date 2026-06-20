@@ -5,7 +5,7 @@ set WORKSPACE=../..
 set LUBAN_DLL=..\Luban\Luban.dll
 set CONF_ROOT=.
 set DATA_OUTPATH=%WORKSPACE%/UnityProject/Assets/AssetRaw/Configs/json/
-set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/PFGAS/Generated/LubanConfig
+set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/GameScripts/HotFix/GameProto/LubanConfig
 
 dotnet %LUBAN_DLL% ^
     -t client ^
@@ -14,5 +14,3 @@ dotnet %LUBAN_DLL% ^
     --conf %CONF_ROOT%\luban.conf ^
     -x outputCodeDir=%CODE_OUTPATH%\ ^
     -x outputDataDir=%DATA_OUTPATH%
-
-pause

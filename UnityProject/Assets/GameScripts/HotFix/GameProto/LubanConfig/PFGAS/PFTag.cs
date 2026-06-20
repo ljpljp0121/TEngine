@@ -41,7 +41,7 @@ public sealed partial class PFTag : Luban.BeanBase
     /// </summary>
     public readonly int ParentId;
     /// <summary>
-    /// 同一父级下唯一，用于生成完整路径和 PFTagId 枚举名片段。
+    /// 同一父级下唯一，用于生成完整路径。
     /// </summary>
     public readonly string Name;
     /// <summary>

@@ -2,7 +2,7 @@ Cd /d %~dp0
 echo %CD%
 
 set WORKSPACE=../../
-set LUBAN_DLL=../Tools/Luban/Luban.dll
+set LUBAN_DLL=..\Luban\Luban.dll
 set CONF_ROOT=.
 set DATA_OUTPATH=%WORKSPACE%/Server/GameConfig 
 set CODE_OUTPATH=%WORKSPACE%/Server/Hotfix/Config/GameConfig

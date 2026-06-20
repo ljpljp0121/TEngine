@@ -62,8 +62,8 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectCapturePolicy.ReevaluateOnPeriod),
                 },
                 tags: new GameplayEffectTagRequirements(
-                    blockedTargetTags: new[] { PFTagId.State_DeBuff_Ice }),
-                grantedTags: new[] { PFTagId.State_DeBuff_Fire });
+                    blockedTargetTags: new[] { PFGASTestTagIds.State_DeBuff_Ice }),
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Fire });
         }
 
         // 队长光环：Ongoing modifier 动态读取 source MaxHP，适合一名 source 增益多个目标。
@@ -81,7 +81,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, 0.2f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
-                grantedTags: new[] { PFTagId.State_Buff });
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
         }
 
         // 毒层：同一 source/target 叠层到上限，周期伤害按 StackCount 缩放，溢出明确忽略。
@@ -104,7 +104,7 @@ namespace PFGAS.Runtime.Tests
                     3,
                     GameplayEffectStackingScope.BySourceAndTarget,
                     overflowPolicy: GameplayEffectOverflowPolicy.Ignore),
-                grantedTags: new[] { PFTagId.State_DeBuff_Du });
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Du });
         }
 
         // 生命护盾：target-local magnitude 进入 AttributeGraph，MaxHP 变化会自动重算护盾值。
@@ -124,7 +124,7 @@ namespace PFGAS.Runtime.Tests
                             0.5f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
-                grantedTags: new[] { PFTagId.State_Buff });
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
         }
 
         // 生命周期：Execution 记录 apply/remove，Trigger 只在 active 期间订阅 GameplayEventBus。
@@ -157,7 +157,7 @@ namespace PFGAS.Runtime.Tests
             return new GameplayEffect(
                 "Sample_LifecycleEvent",
                 lifetime,
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 executions: new[]
                 {
                     new GameplayEffectExecutionSpec(
@@ -187,7 +187,7 @@ namespace PFGAS.Runtime.Tests
                 var iceTarget = factory.CreateUnit("SampleBurningIceTarget");
                 var burning = PFGASSampleEffects.CreateBurningDot();
 
-                iceTarget.Tags.AddLooseTag(PFTagId.State_DeBuff_Ice);
+                iceTarget.Tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Ice);
                 var blockedApply = iceTarget.Effects.ApplyToSelf(burning, source);
 
                 var apply = RequireSuccess(
@@ -195,7 +195,7 @@ namespace PFGAS.Runtime.Tests
                     "Burning sample apply failed.");
 
                 var hpAfterApply = target.Attributes.GetBaseValue(PFAttributeId.HP);
-                var fireTagWhileActive = target.Tags.HasTag(PFTagId.State_DeBuff_Fire);
+                var fireTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire);
 
                 target.Effects.Tick(1f);
                 var hpAfterFirstPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
@@ -214,7 +214,7 @@ namespace PFGAS.Runtime.Tests
                     hpAfterSecondPeriod,
                     target.Attributes.GetBaseValue(PFAttributeId.HP),
                     fireTagWhileActive,
-                    target.Tags.HasTag(PFTagId.State_DeBuff_Fire),
+                    target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire),
                     target.Effects.ActiveEffectCount,
                     apply.Handle.IsValid);
             }
@@ -272,8 +272,8 @@ namespace PFGAS.Runtime.Tests
                     backWhileStillActive,
                     frontTarget.Effects.ActiveEffectCount,
                     backTarget.Effects.ActiveEffectCount,
-                    frontTarget.Tags.HasTag(PFTagId.State_Buff),
-                    backTarget.Tags.HasTag(PFTagId.State_Buff));
+                    frontTarget.Tags.HasTag(PFGASTestTagIds.State_Buff),
+                    backTarget.Tags.HasTag(PFGASTestTagIds.State_Buff));
             }
         }
 
@@ -311,7 +311,7 @@ namespace PFGAS.Runtime.Tests
 
                 target.Effects.Tick(1f);
                 var hpAfterBothSourcesPeriod = target.Attributes.GetBaseValue(PFAttributeId.HP);
-                var poisonTagWhileActive = target.Tags.HasTag(PFTagId.State_DeBuff_Du);
+                var poisonTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Du);
 
                 target.Effects.RemoveAll();
 
@@ -323,7 +323,7 @@ namespace PFGAS.Runtime.Tests
                     hpAfterSourceAFirstPeriod,
                     hpAfterBothSourcesPeriod,
                     poisonTagWhileActive,
-                    target.Tags.HasTag(PFTagId.State_DeBuff_Du),
+                    target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Du),
                     target.Effects.ActiveEffectCount);
             }
         }
@@ -351,7 +351,7 @@ namespace PFGAS.Runtime.Tests
                     hpAfterMaxHpChange,
                     target.Attributes.GetCurrentValue(PFAttributeId.HP),
                     target.Effects.ActiveEffectCount,
-                    target.Tags.HasTag(PFTagId.State_Buff),
+                    target.Tags.HasTag(PFGASTestTagIds.State_Buff),
                     apply.Handle.IsValid);
             }
         }
@@ -372,7 +372,7 @@ namespace PFGAS.Runtime.Tests
                 target.GameplayEventBus.Publish(LifecycleEventName, source, target);
                 var eventCountWhileActive = counters.EventCount;
                 var hasEventKeyWhileActive = target.GameplayEventBus.HasEvent(LifecycleEventName);
-                var hasGrantedTagWhileActive = target.Tags.HasTag(PFTagId.State_Buff);
+                var hasGrantedTagWhileActive = target.Tags.HasTag(PFGASTestTagIds.State_Buff);
 
                 target.Effects.Tick(2f);
                 var eventCountBeforeCleanupPublish = counters.EventCount;
@@ -387,7 +387,7 @@ namespace PFGAS.Runtime.Tests
                     hasEventKeyWhileActive,
                     counters.EventCount == eventCountBeforeCleanupPublish,
                     hasGrantedTagWhileActive,
-                    target.Tags.HasTag(PFTagId.State_Buff),
+                    target.Tags.HasTag(PFGASTestTagIds.State_Buff),
                     target.Effects.ActiveEffectCount,
                     apply.Handle.IsValid);
             }

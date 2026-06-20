@@ -348,33 +348,33 @@ namespace PFGAS.Runtime.Tests
         {
             var source = CreateUnit("Source");
             var target = CreateUnit("Target");
-            target.Tags.AddLooseTag(PFTagId.State_DeBuff_Fire);
+            target.Tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Fire);
 
             var blocked = new GameplayEffect(
                 "BlockedByDebuff",
                 GameplayEffectLifetime.ForDuration(1f),
                 tags: new GameplayEffectTagRequirements(
-                    blockedTargetTags: new[] { PFTagId.State_DeBuff }));
+                    blockedTargetTags: new[] { PFGASTestTagIds.State_DeBuff }));
 
             var blockedResult = target.Effects.ApplyToSelf(blocked, source);
 
             Expect(blockedResult.Failed, "Blocked target tag should fail apply.");
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Blocked effect should not become active.");
 
-            target.Tags.RemoveLooseTag(PFTagId.State_DeBuff_Fire);
+            target.Tags.RemoveLooseTag(PFGASTestTagIds.State_DeBuff_Fire);
             var grant = new GameplayEffect(
                 "GrantBurning",
                 GameplayEffectLifetime.ForDuration(1f),
-                grantedTags: new[] { PFTagId.State_DeBuff_Fire });
+                grantedTags: new[] { PFGASTestTagIds.State_DeBuff_Fire });
 
             var grantResult = target.Effects.ApplyToSelf(grant, source);
 
             Expect(grantResult.Succeeded, "Granted tag effect should apply.");
-            Expect(target.Tags.HasTag(PFTagId.State_DeBuff_Fire), "Granted tag should be present.");
+            Expect(target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), "Granted tag should be present.");
 
             target.Effects.Tick(1f);
 
-            Expect(!target.Tags.HasTag(PFTagId.State_DeBuff_Fire), "Granted tag should be removed on expire.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), "Granted tag should be removed on expire.");
         }
 
         private void StackingModesUpdateActiveRuntimeState()
@@ -691,13 +691,13 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(10f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 triggers: new[]
                 {
                     new GameplayEffectTriggerSpec(
                         new ObservingActivationTrigger(
                             counters,
-                            PFTagId.State_Buff,
+                            PFGASTestTagIds.State_Buff,
                             expectedMaxHp: 110f)),
                 });
 
@@ -771,7 +771,7 @@ namespace PFGAS.Runtime.Tests
             var instantWithGrantedTag = new GameplayEffect(
                 "InstantWithGrantedTag",
                 GameplayEffectLifetime.Instant,
-                grantedTags: new[] { PFTagId.State_Buff });
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
 
             ExpectThrows<InvalidOperationException>(
                 () => target.Effects.ApplyToSelf(instantWithGrantedTag, target),
@@ -779,7 +779,7 @@ namespace PFGAS.Runtime.Tests
 
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Invalid configurations should not create active effects.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "Invalid configurations should not add modifiers.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "Invalid configurations should not grant tags.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Invalid configurations should not grant tags.");
         }
 
         private void SourceAndTargetTagRequirementsGateApply()
@@ -799,29 +799,29 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
                 new GameplayEffectTagRequirements(
-                    requiredSourceTags: new[] { PFTagId.State_Buff },
-                    blockedSourceTags: new[] { PFTagId.State_DeBuff },
-                    requiredTargetTags: new[] { PFTagId.Life },
-                    blockedTargetTags: new[] { PFTagId.State_DeBuff }));
+                    requiredSourceTags: new[] { PFGASTestTagIds.State_Buff },
+                    blockedSourceTags: new[] { PFGASTestTagIds.State_DeBuff },
+                    requiredTargetTags: new[] { PFGASTestTagIds.Life },
+                    blockedTargetTags: new[] { PFGASTestTagIds.State_DeBuff }));
 
             var missingSourceTag = target.Effects.ApplyToSelf(gated, source);
             Expect(missingSourceTag.Failed, "Missing source required tag should fail.");
 
-            source.Tags.AddLooseTag(PFTagId.State_Buff);
+            source.Tags.AddLooseTag(PFGASTestTagIds.State_Buff);
             var missingTargetTag = target.Effects.ApplyToSelf(gated, source);
             Expect(missingTargetTag.Failed, "Missing target required tag should fail.");
 
-            target.Tags.AddLooseTag(PFTagId.Life_HP);
-            source.Tags.AddLooseTag(PFTagId.State_DeBuff_Ice);
+            target.Tags.AddLooseTag(PFGASTestTagIds.Life_HP);
+            source.Tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Ice);
             var blockedSource = target.Effects.ApplyToSelf(gated, source);
             Expect(blockedSource.Failed, "Blocked source tag should fail.");
 
-            source.Tags.RemoveLooseTag(PFTagId.State_DeBuff_Ice);
-            target.Tags.AddLooseTag(PFTagId.State_DeBuff_Fire);
+            source.Tags.RemoveLooseTag(PFGASTestTagIds.State_DeBuff_Ice);
+            target.Tags.AddLooseTag(PFGASTestTagIds.State_DeBuff_Fire);
             var blockedTarget = target.Effects.ApplyToSelf(gated, source);
             Expect(blockedTarget.Failed, "Blocked target tag should fail.");
 
-            target.Tags.RemoveLooseTag(PFTagId.State_DeBuff_Fire);
+            target.Tags.RemoveLooseTag(PFGASTestTagIds.State_DeBuff_Fire);
             var success = target.Effects.ApplyToSelf(gated, source);
 
             Expect(success.Succeeded, "Satisfied tag requirements should allow apply.");
@@ -846,7 +846,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, 0.5f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 executions: new[]
                 {
                     new GameplayEffectExecutionSpec(
@@ -862,7 +862,7 @@ namespace PFGAS.Runtime.Tests
 
             Expect(apply.Succeeded, "Cleanup effect should apply.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 150f, "Cleanup effect initial modifier.");
-            Expect(target.Tags.HasTag(PFTagId.State_Buff), "Cleanup effect should grant tag.");
+            Expect(target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Cleanup effect should grant tag.");
             target.GameplayEventBus.Publish("Hit", source, target);
             ExpectEqual(counters.TriggerCount, 1, "Cleanup trigger should respond before remove.");
 
@@ -872,7 +872,7 @@ namespace PFGAS.Runtime.Tests
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Manual remove should clear active effect.");
             ExpectEqual(counters.RemoveCount, 1, "Manual remove should run OnRemove.");
             ExpectEqual(counters.DeactivateCount, 1, "Manual remove should deactivate trigger.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "Manual remove should remove granted tag.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Manual remove should remove granted tag.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "Manual remove should remove modifier.");
 
             source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
@@ -899,7 +899,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(10f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 triggers: new[]
                 {
                     new GameplayEffectTriggerSpec(new EventCounterTrigger("Hit", counters)),
@@ -912,7 +912,7 @@ namespace PFGAS.Runtime.Tests
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Failing trigger should not create active effect.");
             ExpectEqual(counters.TriggerActivationFailures, 1, "Failing trigger activation count.");
             ExpectEqual(counters.DeactivateCount, 1, "Previously activated trigger should be deactivated.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "Failing trigger should rollback granted tag.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Failing trigger should rollback granted tag.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "Failing trigger should rollback modifier.");
 
             target.GameplayEventBus.Publish("Hit", source, target);
@@ -942,7 +942,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(-25f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 executions: new[]
                 {
                     new GameplayEffectExecutionSpec(
@@ -957,7 +957,7 @@ namespace PFGAS.Runtime.Tests
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Failing OnApply should not create active effect.");
             ExpectNearly(target.Attributes.GetBaseValue(PFAttributeId.HP), 100f, "Failing OnApply should not apply instant modifier.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "Failing OnApply should not add ongoing modifier.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "Failing OnApply should not grant tag.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Failing OnApply should not grant tag.");
         }
 
         private void OnRemoveFailureKeepsActiveEffectRemovable()
@@ -977,7 +977,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.Fixed(10f),
                         GameplayEffectCapturePolicy.SnapshotOnApply),
                 },
-                grantedTags: new[] { PFTagId.State_Buff },
+                grantedTags: new[] { PFGASTestTagIds.State_Buff },
                 executions: new[]
                 {
                     new GameplayEffectExecutionSpec(
@@ -993,7 +993,7 @@ namespace PFGAS.Runtime.Tests
             ExpectEqual(counters.RemoveFailureCount, 1, "First OnRemove failure should be recorded.");
             ExpectEqual(target.Effects.ActiveEffectCount, 1, "Failed OnRemove should keep active effect.");
             Expect(target.Effects.TryGetActiveEffect(apply.Value.Handle, out _), "Failed OnRemove should keep handle removable.");
-            Expect(target.Tags.HasTag(PFTagId.State_Buff), "Failed OnRemove should keep granted tag.");
+            Expect(target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Failed OnRemove should keep granted tag.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 110f, "Failed OnRemove should keep modifier.");
 
             var secondRemove = target.Effects.Remove(apply.Value.Handle);
@@ -1001,7 +1001,7 @@ namespace PFGAS.Runtime.Tests
             Expect(secondRemove.Succeeded, "Second remove should succeed.");
             ExpectEqual(counters.RemoveCount, 1, "Second OnRemove should complete.");
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "Successful retry should remove active effect.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "Successful retry should remove granted tag.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "Successful retry should remove granted tag.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "Successful retry should remove modifier.");
         }
 
@@ -1154,10 +1154,10 @@ namespace PFGAS.Runtime.Tests
             var source = CreateUnit("CopySource");
             var target = CreateUnit("CopyTarget");
             var counters = new LifecycleCounters();
-            target.Tags.AddSourceTags("RequiredTag", PFTagId.State_Buff);
+            target.Tags.AddSourceTags("RequiredTag", PFGASTestTagIds.State_Buff);
 
-            var requiredTags = new[] { PFTagId.State_Buff };
-            var grantedTags = new[] { PFTagId.State_DeBuff_Ice };
+            var requiredTags = new[] { PFGASTestTagIds.State_Buff };
+            var grantedTags = new[] { PFGASTestTagIds.State_DeBuff_Ice };
             var modifiers = new[]
             {
                 new GameplayEffectModifierSpec(
@@ -1187,8 +1187,8 @@ namespace PFGAS.Runtime.Tests
                 executions: executions,
                 triggers: triggers);
 
-            requiredTags[0] = PFTagId.State_DeBuff_Fire;
-            grantedTags[0] = PFTagId.State_DeBuff_Fire;
+            requiredTags[0] = PFGASTestTagIds.State_DeBuff_Fire;
+            grantedTags[0] = PFGASTestTagIds.State_DeBuff_Fire;
             modifiers[0] = new GameplayEffectModifierSpec(
                 GameplayEffectModifierPhase.Instant,
                 PFAttributeId.HP,
@@ -1210,8 +1210,8 @@ namespace PFGAS.Runtime.Tests
             ExpectEqual(counters.ApplyFailureCount, 0, "Defensive copy should ignore mutated failing execution.");
             ExpectEqual(counters.TriggerActivationFailures, 0, "Defensive copy should ignore mutated failing trigger.");
             ExpectEqual(counters.TriggerCount, 1, "Defensive copy should keep original trigger.");
-            Expect(target.Tags.HasTag(PFTagId.State_DeBuff_Ice), "Defensive copy should keep original granted tag.");
-            Expect(!target.Tags.HasTag(PFTagId.State_DeBuff_Fire), "Defensive copy should ignore mutated granted tag.");
+            Expect(target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Ice), "Defensive copy should keep original granted tag.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_DeBuff_Fire), "Defensive copy should ignore mutated granted tag.");
         }
 
         private void RemoveAllCleansMultipleActiveEffects()
@@ -1230,7 +1230,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectMagnitudeSpec.SourceAttribute(PFAttributeId.MaxHP, 0.5f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
-                grantedTags: new[] { PFTagId.State_Buff });
+                grantedTags: new[] { PFGASTestTagIds.State_Buff });
             var fixedEffect = StackBuff("RemoveAllFixed", GameplayEffectStackingPolicy.Independent());
 
             var dynamicApply = target.Effects.ApplyToSelf(dynamicEffect, source);
@@ -1240,14 +1240,14 @@ namespace PFGAS.Runtime.Tests
             Expect(fixedApply.Succeeded, "Fixed RemoveAll effect should apply.");
             ExpectEqual(target.Effects.ActiveEffectCount, 2, "RemoveAll setup should have two active effects.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 160f, "RemoveAll setup modifiers.");
-            Expect(target.Tags.HasTag(PFTagId.State_Buff), "RemoveAll setup should grant tag.");
+            Expect(target.Tags.HasTag(PFGASTestTagIds.State_Buff), "RemoveAll setup should grant tag.");
 
             target.Effects.RemoveAll();
             source.Attributes.SetBaseValue(PFAttributeId.MaxHP, 200f);
 
             ExpectEqual(target.Effects.ActiveEffectCount, 0, "RemoveAll should clear active effects.");
             ExpectNearly(target.Attributes.GetCurrentValue(PFAttributeId.MaxHP), 100f, "RemoveAll should remove modifiers and subscriptions.");
-            Expect(!target.Tags.HasTag(PFTagId.State_Buff), "RemoveAll should remove granted tags.");
+            Expect(!target.Tags.HasTag(PFGASTestTagIds.State_Buff), "RemoveAll should remove granted tags.");
         }
 
         private GameplayEffect StackBuff(

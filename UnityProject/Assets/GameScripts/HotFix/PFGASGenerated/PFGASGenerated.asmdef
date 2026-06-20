@@ -1,12 +1,11 @@
 {
-    "name": "com.peifeng.pfgas.Editor",
+    "name": "PFGASGenerated",
     "rootNamespace": "",
     "references": [
-        "com.peifeng.pfgas.Runtime"
+        "com.peifeng.pfgas.Runtime",
+        "GameProto"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,

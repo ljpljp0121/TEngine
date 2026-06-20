@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using GameConfig;
 using GameLogic;
+using PFGAS.Generated;
 #if ENABLE_OBFUZ
 using Obfuz;
 #endif
@@ -38,6 +39,7 @@ public partial class GameApp
     {
         // GameEvent.Get<ILoginUI>().ShowLoginUI();
         Tables.SetJsonLoader(new LubanJsonLoader());
+        PFGASTagGenerated.RegisterFromLubanTable();
     }
     
     private static void Release()
