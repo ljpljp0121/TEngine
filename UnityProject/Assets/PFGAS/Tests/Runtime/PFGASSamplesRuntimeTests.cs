@@ -155,6 +155,93 @@ namespace PFGAS.Runtime.Tests
             }
         }
 
+        [Test]
+        public void SceneRunnerAutoTickAdvancesPeriodicEffects()
+        {
+            var gameObject = new GameObject("PFGASSampleScenarioRunnerAutoTickTest");
+            var runner = gameObject.AddComponent<PFGASSampleScenarioRunner>();
+
+            try
+            {
+                runner.ResetDuel();
+                var halfSecondDot = new GameplayEffect(
+                    "Sample_HalfSecondDot",
+                    GameplayEffectLifetime.ForDuration(1f, period: 0.5f),
+                    new[]
+                    {
+                        new GameplayEffectModifierSpec(
+                            GameplayEffectModifierPhase.Periodic,
+                            PFAttributeId.HP,
+                            GEOperation.Add,
+                            GameplayEffectMagnitudeSpec.Fixed(-10f),
+                            GameplayEffectCapturePolicy.SnapshotOnApply),
+                    });
+                var applyResult = runner.UnitB.Effects.ApplyToSelf(halfSecondDot, runner.UnitA);
+
+                Assert.That(runner.AutoTickEnabled, Is.True);
+                Assert.That(applyResult.Failed, Is.False);
+                AssertNearly(runner.UnitB.Attributes.GetBaseValue(PFAttributeId.HP), 100f);
+
+                runner.AdvanceAutoTick(0.49f);
+
+                AssertNearly(runner.UnitB.Attributes.GetBaseValue(PFAttributeId.HP), 100f);
+                Assert.That(runner.AutoTickCount, Is.EqualTo(1));
+                AssertNearly(runner.ElapsedDuelTime, 0.49f);
+
+                runner.AdvanceAutoTick(0.01f);
+
+                AssertNearly(runner.UnitB.Attributes.GetBaseValue(PFAttributeId.HP), 90f);
+                Assert.That(runner.AutoTickCount, Is.EqualTo(2));
+                AssertNearly(runner.ElapsedDuelTime, 0.5f);
+            }
+            finally
+            {
+                runner.CleanupDuel();
+                Object.DestroyImmediate(gameObject);
+            }
+        }
+
+        [Test]
+        public void SceneRunnerManualTagButtonsExposeHierarchyState()
+        {
+            var gameObject = new GameObject("PFGASSampleScenarioRunnerTagTest");
+            var runner = gameObject.AddComponent<PFGASSampleScenarioRunner>();
+
+            try
+            {
+                runner.ResetDuel();
+                runner.AddFireTagToA();
+                runner.AddIceTagToB();
+                runner.AddBuffTagToA();
+                runner.AddPoisonTagToB();
+
+                Assert.That(runner.IsReady, Is.True);
+                Assert.That(runner.UnitA.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Fire), Is.True);
+                Assert.That(runner.UnitA.Tags.HasTag(PFGASTestTagIds.State_DeBuff), Is.True);
+                Assert.That(runner.UnitA.Tags.HasTag(PFGASTestTagIds.State), Is.True);
+                Assert.That(runner.UnitA.Tags.HasTag(PFGASTestTagIds.State_Buff), Is.True);
+                Assert.That(runner.UnitB.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice), Is.True);
+                Assert.That(runner.UnitB.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Du), Is.True);
+                Assert.That(runner.UnitB.Tags.HasTag(PFGASTestTagIds.State_DeBuff), Is.True);
+
+                runner.RemoveFireTagFromA();
+                runner.RemoveIceTagFromB();
+
+                Assert.That(runner.UnitA.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Fire), Is.False);
+                Assert.That(runner.UnitB.Tags.HasExactTag(PFGASTestTagIds.State_DeBuff_Ice), Is.False);
+
+                runner.ClearAllTags();
+
+                Assert.That(runner.UnitA.Tags.IsEmpty, Is.True);
+                Assert.That(runner.UnitB.Tags.IsEmpty, Is.True);
+            }
+            finally
+            {
+                runner.CleanupDuel();
+                Object.DestroyImmediate(gameObject);
+            }
+        }
+
         private static void AssertNearly(float actual, float expected)
         {
             Assert.That(actual, Is.EqualTo(expected).Within(0.0001f));

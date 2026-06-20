@@ -8,7 +8,9 @@ TEngine.Editor	Assets/TEngine/Editor/TEngine.Editor.asmdef	Editor
 TEngine.Runtime	Assets/TEngine/Runtime/TEngine.Runtime.asmdef				
 GameLogic	Assets/GameScripts/HotFix/GameLogic/GameLogic.asmdef				
 GameProto	Assets/GameScripts/HotFix/GameProto/GameProto.asmdef				
+PFGASGenerated	Assets/GameScripts/HotFix/PFGASGenerated/PFGASGenerated.asmdef				
 com.peifeng.pfgas.Editor	Assets/PFGAS/Editor/Scripts/com.peifeng.pfgas.Editor.asmdef	Editor			
+com.peifeng.pfgas.Editor.Tests	Assets/PFGAS/Tests/Editor/com.peifeng.pfgas.Editor.Tests.asmdef	Editor		UNITY_INCLUDE_TESTS	
 com.peifeng.pfgas.Tests	Assets/PFGAS/Tests/Runtime/com.peifeng.pfgas.Tests.asmdef			UNITY_INCLUDE_TESTS	
 com.peifeng.pfgraph.Editor	Assets/PFGraph/Editor/Scripts/com.peifeng.pfgraph.Editor.asmdef	Editor			
 ToolbarExtender	Assets/PFPackage/EditorEnhance/ToolbarExtender/ToolbarExtender.asmdef	Editor			
@@ -17,7 +19,6 @@ VHierarchy	Assets/PFPackage/EditorEnhance/vHierarchy/VHierarchy.asmdef	Editor
 VInspector	Assets/PFPackage/EditorEnhance/vInspector/VInspector.asmdef				
 com.peifeng.pfdebugger.Runtime	Assets/PFPackage/PFDebugger/Runtime/com.peifeng.pfdebugger.Runtime.asmdef				
 com.peifeng.pfdebugger.Test	Assets/PFPackage/PFDebugger/Test/com.peifeng.pfdebugger.Test.asmdef				
-com.peifeng.pftreeview.Editor	Assets/PFTreeView/Editor/Scripts/com.peifeng.pftreeview.Editor.asmdef	Editor			
 com.peifeng.pfdebugger.Editor	Assets/PFPackage/PFDebugger/Editor/Scripts/com.peifeng.pfdebugger.Editor.asmdef	Editor			
 RuntimeInspector.Runtime	Assets/PFPackage/PFDebugger/Plugin/RuntimeInspector/RuntimeInspector.Runtime.asmdef				
 Sirenix.OdinInspector.Modules.UnityMathematics	Assets/Plugins/Sirenix/Odin Inspector/Modules/Unity.Mathematics/Sirenix.OdinInspector.Modules.UnityMathematics.asmdef	Editor			
