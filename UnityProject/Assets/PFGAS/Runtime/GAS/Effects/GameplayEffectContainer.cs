@@ -33,6 +33,17 @@ namespace PFGAS.Runtime
 
         public int ActiveEffectCount => activeEffects.Count;
 
+        public void GetActiveEffects(List<ActiveGameplayEffect> results)
+        {
+            if (results == null)
+            {
+                GASGuard.ThrowArgument("Result list cannot be null.", nameof(results));
+            }
+
+            results.Clear();
+            results.AddRange(activeEffects.Values);
+        }
+
         public GASResult<GameplayEffectSpec> CreateSpec(
             GameplayEffect effect,
             CombatUnit source,
