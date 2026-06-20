@@ -28,7 +28,7 @@ Replace/ReplaceOldest 当前在新效果创建流程后段才移除旧效果。�
 
 ### 决策 1：新增稳定 EffectId
 
-`GameplayEffect` 将持有稳定 `EffectId`。短期可以复用现有 name 字符串作为默认 id，避免一次性迁移全部调用点；长期可由配置表提供数值或字符串 id。`EffectId` 必须非空，并作为同一效果的规范身份。
+`GameplayEffect` 将只持有稳定 `EffectId`，不再保留 `Name`，也不做 `name` 或配置行 ID 回退。构造器第一参数就是必填 `EffectId`；空白 `EffectId` 会被拒绝。显示文本、策划备注或配置描述若需要，应留在配置层的 DisplayName/Desc 等字段，不进入 Runtime 身份模型。
 
 替代方案是继续要求调用方复用同一个 `GameplayEffect` 实例。这个方案对测试方便，但对工厂、热更、配置表和网络同步都脆弱，因此不采用。
 
@@ -36,7 +36,7 @@ Replace/ReplaceOldest 当前在新效果创建流程后段才移除旧效果。�
 
 `GameplayEffectStackingResolver.FindMatchingActiveEffect` 将比较 `EffectId`。`GameplayEffectStackingScope.BySourceAndTarget` 仍然要求 source 相同；`ByTarget` 则允许同一目标上来自不同 source 的同一 EffectId 合并。
 
-这能支持“毒箭、毒雾、毒刃都施加 Poison EffectId”的简单模型：目标身上只有一条 Poison active effect，重复施加增加 StackCount 并刷新持续时间。
+这能支持“毒箭、毒雾、毒刃都施加同一个中毒 EffectId”的简单模型：目标身上只有一条中毒 active effect，重复施加增加 StackCount 并刷新持续时间。
 
 ### 决策 3：来源属性默认快照，动态来源保留但作为显式高级行为
 
@@ -55,12 +55,12 @@ Replace/ReplaceOldest 当前在新效果创建流程后段才移除旧效果。�
 
 ### 决策 5：不引入 StackGroupId
 
-当前需求可以通过复用同一个 `EffectId` 完成。不同 Ability 应用同一个 Poison Effect；Ability 差异通过 level、payload 或后续 set-by-caller 参数表达。StackGroupId 会增加设计面，等真正出现“不同 EffectId 共享层数但保留不同身份”的需求时再引入。
+当前需求可以通过复用同一个 `EffectId` 完成。不同 Ability 应用同一个中毒 Effect；Ability 差异通过 level、payload 或后续 set-by-caller 参数表达。StackGroupId 会增加设计面，等真正出现“不同 EffectId 共享层数但保留不同身份”的需求时再引入。
 
 ## 风险 / 权衡
 
-- [风险] 使用 name 作为默认 EffectId 可能让重名效果错误合并。  
-  [缓解] 文档和测试要求 EffectId 唯一；后续配置表应显式生成稳定 id。
+- [风险] 移除 `Name` 和默认回退会要求所有构造调用显式传入稳定身份。
+  [缓解] 本变更同步迁移 Runtime、测试和样例调用；后续配置生成层必须提供非空且唯一的 `EffectId`。
 
 - [风险] Replace 路径回滚复杂，可能在失败时丢失旧效果订阅或标签。  
   [缓解] 增加失败路径测试，覆盖 modifier、tag、active count、dynamic source subscription 和 trigger rollback。

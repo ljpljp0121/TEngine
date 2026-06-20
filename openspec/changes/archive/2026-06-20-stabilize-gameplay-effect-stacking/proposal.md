@@ -8,7 +8,7 @@
 
 - 为 `GameplayEffect` 引入稳定 `EffectId`，用于运行时身份、叠层匹配、日志和后续配置表映射。
 - 将 GameplayEffect stacking 匹配从对象引用改为稳定 `EffectId`，并保留 source/target scope 规则。
-- 调整示例和测试中毒、光环等持续效果的建模方式：不同 Ability 复用同一个 Effect 定义，重复施加同一 Effect 应叠层或刷新，而不是创建等价新实例。
+- 调整示例和测试的持续效果建模方式：同一种状态/机制复用同一个 Effect 定义，例如多个 Ability 施加中毒时共享同一个中毒 `EffectId`；光环使用独立 Aura `EffectId`，不与中毒共享。重复施加同一 `EffectId` 应叠层或刷新，而不是创建无法匹配的等价新实例。
 - 将依赖 source 属性的持续伤害/持续状态默认设计为快照来源，避免跨单位实时反馈环。
 - 修正 Replace/ReplaceOldest 语义，使被替换的旧效果不参与新效果的目标当前值计算；失败时仍保持旧效果和旧属性状态。
 - 增加覆盖 EffectId 匹配、重复创建等价 Effect、快照来源、Replace 顺序和互相动态光环风险的测试。

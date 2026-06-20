@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace PFGAS.Runtime
@@ -170,7 +171,10 @@ namespace PFGAS.Runtime
         {
             foreach (var activeEffect in activeEffects)
             {
-                if (!ReferenceEquals(activeEffect.Effect, spec.Effect))
+                if (!string.Equals(
+                        activeEffect.Effect.EffectId,
+                        spec.Effect.EffectId,
+                        StringComparison.Ordinal))
                 {
                     continue;
                 }

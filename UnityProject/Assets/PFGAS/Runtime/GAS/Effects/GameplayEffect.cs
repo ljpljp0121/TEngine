@@ -8,7 +8,7 @@ namespace PFGAS.Runtime
     public sealed class GameplayEffect
     {
         public GameplayEffect(
-            string name,
+            string effectId,
             GameplayEffectLifetime lifetime,
             IEnumerable<GameplayEffectModifierSpec> modifiers = null,
             GameplayEffectTagRequirements tags = default,
@@ -17,7 +17,7 @@ namespace PFGAS.Runtime
             IEnumerable<GameplayEffectExecutionSpec> executions = null,
             IEnumerable<GameplayEffectTriggerSpec> triggers = null)
         {
-            Name = string.IsNullOrWhiteSpace(name) ? nameof(GameplayEffect) : name;
+            EffectId = NormalizeEffectId(effectId);
             Lifetime = lifetime;
             Tags = tags.Normalized();
             Stacking = stacking.Normalized();
@@ -27,7 +27,7 @@ namespace PFGAS.Runtime
             Triggers = CopyOrEmpty(triggers);
         }
 
-        public string Name { get; }
+        public string EffectId { get; }
 
         public GameplayEffectLifetime Lifetime { get; }
 
@@ -51,6 +51,16 @@ namespace PFGAS.Runtime
             }
 
             return values.ToArray();
+        }
+
+        private static string NormalizeEffectId(string effectId)
+        {
+            if (string.IsNullOrWhiteSpace(effectId))
+            {
+                GASGuard.ThrowArgument("GameplayEffect EffectId cannot be empty.", nameof(effectId));
+            }
+
+            return effectId.Trim();
         }
     }
 }

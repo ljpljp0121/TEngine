@@ -1,5 +1,8 @@
-## 新增需求
+# gameplay-effect-stability 规范
 
+## 目的
+待定 - 由归档变更 stabilize-gameplay-effect-stacking 创建。归档后请更新目的。
+## 需求
 ### 需求:GameplayEffect 必须具有稳定身份
 每个 `GameplayEffect` 必须暴露稳定的 `EffectId`，用于识别同一配置效果。`EffectId` 必须非空，并且不得依赖运行时对象引用。
 
@@ -30,8 +33,8 @@ GameplayEffect 的 Stack、Refresh、Replace 和 ReplaceOldest 匹配必须基�
 不同 Ability 若要施加同一种持续状态，必须能够复用同一个 `EffectId` 的 GameplayEffect。重复施加同一持续状态时，系统必须按该 Effect 的 stacking 规则更新已有 active effect，而不是创建等价的新持续状态。
 
 #### 场景:多个能力施加中毒
-- **当** 毒箭、毒雾和毒刃都对目标应用 `EffectId` 为 `Poison` 的效果
-- **那么** 目标必须只维护一条 Poison active effect，并按 Poison 的 stacking 规则叠层和刷新
+- **当** 毒箭、毒雾和毒刃都对目标应用相同中毒 `EffectId` 的效果
+- **那么** 目标必须只维护一条中毒 active effect，并按中毒效果的 stacking 规则叠层和刷新
 
 #### 场景:独立效果需要不同身份
 - **当** 两个效果不应共享叠层或刷新语义
@@ -41,12 +44,12 @@ GameplayEffect 的 Stack、Refresh、Replace 和 ReplaceOldest 匹配必须基�
 持续伤害或持续状态若依赖 source 属性，系统必须支持在应用时捕获 source 属性快照，使后续 source 当前值变化不会自动改变已应用效果。
 
 #### 场景:快照魔攻中毒
-- **当** source 以魔攻快照创建 Poison，并在 Poison 激活后提高魔攻
-- **那么** 已激活 Poison 的周期伤害必须继续使用应用时捕获的魔攻值
+- **当** source 以魔攻快照创建中毒效果，并在中毒效果激活后提高魔攻
+- **那么** 已激活中毒效果的周期伤害必须继续使用应用时捕获的魔攻值
 
 #### 场景:周期伤害按层数缩放
-- **当** Poison active effect 的 StackCount 增加
-- **那么** Poison 的周期伤害必须按 StackCount 缩放，并不得创建额外 Poison active effect
+- **当** 中毒 active effect 的 StackCount 增加
+- **那么** 中毒效果的周期伤害必须按 StackCount 缩放，并不得创建额外中毒 active effect
 
 ### 需求:动态来源必须保持显式高级行为
 `DynamicWhileActive + SourceAttribute` 必须继续可用，但系统和示例不得把它作为持续伤害的默认建模方式。动态来源触发重建时，系统必须继续合并同一 active effect 在同一 Tick 前的多次 source 属性变化。
@@ -81,6 +84,3 @@ Runtime 测试必须覆盖稳定 EffectId、重复创建等价效果、source sc
 - **当** 测试在效果应用后改变 source 属性
 - **那么** 测试必须断言快照来源效果不随 source 当前值变化
 
-## 修改需求
-
-## 移除需求

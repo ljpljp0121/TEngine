@@ -185,12 +185,6 @@ namespace PFGAS.Runtime
 
             GameplayEffectValidator.ValidateEffectConfiguration(spec.Effect);
 
-            var tagValidation = GameplayEffectValidator.ValidateTags(spec.Effect, spec.Source, spec.Target);
-            if (tagValidation.Failed)
-            {
-                return GASResult<ApplyPlan>.Fail(tagValidation.Failure);
-            }
-
             var stackingDecision = GameplayEffectStackingDecision.CreateNew();
             if (spec.Effect.Lifetime.Policy != GameplayEffectDurationPolicy.Instant)
             {
@@ -203,6 +197,33 @@ namespace PFGAS.Runtime
                 stackingDecision = stackingResult.Value;
             }
 
+            ReplacementSuspension replacementSuspension = null;
+            if (stackingDecision.ExistingToReplace != null)
+            {
+                replacementSuspension = new ReplacementSuspension(this, stackingDecision.ExistingToReplace);
+                var suspendResult = replacementSuspension.Suspend();
+                if (suspendResult.Failed)
+                {
+                    return GASResult<ApplyPlan>.Fail(suspendResult.Failure);
+                }
+
+                var recaptureResult = RecaptureSpec(spec);
+                if (recaptureResult.Failed)
+                {
+                    return FailPreparedReplacement(replacementSuspension, recaptureResult.Failure);
+                }
+
+                spec = recaptureResult.Value;
+            }
+
+            var tagValidation = GameplayEffectValidator.ValidateTags(spec.Effect, spec.Source, spec.Target);
+            if (tagValidation.Failed)
+            {
+                return replacementSuspension != null
+                    ? FailPreparedReplacement(replacementSuspension, tagValidation.Failure)
+                    : GASResult<ApplyPlan>.Fail(tagValidation.Failure);
+            }
+
             if (stackingDecision.Action == GameplayEffectStackingAction.ReturnExisting ||
                 stackingDecision.Action == GameplayEffectStackingAction.RefreshExisting)
             {
@@ -212,7 +233,8 @@ namespace PFGAS.Runtime
                         stackingDecision,
                         Array.Empty<AttributeModifier>(),
                         null,
-                        Array.Empty<AttributeModifier>()));
+                        Array.Empty<AttributeModifier>(),
+                        replacementSuspension));
             }
 
             if (stackingDecision.Action == GameplayEffectStackingAction.StackExisting)
@@ -231,7 +253,8 @@ namespace PFGAS.Runtime
                         stackingDecision,
                         Array.Empty<AttributeModifier>(),
                         stackSourceResult.Value,
-                        Array.Empty<AttributeModifier>()));
+                        Array.Empty<AttributeModifier>(),
+                        replacementSuspension));
             }
 
             var instantResult = modifierResolver.ResolveModifiers(
@@ -240,7 +263,9 @@ namespace PFGAS.Runtime
                 spec.StackCount);
             if (instantResult.Failed)
             {
-                return GASResult<ApplyPlan>.Fail(instantResult.Failure);
+                return replacementSuspension != null
+                    ? FailPreparedReplacement(replacementSuspension, instantResult.Failure)
+                    : GASResult<ApplyPlan>.Fail(instantResult.Failure);
             }
 
             if (spec.Effect.Lifetime.Policy == GameplayEffectDurationPolicy.Instant)
@@ -251,13 +276,16 @@ namespace PFGAS.Runtime
                         stackingDecision,
                         instantResult.Value,
                         null,
-                        Array.Empty<AttributeModifier>()));
+                        Array.Empty<AttributeModifier>(),
+                        replacementSuspension));
             }
 
             var ongoingSourceResult = modifierResolver.CreateOngoingModifierSource(spec, spec.StackCount);
             if (ongoingSourceResult.Failed)
             {
-                return GASResult<ApplyPlan>.Fail(ongoingSourceResult.Failure);
+                return replacementSuspension != null
+                    ? FailPreparedReplacement(replacementSuspension, ongoingSourceResult.Failure)
+                    : GASResult<ApplyPlan>.Fail(ongoingSourceResult.Failure);
             }
 
             var initialPeriodicModifiers = Array.Empty<AttributeModifier>();
@@ -269,7 +297,9 @@ namespace PFGAS.Runtime
                     spec.StackCount);
                 if (initialPeriodicResult.Failed)
                 {
-                    return GASResult<ApplyPlan>.Fail(initialPeriodicResult.Failure);
+                    return replacementSuspension != null
+                        ? FailPreparedReplacement(replacementSuspension, initialPeriodicResult.Failure)
+                        : GASResult<ApplyPlan>.Fail(initialPeriodicResult.Failure);
                 }
 
                 initialPeriodicModifiers = initialPeriodicResult.Value;
@@ -281,7 +311,8 @@ namespace PFGAS.Runtime
                     stackingDecision,
                     instantResult.Value,
                     ongoingSourceResult.Value,
-                    initialPeriodicModifiers));
+                    initialPeriodicModifiers,
+                    replacementSuspension));
         }
 
         private GASResult<GameplayEffectApplyResult> CommitApply(ApplyPlan plan)
@@ -353,12 +384,13 @@ namespace PFGAS.Runtime
             var onApplyResult = ExecuteExecutions(spec, null, GameplayEffectExecutionPhase.OnApply);
             if (onApplyResult.Failed)
             {
-                return GASResult<GameplayEffectApplyResult>.Fail(onApplyResult.Failure);
+                return FailNewApply(plan, onApplyResult.Failure);
             }
 
             if (spec.Effect.Lifetime.Policy == GameplayEffectDurationPolicy.Instant)
             {
                 var instantChanges = ApplyBaseModifiers(plan.InstantModifiers);
+                plan.ReplacementSuspension?.Commit();
                 return GASResult<GameplayEffectApplyResult>.Success(
                     new GameplayEffectApplyResult(GameplayEffectHandle.Invalid, instantChanges));
             }
@@ -402,8 +434,7 @@ namespace PFGAS.Runtime
                 var triggerResult = ActivateTriggers(activeEffect);
                 if (triggerResult.Failed)
                 {
-                    transaction.Rollback();
-                    return GASResult<GameplayEffectApplyResult>.Fail(triggerResult.Failure);
+                    return FailNewApply(plan, triggerResult.Failure, transaction);
                 }
 
                 if (spec.Effect.Lifetime.ExecutePeriodicOnApply)
@@ -414,19 +445,16 @@ namespace PFGAS.Runtime
                         GameplayEffectExecutionPhase.OnPeriod);
                     if (periodExecutionResult.Failed)
                     {
-                        transaction.Rollback();
-                        return GASResult<GameplayEffectApplyResult>.Fail(periodExecutionResult.Failure);
+                        return FailNewApply(plan, periodExecutionResult.Failure, transaction);
                     }
                 }
 
-                if (plan.StackingDecision.ExistingToReplace != null &&
-                    activeEffects.ContainsKey(plan.StackingDecision.ExistingToReplace.Handle.Value))
+                if (plan.ReplacementSuspension != null)
                 {
-                    var removeResult = RemoveActiveEffect(plan.StackingDecision.ExistingToReplace, true);
-                    if (removeResult.Failed)
+                    var completeReplacementResult = plan.ReplacementSuspension.Complete();
+                    if (completeReplacementResult.Failed)
                     {
-                        transaction.Rollback();
-                        return GASResult<GameplayEffectApplyResult>.Fail(removeResult.Failure);
+                        return FailNewApply(plan, completeReplacementResult.Failure, transaction);
                     }
                 }
 
@@ -435,12 +463,14 @@ namespace PFGAS.Runtime
                 AppendChanges(ApplyBaseModifiers(reusableBaseModifiers), reusableApplyChanges);
 
                 transaction.Commit();
+                plan.ReplacementSuspension?.Commit();
                 return GASResult<GameplayEffectApplyResult>.Success(
                     new GameplayEffectApplyResult(handle, reusableApplyChanges));
             }
             catch
             {
                 transaction.Rollback();
+                plan.ReplacementSuspension?.Restore();
                 throw;
             }
             finally
@@ -448,6 +478,58 @@ namespace PFGAS.Runtime
                 reusableBaseModifiers.Clear();
                 reusableApplyChanges.Clear();
             }
+        }
+
+        private GASResult<ApplyPlan> FailPreparedReplacement(
+            ReplacementSuspension replacementSuspension,
+            GASFailure failure)
+        {
+            var restoreResult = replacementSuspension.Restore();
+            return restoreResult.Failed
+                ? GASResult<ApplyPlan>.Fail(restoreResult.Failure)
+                : GASResult<ApplyPlan>.Fail(failure);
+        }
+
+        private GASResult<GameplayEffectApplyResult> FailNewApply(
+            ApplyPlan plan,
+            GASFailure failure,
+            GameplayEffectApplyTransaction transaction = null)
+        {
+            transaction?.Rollback();
+
+            if (plan.ReplacementSuspension != null)
+            {
+                var restoreResult = plan.ReplacementSuspension.Restore();
+                if (restoreResult.Failed)
+                {
+                    return GASResult<GameplayEffectApplyResult>.Fail(restoreResult.Failure);
+                }
+            }
+
+            return GASResult<GameplayEffectApplyResult>.Fail(failure);
+        }
+
+        private GASResult<GameplayEffectSpec> RecaptureSpec(GameplayEffectSpec spec)
+        {
+            var capturedValues = new GameplayEffectCapturedValues();
+            var captureResult = modifierResolver.CaptureSnapshotValues(
+                spec.Effect,
+                spec.Source,
+                spec.Target,
+                capturedValues);
+            if (captureResult.Failed)
+            {
+                return GASResult<GameplayEffectSpec>.Fail(captureResult.Failure);
+            }
+
+            return GASResult<GameplayEffectSpec>.Success(
+                new GameplayEffectSpec(
+                    spec.Effect,
+                    spec.Source,
+                    spec.Target,
+                    spec.Level,
+                    spec.Payload,
+                    capturedValues));
         }
 
         private void TickPeriodic(ActiveGameplayEffect activeEffect)
@@ -618,6 +700,132 @@ namespace PFGAS.Runtime
             }
         }
 
+        private sealed class ReplacementSuspension
+        {
+            private readonly GameplayEffectContainer container;
+            private readonly ActiveGameplayEffect activeEffect;
+            private readonly ModifierSource oldModifierSource;
+            private readonly bool hadModifierSource;
+            private bool suspended;
+            private bool completed;
+            private bool committed;
+
+            public ReplacementSuspension(
+                GameplayEffectContainer container,
+                ActiveGameplayEffect activeEffect)
+            {
+                this.container = container;
+                this.activeEffect = activeEffect;
+                oldModifierSource = activeEffect.ModifierSource;
+                hadModifierSource = activeEffect.ModifierSourceHandle.IsValid &&
+                                    oldModifierSource != null;
+            }
+
+            public GASResult Suspend()
+            {
+                if (suspended || completed || committed)
+                {
+                    return GASResult.Success();
+                }
+
+                try
+                {
+                    using (container.Owner.Attributes.BatchUpdate())
+                    {
+                        if (activeEffect.ModifierSourceHandle.IsValid)
+                        {
+                            container.Owner.Attributes.RemoveModifierSource(
+                                activeEffect.ModifierSourceHandle);
+                            activeEffect.ClearModifierSource();
+                        }
+                    }
+
+                    if (activeEffect.Effect.GrantedTags.Count > 0)
+                    {
+                        container.Owner.Tags.RemoveSourceTags(activeEffect);
+                    }
+
+                    suspended = true;
+                    return GASResult.Success();
+                }
+                catch (Exception exception)
+                {
+                    return GASResult.Fail("ReplacementSuspendFailed", exception.Message);
+                }
+            }
+
+            public GASResult Restore()
+            {
+                if (!suspended || committed)
+                {
+                    return GASResult.Success();
+                }
+
+                if (completed)
+                {
+                    return GASResult.Fail(
+                        "ReplacementRestoreFailed",
+                        "Cannot restore an already completed replacement.");
+                }
+
+                try
+                {
+                    using (container.Owner.Attributes.BatchUpdate())
+                    {
+                        if (hadModifierSource && !activeEffect.ModifierSourceHandle.IsValid)
+                        {
+                            var restoredHandle = container.Owner.Attributes.AddModifierSource(oldModifierSource);
+                            activeEffect.SetModifierSource(restoredHandle, oldModifierSource);
+                        }
+                    }
+
+                    if (activeEffect.Effect.GrantedTags.Count > 0)
+                    {
+                        container.Owner.Tags.AddSourceTags(
+                            activeEffect,
+                            ToTagArray(activeEffect.Effect.GrantedTags));
+                    }
+
+                    suspended = false;
+                    return GASResult.Success();
+                }
+                catch (Exception exception)
+                {
+                    return GASResult.Fail("ReplacementRestoreFailed", exception.Message);
+                }
+            }
+
+            public GASResult Complete()
+            {
+                if (!suspended || completed || committed)
+                {
+                    return GASResult.Success();
+                }
+
+                var executionResult = container.ExecuteExecutions(
+                    activeEffect.Spec,
+                    activeEffect,
+                    GameplayEffectExecutionPhase.OnRemove);
+                if (executionResult.Failed)
+                {
+                    return executionResult;
+                }
+
+                container.activeCleanup.Cleanup(
+                    activeEffect,
+                    activeEffect.Effect.GrantedTags.Count > 0,
+                    true);
+                activeEffect.MarkExpired();
+                completed = true;
+                return GASResult.Success();
+            }
+
+            public void Commit()
+            {
+                committed = true;
+            }
+        }
+
         private readonly struct ApplyPlan
         {
             public ApplyPlan(
@@ -625,13 +833,15 @@ namespace PFGAS.Runtime
                 GameplayEffectStackingDecision stackingDecision,
                 AttributeModifier[] instantModifiers,
                 ModifierSource ongoingSource,
-                AttributeModifier[] initialPeriodicModifiers)
+                AttributeModifier[] initialPeriodicModifiers,
+                ReplacementSuspension replacementSuspension)
             {
                 Spec = spec;
                 StackingDecision = stackingDecision;
                 InstantModifiers = instantModifiers ?? Array.Empty<AttributeModifier>();
                 OngoingSource = ongoingSource;
                 InitialPeriodicModifiers = initialPeriodicModifiers ?? Array.Empty<AttributeModifier>();
+                ReplacementSuspension = replacementSuspension;
             }
 
             public GameplayEffectSpec Spec { get; }
@@ -643,6 +853,8 @@ namespace PFGAS.Runtime
             public ModifierSource OngoingSource { get; }
 
             public AttributeModifier[] InitialPeriodicModifiers { get; }
+
+            public ReplacementSuspension ReplacementSuspension { get; }
         }
     }
 }

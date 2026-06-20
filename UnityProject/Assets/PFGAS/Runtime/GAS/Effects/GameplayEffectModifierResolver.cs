@@ -52,7 +52,7 @@ namespace PFGAS.Runtime
                 return GASResult<ModifierSource>.Success(null);
             }
 
-            return GASResult<ModifierSource>.Success(new ModifierSource(spec.Effect.Name, modifiers.Value));
+            return GASResult<ModifierSource>.Success(new ModifierSource(spec.Effect.EffectId, modifiers.Value));
         }
 
         public GASResult<AttributeModifier[]> ResolveModifiers(
