@@ -1,8 +1,6 @@
-using System;
-
 namespace PFGAS.Runtime
 {
-    /// <summary>创建常用 Attribute Magnitude 表达式节点的工厂。</summary>
+    /// <summary>创建正式内置 Attribute Magnitude 计算类型的工厂。</summary>
     public static class AttributeMagnitude
     {
         public static IAttributeMagnitude Fixed(float value)
@@ -10,47 +8,39 @@ namespace PFGAS.Runtime
             return new FixedAttributeMagnitude(value);
         }
 
-        public static IAttributeMagnitude Attribute(PFAttributeId attributeId)
+        public static IAttributeMagnitude ScalableFloat(
+            float baseValue,
+            float coefficient = 1f,
+            float postAdd = 0f)
         {
-            return new AttributeReferenceMagnitude(attributeId);
+            return new ScalableFloatAttributeMagnitude(baseValue, coefficient, postAdd);
         }
 
-        public static IAttributeMagnitude Add(IAttributeMagnitude left, IAttributeMagnitude right)
+        public static IAttributeMagnitude AttributeBased(
+            PFAttributeId attributeId,
+            float coefficient = 1f,
+            float postAdd = 0f)
         {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Add, left, right);
+            return new AttributeBasedMagnitude(attributeId, coefficient, postAdd);
         }
 
-        public static IAttributeMagnitude Subtract(IAttributeMagnitude left, IAttributeMagnitude right)
+        internal static IAttributeMagnitude Transform(
+            IAttributeMagnitude magnitude,
+            float coefficient,
+            float postAdd)
         {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Subtract, left, right);
-        }
+            if (magnitude == null)
+            {
+                GASGuard.ThrowArgument("Attribute magnitude cannot be null.", nameof(magnitude));
+            }
 
-        public static IAttributeMagnitude Multiply(IAttributeMagnitude left, IAttributeMagnitude right)
-        {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Multiply, left, right);
-        }
+            if (PFGASHelper.IsNearlyEqual(coefficient, 1f) &&
+                PFGASHelper.IsNearlyZero(postAdd))
+            {
+                return magnitude;
+            }
 
-        public static IAttributeMagnitude Divide(IAttributeMagnitude left, IAttributeMagnitude right)
-        {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Divide, left, right);
-        }
-
-        public static IAttributeMagnitude Min(IAttributeMagnitude left, IAttributeMagnitude right)
-        {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Min, left, right);
-        }
-
-        public static IAttributeMagnitude Max(IAttributeMagnitude left, IAttributeMagnitude right)
-        {
-            return new BinaryAttributeMagnitude(BinaryMagnitudeOperation.Max, left, right);
-        }
-
-        public static IAttributeMagnitude Clamp(
-            IAttributeMagnitude value,
-            IAttributeMagnitude min,
-            IAttributeMagnitude max)
-        {
-            return new ClampAttributeMagnitude(value, min, max);
+            return new TransformedAttributeMagnitude(magnitude, coefficient, postAdd);
         }
 
         internal static float ValidateFinite(float value, string label)
@@ -62,6 +52,5 @@ namespace PFGAS.Runtime
 
             return value;
         }
-
     }
 }

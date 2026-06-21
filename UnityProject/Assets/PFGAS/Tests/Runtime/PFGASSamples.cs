@@ -221,9 +221,7 @@ namespace PFGAS.Runtime.Tests
                         GameplayEffectModifierPhase.Ongoing,
                         PFAttributeId.HP,
                         GEOperation.Add,
-                        GameplayEffectMagnitudeSpec.FromTargetMagnitude(
-                            AttributeMagnitude.Attribute(PFAttributeId.MaxHP),
-                            0.5f),
+                        GameplayEffectMagnitudeSpec.TargetAttribute(PFAttributeId.MaxHP, 0.5f),
                         GameplayEffectCapturePolicy.DynamicWhileActive),
                 },
                 stacking: GameplayEffectStackingPolicy.Replace(),

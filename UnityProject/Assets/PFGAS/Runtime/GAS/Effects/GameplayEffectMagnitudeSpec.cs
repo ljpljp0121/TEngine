@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PFGAS.Runtime
 {
-    /// <summary>描述 GameplayEffect Modifier 数值来源、线性变换和 Stack 缩放规则。</summary>
+    /// <summary>描述 GameplayEffect Modifier 数值来源、线性变换和层数缩放规则。</summary>
     public readonly struct GameplayEffectMagnitudeSpec
     {
         private static readonly PFAttributeId[] EmptyDependencies = Array.Empty<PFAttributeId>();
@@ -78,7 +78,7 @@ namespace PFGAS.Runtime
                 postAdd);
         }
 
-        /// <summary>使用 Target AttributeGraph 中可求值的 Magnitude 表达式。</summary>
+        /// <summary>使用目标 AttributeGraph 中可求值的自定义 Magnitude。</summary>
         public static GameplayEffectMagnitudeSpec FromTargetMagnitude(
             IAttributeMagnitude magnitude,
             float coefficient = 1f,
@@ -139,30 +139,25 @@ namespace PFGAS.Runtime
 
         internal IAttributeMagnitude CreateTargetMagnitude(int stackCount)
         {
-            IAttributeMagnitude magnitude = AttributeMagnitude.Fixed(FixedValue);
+            var coefficient = Coefficient * stackCount;
+            var postAdd = (PreAdd * Coefficient + PostAdd) * stackCount;
+            ValidateFinite(coefficient, nameof(coefficient));
+            ValidateFinite(postAdd, nameof(postAdd));
+
             switch (Source)
             {
                 case GameplayEffectMagnitudeSource.Fixed:
-                    break;
+                    return AttributeMagnitude.ScalableFloat(FixedValue, coefficient, postAdd);
                 case GameplayEffectMagnitudeSource.TargetAttribute:
-                    magnitude = AttributeMagnitude.Attribute(AttributeId);
-                    break;
+                    return AttributeMagnitude.AttributeBased(AttributeId, coefficient, postAdd);
                 case GameplayEffectMagnitudeSource.TargetMagnitude:
-                    magnitude = TargetMagnitude;
-                    break;
+                    return AttributeMagnitude.Transform(TargetMagnitude, coefficient, postAdd);
                 case GameplayEffectMagnitudeSource.SourceAttribute:
-                    magnitude = GASGuard.ThrowInvalidOperation<IAttributeMagnitude>(
+                    return GASGuard.ThrowInvalidOperation<IAttributeMagnitude>(
                         "SourceAttribute magnitude cannot enter AttributeGraph as a live dependency.");
-                    break;
             }
 
-            magnitude = ApplyTransform(magnitude);
-            if (stackCount != 1)
-            {
-                magnitude = AttributeMagnitude.Multiply(magnitude, AttributeMagnitude.Fixed(stackCount));
-            }
-
-            return magnitude;
+            return AttributeMagnitude.ScalableFloat(FixedValue, coefficient, postAdd);
         }
 
         internal float ApplyStack(float value, int stackCount)
@@ -170,26 +165,6 @@ namespace PFGAS.Runtime
             var result = value * stackCount;
             ValidateFinite(result, nameof(result));
             return result;
-        }
-
-        private IAttributeMagnitude ApplyTransform(IAttributeMagnitude magnitude)
-        {
-            if (!PFGASHelper.IsNearlyZero(PreAdd))
-            {
-                magnitude = AttributeMagnitude.Add(magnitude, AttributeMagnitude.Fixed(PreAdd));
-            }
-
-            if (!PFGASHelper.IsNearlyEqual(Coefficient, 1f))
-            {
-                magnitude = AttributeMagnitude.Multiply(magnitude, AttributeMagnitude.Fixed(Coefficient));
-            }
-
-            if (!PFGASHelper.IsNearlyZero(PostAdd))
-            {
-                magnitude = AttributeMagnitude.Add(magnitude, AttributeMagnitude.Fixed(PostAdd));
-            }
-
-            return magnitude;
         }
 
         private GASResult<float> EvaluateTargetMagnitude(CombatUnit target)

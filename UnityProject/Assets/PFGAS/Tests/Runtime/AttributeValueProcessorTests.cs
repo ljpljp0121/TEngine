@@ -101,6 +101,47 @@ namespace PFGAS.Runtime.Tests
             }
         }
 
+        [Test]
+        public void RefreshingPeriodicEffect_DoesNotPostponeNextPeriod()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var source = factory.CreateUnit("BurningSource", maxHp: 100f);
+                var target = factory.CreateUnit("BurningTarget", hp: 100f, maxHp: 100f);
+                var burning = CreatePeriodicDamageEffect();
+
+                RequireSuccess(target.Effects.ApplyToSelf(burning, source));
+                target.Effects.Tick(0.4f);
+                RequireSuccess(target.Effects.ApplyToSelf(burning, source));
+                target.Effects.Tick(0.4f);
+                RequireSuccess(target.Effects.ApplyToSelf(burning, source));
+
+                Assert.That(target.Attributes.GetBaseValue(PFAttributeId.HP), Is.EqualTo(100f));
+
+                target.Effects.Tick(0.21f);
+
+                Assert.That(target.Attributes.GetBaseValue(PFAttributeId.HP), Is.EqualTo(92f));
+                Assert.That(target.Attributes.GetCurrentValue(PFAttributeId.HP), Is.EqualTo(92f));
+            }
+        }
+
+        private static GameplayEffect CreatePeriodicDamageEffect()
+        {
+            return new GameplayEffect(
+                "Test.PeriodicDamage",
+                GameplayEffectLifetime.ForDuration(3f, period: 1f),
+                new[]
+                {
+                    new GameplayEffectModifierSpec(
+                        GameplayEffectModifierPhase.Periodic,
+                        PFAttributeId.HP,
+                        GEOperation.Add,
+                        GameplayEffectMagnitudeSpec.Fixed(-8f),
+                        GameplayEffectCapturePolicy.SnapshotOnApply),
+                },
+                stacking: GameplayEffectStackingPolicy.Refresh());
+        }
+
         private static GameplayEffectApplyResult RequireSuccess(
             GASResult<GameplayEffectApplyResult> result)
         {

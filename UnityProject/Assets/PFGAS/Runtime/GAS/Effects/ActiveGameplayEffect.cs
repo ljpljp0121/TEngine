@@ -86,8 +86,12 @@ namespace PFGAS.Runtime
 
         internal void RefreshTiming()
         {
+            var timeUntilNextPeriod = Period > 0f
+                ? Math.Max(0f, NextPeriodTime - ElapsedTime)
+                : 0f;
+
             ElapsedTime = 0f;
-            NextPeriodTime = Period > 0f ? Period : 0f;
+            NextPeriodTime = Period > 0f ? timeUntilNextPeriod : 0f;
             IsExpired = false;
         }
 
