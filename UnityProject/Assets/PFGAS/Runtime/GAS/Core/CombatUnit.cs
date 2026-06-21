@@ -64,6 +64,17 @@ namespace PFGAS.Runtime
 
         public virtual void Disable() { }
 
+        public void AttachAttributeSet(AttributeSet attributeSet)
+        {
+            EnsureInitialized();
+            Attributes.AddAttributeSet(attributeSet);
+        }
+
+        public void AttachAttributeSet(PFAttributeSetId attributeSetId)
+        {
+            AttachAttributeSet(PFAttributeSets.Get(attributeSetId));
+        }
+
         public void Tick(float deltaTime, float unscaledDeltaTime)
         {
             Effects?.Tick(deltaTime);

@@ -11,47 +11,53 @@ namespace PFGAS.Runtime
         MaxHP = 1,
     }
 
-    public static class PFAttributeRules
+    public enum PFAttributeSetId
     {
-        public static readonly AttributeRule HP =
-            new AttributeRule(
-                PFAttributeId.HP,
-                100f,
-                AggregationMode.Stacking,
-                0f,
-                float.MaxValue,
-                new ClampBaseValueProcessor(0f, PFAttributeId.MaxHP),
-                new ClampMaxCurrentValueProcessor(PFAttributeId.MaxHP));
+        Vital = 0,
+    }
 
-        public static readonly AttributeRule MaxHP =
-            new AttributeRule(
-                PFAttributeId.MaxHP,
-                100f,
-                AggregationMode.Stacking,
-                1f,
-                float.MaxValue,
-                DefaultAttributeBaseValueProcessor.Instance,
-                DefaultAttributeCurrentValueProcessor.Instance);
+    public static class PFAttributeSets
+    {
+        public static readonly AttributeSet Vital =
+            new AttributeSet(
+                (int)PFAttributeSetId.Vital,
+                nameof(PFAttributeSetId.Vital),
+                new[]
+                {
+                    new AttributeSetEntry(
+                        PFAttributeId.HP,
+                        100f,
+                        AggregationMode.Stacking,
+                        0f,
+                        float.MaxValue,
+                        new ClampBaseValueProcessor(0f, PFAttributeId.MaxHP),
+                        new ClampMaxCurrentValueProcessor(PFAttributeId.MaxHP)),
+                    new AttributeSetEntry(
+                        PFAttributeId.MaxHP,
+                        100f,
+                        AggregationMode.Stacking,
+                        1f,
+                        float.MaxValue,
+                        DefaultAttributeBaseValueProcessor.Instance,
+                        DefaultAttributeCurrentValueProcessor.Instance)
+                });
 
-        private static readonly AttributeRule[] AllRules =
+        private static readonly AttributeSet[] AllSets =
         {
-            HP,
-            MaxHP,
+            Vital,
         };
 
-        public static readonly System.Collections.ObjectModel.ReadOnlyCollection<AttributeRule> All =
-            System.Array.AsReadOnly(AllRules);
+        public static readonly System.Collections.ObjectModel.ReadOnlyCollection<AttributeSet> All =
+            System.Array.AsReadOnly(AllSets);
 
-        public static AttributeRule Get(PFAttributeId attributeId)
+        public static AttributeSet Get(PFAttributeSetId attributeSetId)
         {
-            switch (attributeId)
+            switch (attributeSetId)
             {
-                case PFAttributeId.HP:
-                    return HP;
-                case PFAttributeId.MaxHP:
-                    return MaxHP;
+                case PFAttributeSetId.Vital:
+                    return Vital;
                 default:
-                    throw new System.ArgumentOutOfRangeException(nameof(attributeId), attributeId, null);
+                    throw new System.ArgumentOutOfRangeException(nameof(attributeSetId), attributeSetId, null);
             }
         }
     }

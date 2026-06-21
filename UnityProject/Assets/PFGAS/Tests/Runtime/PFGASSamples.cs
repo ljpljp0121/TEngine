@@ -15,11 +15,7 @@ namespace PFGAS.Runtime.Tests
 
             var unit = gameObject.AddComponent<CombatUnit>();
             unit.EnsureInitialized();
-            unit.Attributes.AddAttributes(new[]
-            {
-                PFAttributeRules.HP,
-                PFAttributeRules.MaxHP,
-            });
+            unit.AttachAttributeSet(PFAttributeSets.Vital);
             unit.Attributes.SetBaseValue(PFAttributeId.MaxHP, maxHp);
             unit.Attributes.SetBaseValue(PFAttributeId.HP, hp);
             return unit;

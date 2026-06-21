@@ -56,13 +56,16 @@ namespace PFGAS.Editor
     public sealed class PFAttributeProcessorCodeContext
     {
         private readonly IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById;
+        private readonly HashSet<int> allowedAttributeIds;
 
         public PFAttributeProcessorCodeContext(
             PFAttributeGenerationAttributeInfo owner,
-            IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById)
+            IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById,
+            IEnumerable<int> allowedAttributeIds)
         {
             Owner = owner;
             this.attributesById = attributesById;
+            this.allowedAttributeIds = new HashSet<int>(allowedAttributeIds);
         }
 
         public PFAttributeGenerationAttributeInfo Owner { get; }
@@ -82,6 +85,12 @@ namespace PFGAS.Editor
             if (!attributesById.TryGetValue(attributeId, out attribute))
             {
                 error = $"Required attribute id '{attributeId}' does not exist.";
+                return false;
+            }
+
+            if (!allowedAttributeIds.Contains(attributeId))
+            {
+                error = $"Required attribute '{attribute.Name}' is not in the same AttributeSet.";
                 return false;
             }
 

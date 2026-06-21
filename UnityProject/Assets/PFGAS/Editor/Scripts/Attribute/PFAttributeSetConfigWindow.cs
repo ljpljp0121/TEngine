@@ -1,58 +1,20 @@
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 namespace PFGAS.Editor
 {
-    public sealed class PFAttributeConfigWindow : EditorWindow
+    public sealed class PFAttributeSetConfigWindow : EditorWindow
     {
         private PFAttributeConfigAsset config;
         private SerializedObject serializedConfig;
         private Vector2 scrollPosition;
 
-        public static string ConfigPath
-        {
-            get
-            {
-                var guids = AssetDatabase.FindAssets("t:Script PFAttributeConfigWindow");
-                if (guids.Length == 0)
-                {
-                    return "Assets/PFGAS/Editor/Scripts/Attribute/PFAttributeConfig.asset";
-                }
-
-                var scriptPath = AssetDatabase.GUIDToAssetPath(guids[0]);
-                var dir = Path.GetDirectoryName(scriptPath);
-                return Path.Combine(dir ?? string.Empty, "PFAttributeConfig.asset").Replace("\\", "/");
-            }
-        }
-
-        [MenuItem("Game/Attribute", false, 101)]
+        [MenuItem("Game/AttributeSet", false, 102)]
         public static void ShowWindow()
         {
-            var window = GetWindow<PFAttributeConfigWindow>("Attribute");
-            window.minSize = new Vector2(520f, 420f);
+            var window = GetWindow<PFAttributeSetConfigWindow>("AttributeSet");
+            window.minSize = new Vector2(640f, 460f);
             window.Show();
-        }
-
-        internal static PFAttributeConfigAsset LoadOrCreateConfigAsset()
-        {
-            var config = AssetDatabase.LoadAssetAtPath<PFAttributeConfigAsset>(ConfigPath);
-            if (config != null)
-            {
-                return config;
-            }
-
-            config = CreateInstance<PFAttributeConfigAsset>();
-
-            var directory = Path.GetDirectoryName(ConfigPath);
-            if (!string.IsNullOrWhiteSpace(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            AssetDatabase.CreateAsset(config, ConfigPath);
-            AssetDatabase.SaveAssets();
-            return config;
         }
 
         private void OnEnable()
@@ -72,8 +34,8 @@ namespace PFGAS.Editor
             serializedConfig.Update();
 
             scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
-            var attributes = serializedConfig.FindProperty(nameof(PFAttributeConfigAsset.Attributes));
-            EditorGUILayout.PropertyField(attributes, new GUIContent("Attributes"), true);
+            var attributeSets = serializedConfig.FindProperty(nameof(PFAttributeConfigAsset.AttributeSets));
+            EditorGUILayout.PropertyField(attributeSets, new GUIContent("AttributeSets"), true);
             EditorGUILayout.EndScrollView();
 
             serializedConfig.ApplyModifiedProperties();
@@ -89,9 +51,9 @@ namespace PFGAS.Editor
                     OnGenerateClicked();
                 }
 
-                if (GUILayout.Button("Open AttributeSet", EditorStyles.toolbarButton, GUILayout.Width(120f)))
+                if (GUILayout.Button("Open Attribute", EditorStyles.toolbarButton, GUILayout.Width(110f)))
                 {
-                    PFAttributeSetConfigWindow.ShowWindow();
+                    PFAttributeConfigWindow.ShowWindow();
                 }
             }
         }
@@ -113,7 +75,7 @@ namespace PFGAS.Editor
 
         private void LoadConfig()
         {
-            config = LoadOrCreateConfigAsset();
+            config = PFAttributeConfigWindow.LoadOrCreateConfigAsset();
             serializedConfig = config == null ? null : new SerializedObject(config);
         }
 

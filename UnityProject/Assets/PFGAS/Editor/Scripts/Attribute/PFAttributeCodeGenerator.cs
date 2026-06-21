@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace PFGAS.Editor
 {
-    /// <summary>根据属性配置资产生成 AttributeId 和全局 AttributeRule 代码。</summary>
+    /// <summary>根据属性配置资产生成 AttributeId、AttributeSetId 和 AttributeSet 代码。</summary>
     public static class PFAttributeCodeGenerator
     {
         private const string FileName = "PFAttributeGenerated.cs";
@@ -33,7 +33,7 @@ namespace PFGAS.Editor
         {
             if (config == null)
             {
-                Debug.LogError("PFAttributeConfig not found. Open the Attribute Config window first.");
+                Debug.LogError("PFAttributeConfig not found. Open the Attribute window first.");
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace PFGAS.Editor
                 return;
             }
 
-            if (!TryBuildModel(config, out var attributes, out var error))
+            if (!TryBuildModel(config, out var attributes, out var attributeSets, out var error))
             {
                 Debug.LogError(error);
                 return;
@@ -56,7 +56,7 @@ namespace PFGAS.Editor
             }
 
             var outputPath = GetDefaultOutputPath();
-            GenerateFile(attributes, outputPath);
+            GenerateFile(attributes, attributeSets, outputPath);
             AssetDatabase.Refresh();
             Debug.Log($"Attribute code generated: {Path.Combine(outputPath, FileName).Replace("\\", "/")}");
         }
@@ -81,11 +81,12 @@ namespace PFGAS.Editor
                 }
             }
 
-            return "Assets/PFPackage/PFGAS/Runtime/Gen";
+            return "Assets/PFGAS/Runtime/Gen";
         }
 
         private static void GenerateFile(
             IReadOnlyList<AttributeModel> attributes,
+            IReadOnlyList<AttributeSetModel> attributeSets,
             string outputPath)
         {
             var sb = new StringBuilder();
@@ -98,7 +99,9 @@ namespace PFGAS.Editor
             sb.AppendLine("{");
             GenerateAttributeIdEnum(sb, attributes);
             sb.AppendLine();
-            GenerateAttributeRulesClass(sb, attributes);
+            GenerateAttributeSetIdEnum(sb, attributeSets);
+            sb.AppendLine();
+            GenerateAttributeSetsClass(sb, attributeSets);
             sb.AppendLine("}");
 
             Directory.CreateDirectory(outputPath);
@@ -121,73 +124,126 @@ namespace PFGAS.Editor
             sb.AppendLine("    }");
         }
 
-        private static void GenerateAttributeRulesClass(
+        private static void GenerateAttributeSetIdEnum(
             StringBuilder sb,
-            IReadOnlyList<AttributeModel> attributes)
+            IReadOnlyList<AttributeSetModel> attributeSets)
         {
-            sb.AppendLine("    public static class PFAttributeRules");
+            sb.AppendLine("    public enum PFAttributeSetId");
             sb.AppendLine("    {");
-            for (var i = 0; i < attributes.Count; i++)
+            for (var i = 0; i < attributeSets.Count; i++)
+            {
+                var attributeSet = attributeSets[i];
+                AppendXmlSummary(sb, 8, attributeSet.Config.Comment);
+                sb.AppendLine($"        {attributeSet.EnumName} = {attributeSet.Id},");
+            }
+
+            sb.AppendLine("    }");
+        }
+
+        private static void GenerateAttributeSetsClass(
+            StringBuilder sb,
+            IReadOnlyList<AttributeSetModel> attributeSets)
+        {
+            sb.AppendLine("    public static class PFAttributeSets");
+            sb.AppendLine("    {");
+            for (var i = 0; i < attributeSets.Count; i++)
             {
                 if (i > 0)
                 {
                     sb.AppendLine();
                 }
 
-                GenerateAttributeRuleField(sb, attributes[i]);
+                GenerateAttributeSetField(sb, attributeSets[i]);
             }
 
             sb.AppendLine();
-            sb.AppendLine("        private static readonly AttributeRule[] AllRules =");
+            sb.AppendLine("        private static readonly AttributeSet[] AllSets =");
             sb.AppendLine("        {");
-            for (var i = 0; i < attributes.Count; i++)
+            for (var i = 0; i < attributeSets.Count; i++)
             {
-                sb.AppendLine($"            {attributes[i].RuleName},");
+                sb.AppendLine($"            {attributeSets[i].FieldName},");
             }
 
             sb.AppendLine("        };");
             sb.AppendLine();
-            sb.AppendLine("        public static readonly System.Collections.ObjectModel.ReadOnlyCollection<AttributeRule> All =");
-            sb.AppendLine("            System.Array.AsReadOnly(AllRules);");
+            sb.AppendLine("        public static readonly System.Collections.ObjectModel.ReadOnlyCollection<AttributeSet> All =");
+            sb.AppendLine("            System.Array.AsReadOnly(AllSets);");
             sb.AppendLine();
-            sb.AppendLine("        public static AttributeRule Get(PFAttributeId attributeId)");
+            sb.AppendLine("        public static AttributeSet Get(PFAttributeSetId attributeSetId)");
             sb.AppendLine("        {");
-            sb.AppendLine("            switch (attributeId)");
+            sb.AppendLine("            switch (attributeSetId)");
             sb.AppendLine("            {");
-            for (var i = 0; i < attributes.Count; i++)
+            for (var i = 0; i < attributeSets.Count; i++)
             {
-                var attribute = attributes[i];
-                sb.AppendLine($"                case PFAttributeId.{attribute.EnumName}:");
-                sb.AppendLine($"                    return {attribute.RuleName};");
+                var attributeSet = attributeSets[i];
+                sb.AppendLine($"                case PFAttributeSetId.{attributeSet.EnumName}:");
+                sb.AppendLine($"                    return {attributeSet.FieldName};");
             }
 
             sb.AppendLine("                default:");
-            sb.AppendLine("                    throw new System.ArgumentOutOfRangeException(nameof(attributeId), attributeId, null);");
+            sb.AppendLine("                    throw new System.ArgumentOutOfRangeException(nameof(attributeSetId), attributeSetId, null);");
             sb.AppendLine("            }");
             sb.AppendLine("        }");
             sb.AppendLine("    }");
         }
 
-        private static void GenerateAttributeRuleField(StringBuilder sb, AttributeModel attribute)
+        private static void GenerateAttributeSetField(StringBuilder sb, AttributeSetModel attributeSet)
         {
-            AppendXmlSummary(sb, 8, attribute.Config.Comment);
-            sb.AppendLine($"        public static readonly AttributeRule {attribute.RuleName} =");
-            sb.AppendLine("            new AttributeRule(");
-            sb.AppendLine($"                PFAttributeId.{attribute.EnumName},");
-            sb.AppendLine($"                {FormatFloat(attribute.Config.DefaultValue)},");
-            sb.AppendLine($"                AggregationMode.{attribute.Config.AggregationMode},");
-            sb.AppendLine($"                {FormatMinValue(attribute.Config)},");
-            sb.AppendLine($"                {FormatMaxValue(attribute.Config)},");
-            sb.AppendLine($"                {attribute.BaseValueProcessorExpression},");
-            sb.AppendLine($"                {attribute.CurrentValueProcessorExpression});");
+            AppendXmlSummary(sb, 8, attributeSet.Config.Comment);
+            sb.AppendLine($"        public static readonly AttributeSet {attributeSet.FieldName} =");
+            sb.AppendLine("            new AttributeSet(");
+            sb.AppendLine($"                (int)PFAttributeSetId.{attributeSet.EnumName},");
+            sb.AppendLine($"                nameof(PFAttributeSetId.{attributeSet.EnumName}),");
+            sb.AppendLine("                new[]");
+            sb.AppendLine("                {");
+            for (var i = 0; i < attributeSet.Entries.Count; i++)
+            {
+                GenerateAttributeSetEntryExpression(sb, attributeSet.Entries[i], i == attributeSet.Entries.Count - 1);
+            }
+
+            sb.AppendLine("                });");
+        }
+
+        private static void GenerateAttributeSetEntryExpression(
+            StringBuilder sb,
+            AttributeSetEntryModel entry,
+            bool isLast)
+        {
+            sb.AppendLine("                    new AttributeSetEntry(");
+            sb.AppendLine($"                        PFAttributeId.{entry.Attribute.EnumName},");
+            sb.AppendLine($"                        {FormatFloat(entry.Config.DefaultValue)},");
+            sb.AppendLine($"                        AggregationMode.{entry.Config.AggregationMode},");
+            sb.AppendLine($"                        {FormatMinValue(entry.Config)},");
+            sb.AppendLine($"                        {FormatMaxValue(entry.Config)},");
+            sb.AppendLine($"                        {entry.BaseValueProcessorExpression},");
+            sb.AppendLine($"                        {entry.CurrentValueProcessorExpression}){(isLast ? string.Empty : ",")}");
         }
 
         private static bool TryBuildModel(
             PFAttributeConfigAsset config,
             out List<AttributeModel> attributes,
+            out List<AttributeSetModel> attributeSets,
             out string error)
         {
             attributes = new List<AttributeModel>();
+            attributeSets = new List<AttributeSetModel>();
+            error = null;
+
+            if (!TryBuildAttributes(config, attributes, out var attributesById, out error))
+            {
+                return false;
+            }
+
+            return TryBuildAttributeSets(config, attributesById, attributeSets, out error);
+        }
+
+        private static bool TryBuildAttributes(
+            PFAttributeConfigAsset config,
+            List<AttributeModel> attributes,
+            out Dictionary<int, PFAttributeGenerationAttributeInfo> attributesById,
+            out string error)
+        {
+            attributesById = new Dictionary<int, PFAttributeGenerationAttributeInfo>();
             error = null;
 
             if (config.Attributes == null || config.Attributes.Length == 0)
@@ -198,9 +254,6 @@ namespace PFGAS.Editor
 
             var attributeNames = new HashSet<string>(StringComparer.Ordinal);
             var attributeIds = new HashSet<int>();
-            var attributesById =
-                new Dictionary<int, PFAttributeGenerationAttributeInfo>();
-
             for (var attributeIndex = 0; attributeIndex < config.Attributes.Length; attributeIndex++)
             {
                 var attributeConfig = config.Attributes[attributeIndex];
@@ -235,43 +288,145 @@ namespace PFGAS.Editor
                     return false;
                 }
 
-                if (!ValidateValueRange(attributeConfig, out error))
+                var info = new PFAttributeGenerationAttributeInfo(attributeName, attributeConfig.Id);
+                attributesById.Add(attributeConfig.Id, info);
+                attributes.Add(new AttributeModel(info, attributeConfig));
+            }
+
+            return true;
+        }
+
+        private static bool TryBuildAttributeSets(
+            PFAttributeConfigAsset config,
+            IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById,
+            List<AttributeSetModel> attributeSets,
+            out string error)
+        {
+            error = null;
+            if (config.AttributeSets == null || config.AttributeSets.Length == 0)
+            {
+                error = "Attribute config has no attribute sets.";
+                return false;
+            }
+
+            var setNames = new HashSet<string>(StringComparer.Ordinal);
+            var setIds = new HashSet<int>();
+            for (var setIndex = 0; setIndex < config.AttributeSets.Length; setIndex++)
+            {
+                var setConfig = config.AttributeSets[setIndex];
+                if (setConfig == null)
                 {
-                    error = $"Attribute '{attributeName}' is invalid: {error}";
+                    error = $"AttributeSet at index {setIndex} is null.";
                     return false;
                 }
 
-                var info = new PFAttributeGenerationAttributeInfo(attributeName, attributeConfig.Id);
-                var model = new AttributeModel(info, attributeConfig);
-                attributesById.Add(attributeConfig.Id, info);
-                attributes.Add(model);
+                var setName = NormalizeName(setConfig.Name);
+                if (!IsValidIdentifier(setName))
+                {
+                    error = $"AttributeSet name '{setConfig.Name}' is not a valid C# identifier.";
+                    return false;
+                }
+
+                if (!setNames.Add(setName))
+                {
+                    error = $"Duplicate AttributeSet name '{setName}'.";
+                    return false;
+                }
+
+                if (setConfig.Id < 0)
+                {
+                    error = $"AttributeSet '{setName}' has invalid Id '{setConfig.Id}'.";
+                    return false;
+                }
+
+                if (!setIds.Add(setConfig.Id))
+                {
+                    error = $"Duplicate AttributeSet id '{setConfig.Id}'.";
+                    return false;
+                }
+
+                var setModel = new AttributeSetModel(setConfig);
+                if (!TryBuildAttributeSetEntries(setModel, attributesById, out error))
+                {
+                    error = $"AttributeSet '{setName}' is invalid: {error}";
+                    return false;
+                }
+
+                attributeSets.Add(setModel);
             }
 
-            for (var i = 0; i < attributes.Count; i++)
+            return true;
+        }
+
+        private static bool TryBuildAttributeSetEntries(
+            AttributeSetModel setModel,
+            IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById,
+            out string error)
+        {
+            error = null;
+            var entries = setModel.Config.Attributes;
+            if (entries == null || entries.Length == 0)
             {
-                var attribute = attributes[i];
-                EnsureProcessorConfigs(attribute.Config);
-                var context = new PFAttributeProcessorCodeContext(attribute.Info, attributesById);
-                if (!attribute.Config.BaseValueProcessor.TryBuildProcessorExpression(
+                error = "AttributeSet must contain at least one attribute.";
+                return false;
+            }
+
+            var idsInSet = new HashSet<int>();
+            for (var entryIndex = 0; entryIndex < entries.Length; entryIndex++)
+            {
+                var entryConfig = entries[entryIndex];
+                if (entryConfig == null)
+                {
+                    error = $"Entry at index {entryIndex} is null.";
+                    return false;
+                }
+
+                if (!attributesById.TryGetValue(entryConfig.AttributeId, out var attribute))
+                {
+                    error = $"Entry at index {entryIndex} references unknown attribute id '{entryConfig.AttributeId}'.";
+                    return false;
+                }
+
+                if (!idsInSet.Add(entryConfig.AttributeId))
+                {
+                    error = $"Attribute '{attribute.Name}' is duplicated in the set.";
+                    return false;
+                }
+
+                if (!ValidateValueRange(entryConfig, out error))
+                {
+                    error = $"Attribute '{attribute.Name}' is invalid: {error}";
+                    return false;
+                }
+
+                EnsureProcessorConfigs(entryConfig);
+                setModel.Entries.Add(new AttributeSetEntryModel(attribute, entryConfig));
+            }
+
+            for (var i = 0; i < setModel.Entries.Count; i++)
+            {
+                var entry = setModel.Entries[i];
+                var context = new PFAttributeProcessorCodeContext(entry.Attribute, attributesById, idsInSet);
+                if (!entry.Config.BaseValueProcessor.TryBuildProcessorExpression(
                         context,
                         out var baseValueProcessorExpression,
                         out error))
                 {
-                    error = $"Attribute '{attribute.Name}' is invalid: {error}";
+                    error = $"Attribute '{entry.Attribute.Name}' is invalid: {error}";
                     return false;
                 }
 
-                if (!attribute.Config.CurrentValueProcessor.TryBuildProcessorExpression(
+                if (!entry.Config.CurrentValueProcessor.TryBuildProcessorExpression(
                         context,
                         out var currentValueProcessorExpression,
                         out error))
                 {
-                    error = $"Attribute '{attribute.Name}' is invalid: {error}";
+                    error = $"Attribute '{entry.Attribute.Name}' is invalid: {error}";
                     return false;
                 }
 
-                attribute.BaseValueProcessorExpression = baseValueProcessorExpression;
-                attribute.CurrentValueProcessorExpression = currentValueProcessorExpression;
+                entry.BaseValueProcessorExpression = baseValueProcessorExpression;
+                entry.CurrentValueProcessorExpression = currentValueProcessorExpression;
             }
 
             return true;
@@ -287,7 +442,14 @@ namespace PFGAS.Editor
 
             if (config.Attributes == null)
             {
-                return true;
+                config.Attributes = Array.Empty<PFAttributeConfig>();
+                changed = true;
+            }
+
+            if (config.AttributeSets == null)
+            {
+                config.AttributeSets = Array.Empty<PFAttributeSetConfig>();
+                changed = true;
             }
 
             if (config.MaxId < 0)
@@ -296,6 +458,19 @@ namespace PFGAS.Editor
                 changed = true;
             }
 
+            if (config.MaxSetId < 0)
+            {
+                config.MaxSetId = 0;
+                changed = true;
+            }
+
+            AssignAttributeIds(config, ref changed);
+            AssignAttributeSetIds(config, ref changed);
+            return true;
+        }
+
+        private static void AssignAttributeIds(PFAttributeConfigAsset config, ref bool changed)
+        {
             var usedAttributeIds = new HashSet<int>();
             for (var attributeIndex = 0; attributeIndex < config.Attributes.Length; attributeIndex++)
             {
@@ -305,22 +480,9 @@ namespace PFGAS.Editor
                     continue;
                 }
 
-                if (attributeConfig.BaseValueProcessor == null)
-                {
-                    attributeConfig.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
-                    changed = true;
-                }
-
-                if (attributeConfig.CurrentValueProcessor == null)
-                {
-                    attributeConfig.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
-                    changed = true;
-                }
-
                 if (attributeConfig.Id < 0 || usedAttributeIds.Contains(attributeConfig.Id))
                 {
-                    var attributeId = AllocateStableId(ref config.MaxId, usedAttributeIds);
-                    attributeConfig.Id = attributeId;
+                    attributeConfig.Id = AllocateStableId(ref config.MaxId, usedAttributeIds);
                     changed = true;
                 }
                 else
@@ -333,8 +495,62 @@ namespace PFGAS.Editor
                     }
                 }
             }
+        }
 
-            return true;
+        private static void AssignAttributeSetIds(PFAttributeConfigAsset config, ref bool changed)
+        {
+            var usedSetIds = new HashSet<int>();
+            for (var setIndex = 0; setIndex < config.AttributeSets.Length; setIndex++)
+            {
+                var setConfig = config.AttributeSets[setIndex];
+                if (setConfig == null)
+                {
+                    continue;
+                }
+
+                if (setConfig.Id < 0 || usedSetIds.Contains(setConfig.Id))
+                {
+                    setConfig.Id = AllocateStableId(ref config.MaxSetId, usedSetIds);
+                    changed = true;
+                }
+                else
+                {
+                    usedSetIds.Add(setConfig.Id);
+                    if (config.MaxSetId <= setConfig.Id)
+                    {
+                        config.MaxSetId = setConfig.Id + 1;
+                        changed = true;
+                    }
+                }
+
+                if (setConfig.Attributes == null)
+                {
+                    setConfig.Attributes = Array.Empty<PFAttributeSetEntryConfig>();
+                    changed = true;
+                    continue;
+                }
+
+                for (var entryIndex = 0; entryIndex < setConfig.Attributes.Length; entryIndex++)
+                {
+                    var entry = setConfig.Attributes[entryIndex];
+                    if (entry == null)
+                    {
+                        continue;
+                    }
+
+                    if (entry.BaseValueProcessor == null)
+                    {
+                        entry.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
+                        changed = true;
+                    }
+
+                    if (entry.CurrentValueProcessor == null)
+                    {
+                        entry.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
+                        changed = true;
+                    }
+                }
+            }
         }
 
         private static int AllocateStableId(ref int nextId, HashSet<int> usedIds)
@@ -351,7 +567,7 @@ namespace PFGAS.Editor
         }
 
         private static bool ValidateValueRange(
-            PFAttributeConfig config,
+            PFAttributeSetEntryConfig config,
             out string error)
         {
             error = null;
@@ -396,25 +612,25 @@ namespace PFGAS.Editor
             return true;
         }
 
-        private static void EnsureProcessorConfigs(PFAttributeConfig attribute)
+        private static void EnsureProcessorConfigs(PFAttributeSetEntryConfig entry)
         {
-            if (attribute.BaseValueProcessor == null)
+            if (entry.BaseValueProcessor == null)
             {
-                attribute.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
+                entry.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
             }
 
-            if (attribute.CurrentValueProcessor == null)
+            if (entry.CurrentValueProcessor == null)
             {
-                attribute.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
+                entry.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
             }
         }
 
-        private static string FormatMinValue(PFAttributeConfig config)
+        private static string FormatMinValue(PFAttributeSetEntryConfig config)
         {
             return config.LimitMinValue ? FormatFloat(config.MinValue) : "float.MinValue";
         }
 
-        private static string FormatMaxValue(PFAttributeConfig config)
+        private static string FormatMaxValue(PFAttributeSetEntryConfig config)
         {
             return config.LimitMaxValue ? FormatFloat(config.MaxValue) : "float.MaxValue";
         }
@@ -465,7 +681,7 @@ namespace PFGAS.Editor
         private static string NormalizeOutputPath(string path)
         {
             return string.IsNullOrWhiteSpace(path)
-                ? "Assets/PFPackage/PFGAS/Runtime/Gen"
+                ? "Assets/PFGAS/Runtime/Gen"
                 : path.Trim().Replace("\\", "/").TrimEnd('/');
         }
 
@@ -511,7 +727,6 @@ namespace PFGAS.Editor
             return !float.IsNaN(value) && !float.IsInfinity(value);
         }
 
-        /// <summary>代码生成时使用的单条属性模型。</summary>
         private sealed class AttributeModel
         {
             public AttributeModel(
@@ -524,12 +739,40 @@ namespace PFGAS.Editor
 
             public readonly PFAttributeGenerationAttributeInfo Info;
             public readonly PFAttributeConfig Config;
-            public string BaseValueProcessorExpression;
-            public string CurrentValueProcessorExpression;
-            public string Name => Info.Name;
             public int Id => Info.Id;
             public string EnumName => Info.EnumName;
-            public string RuleName => Info.RuleName;
+        }
+
+        private sealed class AttributeSetModel
+        {
+            public AttributeSetModel(PFAttributeSetConfig config)
+            {
+                Config = config;
+                Name = NormalizeName(config.Name);
+            }
+
+            public readonly PFAttributeSetConfig Config;
+            public readonly List<AttributeSetEntryModel> Entries = new List<AttributeSetEntryModel>();
+            public readonly string Name;
+            public int Id => Config.Id;
+            public string EnumName => Name;
+            public string FieldName => EnumName;
+        }
+
+        private sealed class AttributeSetEntryModel
+        {
+            public AttributeSetEntryModel(
+                PFAttributeGenerationAttributeInfo attribute,
+                PFAttributeSetEntryConfig config)
+            {
+                Attribute = attribute;
+                Config = config;
+            }
+
+            public readonly PFAttributeGenerationAttributeInfo Attribute;
+            public readonly PFAttributeSetEntryConfig Config;
+            public string BaseValueProcessorExpression;
+            public string CurrentValueProcessorExpression;
         }
     }
 }

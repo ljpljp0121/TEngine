@@ -10,7 +10,10 @@ namespace PFGAS.Editor
     {
         [HideInInspector]
         public int MaxId = 0;
+        [HideInInspector]
+        public int MaxSetId = 0;
         public PFAttributeConfig[] Attributes = Array.Empty<PFAttributeConfig>();
+        public PFAttributeSetConfig[] AttributeSets = Array.Empty<PFAttributeSetConfig>();
 
         private void OnValidate()
         {
@@ -30,6 +33,37 @@ namespace PFGAS.Editor
         public int Id;
         public string Name;
         public string Comment;
+
+        public PFAttributeConfig()
+        {
+            Name = "Default";
+            Comment = "";
+        }
+    }
+
+    /// <summary>可以整体挂到 CombatUnit 上的一组 Attribute 初始化规则。</summary>
+    [Serializable]
+    public class PFAttributeSetConfig
+    {
+        [HideInInspector]
+        public int Id;
+        public string Name;
+        public string Comment;
+        public PFAttributeSetEntryConfig[] Attributes = Array.Empty<PFAttributeSetEntryConfig>();
+
+        public PFAttributeSetConfig()
+        {
+            Name = "Default";
+            Comment = "";
+        }
+    }
+
+    /// <summary>AttributeSet 中某个 Attribute 的默认值、范围和后处理器。</summary>
+    [Serializable]
+    public class PFAttributeSetEntryConfig
+    {
+        [PFAttributeReference]
+        public int AttributeId = -1;
         public float DefaultValue;
         public AggregationMode AggregationMode;
         public bool LimitMinValue;
@@ -41,10 +75,8 @@ namespace PFGAS.Editor
         [SerializeReference]
         public PFAttributeCurrentValueProcessorConfig CurrentValueProcessor;
 
-        public PFAttributeConfig()
+        public PFAttributeSetEntryConfig()
         {
-            Name = "Default";
-            Comment = "";
             DefaultValue = 0;
             AggregationMode = AggregationMode.Stacking;
             LimitMinValue = false;

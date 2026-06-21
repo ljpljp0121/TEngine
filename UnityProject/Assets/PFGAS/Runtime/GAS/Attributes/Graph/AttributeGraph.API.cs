@@ -64,55 +64,16 @@ namespace PFGAS.Runtime
             CommitPartialMutation(transaction, attributeId);
         }
 
-        /// <summary>按 AttributeRule 注册属性，使用规则中的默认基础值。</summary>
-        public void AddAttribute(AttributeRule rule)
+        /// <summary>注册一个 AttributeSet；Set 内的处理器依赖必须由同一个 Set 提供。</summary>
+        public void AddAttributeSet(AttributeSet attributeSet)
         {
             EnsureCanMutate();
-            AddAttributeRule(rule, rule.CreateValue());
-        }
-
-        /// <summary>按 AttributeRule 注册属性，但用传入值覆盖规则默认基础值。</summary>
-        public void AddAttribute(AttributeRule rule, float baseValue)
-        {
-            EnsureCanMutate();
-            AddAttributeRule(rule, rule.CreateValue(baseValue));
-        }
-
-        /// <summary>一次性注册属性规则列表，允许规则顺序和依赖顺序不同。</summary>
-        public void AddAttributes(IEnumerable<AttributeRule> rules)
-        {
-            EnsureCanMutate();
-            var ruleList = new List<AttributeRule>();
-            foreach (var rule in rules)
+            if (attributeSet == null)
             {
-                ruleList.Add(rule);
+                GASGuard.ThrowArgument("AttributeSet cannot be null.", nameof(attributeSet));
             }
 
-            if (ruleList.Count == 0)
-            {
-                return;
-            }
-
-            ValidateAttributeRules(ruleList);
-
-            using var transaction = BeginMutationTransaction();
-            var addedIds = new List<PFAttributeId>(ruleList.Count);
-            foreach (var rule in ruleList)
-            {
-                nodes.Add(rule.Id, new AttributeNode(rule.Id, rule.CreateValue()));
-                transaction.RecordAddedAttribute(rule.Id);
-                addedIds.Add(rule.Id);
-            }
-
-            MarkTopologyDirty();
-            for (var i = 0; i < ruleList.Count; i++)
-            {
-                var rule = ruleList[i];
-                ApplyProcessors(rule.Id, GetNode(rule.Id), rule, transaction);
-            }
-
-            RebuildTopology();
-            CommitAddedAttributes(transaction, addedIds);
+            AddAttributeSetEntries(attributeSet.Entries);
         }
 
         /// <summary>移除无依赖者且无活跃 Modifier 的属性。</summary>

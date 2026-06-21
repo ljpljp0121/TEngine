@@ -13,33 +13,41 @@ MonoBehaviour:
   m_Name: PFAttributeConfig
   m_EditorClassIdentifier: 
   MaxId: 2
+  MaxSetId: 1
   Attributes:
   - Id: 0
     Name: HP
-    Comment: 
-    DefaultValue: 100
-    AggregationMode: 0
-    LimitMinValue: 1
-    MinValue: 0
-    LimitMaxValue: 0
-    MaxValue: 999999
-    BaseValueProcessor:
-      rid: 6536707732479934499
-    CurrentValueProcessor:
-      rid: 6536707732479934498
+    Comment:
   - Id: 1
     Name: MaxHP
-    Comment: 
-    DefaultValue: 100
-    AggregationMode: 0
-    LimitMinValue: 1
-    MinValue: 1
-    LimitMaxValue: 0
-    MaxValue: 999999
-    BaseValueProcessor:
-      rid: 6536707732479934500
-    CurrentValueProcessor:
-      rid: 6536707732479934496
+    Comment:
+  AttributeSets:
+  - Id: 0
+    Name: Vital
+    Comment:
+    Attributes:
+    - AttributeId: 0
+      DefaultValue: 100
+      AggregationMode: 0
+      LimitMinValue: 1
+      MinValue: 0
+      LimitMaxValue: 0
+      MaxValue: 999999
+      BaseValueProcessor:
+        rid: 6536707732479934499
+      CurrentValueProcessor:
+        rid: 6536707732479934498
+    - AttributeId: 1
+      DefaultValue: 100
+      AggregationMode: 0
+      LimitMinValue: 1
+      MinValue: 1
+      LimitMaxValue: 0
+      MaxValue: 999999
+      BaseValueProcessor:
+        rid: 6536707732479934500
+      CurrentValueProcessor:
+        rid: 6536707732479934496
   references:
     version: 2
     RefIds:

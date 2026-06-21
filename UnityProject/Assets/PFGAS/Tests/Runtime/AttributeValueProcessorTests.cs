@@ -67,22 +67,48 @@ namespace PFGAS.Runtime.Tests
         }
 
         [Test]
-        public void BaseValueProcessorCycle_IsRejected()
+        public void AttributeSetProcessorDependencyOutsideSet_IsRejected()
         {
-            var graph = new AttributeGraph();
             var rules = new[]
             {
-                new AttributeRule(
+                new AttributeSetEntry(
                     PFAttributeId.HP,
                     1f,
                     baseValueProcessor: new ClampBaseValueProcessor(0f, PFAttributeId.MaxHP)),
-                new AttributeRule(
+            };
+
+            Assert.Throws<InvalidOperationException>(() => new AttributeSet(10, "Invalid", rules));
+        }
+
+        [Test]
+        public void AttributeSetProcessorCycle_IsRejected()
+        {
+            var rules = new[]
+            {
+                new AttributeSetEntry(
+                    PFAttributeId.HP,
+                    1f,
+                    baseValueProcessor: new ClampBaseValueProcessor(0f, PFAttributeId.MaxHP)),
+                new AttributeSetEntry(
                     PFAttributeId.MaxHP,
                     1f,
                     baseValueProcessor: new ClampBaseValueProcessor(0f, PFAttributeId.HP)),
             };
 
-            Assert.Throws<InvalidOperationException>(() => graph.AddAttributes(rules));
+            Assert.Throws<InvalidOperationException>(() => new AttributeSet(11, "Cycle", rules));
+        }
+
+        [Test]
+        public void CombatUnitAttachesAttributeSet()
+        {
+            using (var factory = new PFGASSampleUnitFactory())
+            {
+                var unit = factory.CreateUnit("AttributeSetTarget", hp: 75f, maxHp: 100f);
+
+                Assert.That(unit.Attributes.TryGetValue(PFAttributeId.HP, out _), Is.True);
+                Assert.That(unit.Attributes.TryGetValue(PFAttributeId.MaxHP, out _), Is.True);
+                Assert.That(unit.Attributes.GetBaseValue(PFAttributeId.HP), Is.EqualTo(75f));
+            }
         }
 
         [Test]

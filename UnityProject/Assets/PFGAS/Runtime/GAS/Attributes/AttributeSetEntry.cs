@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PFGAS.Runtime
 {
-    /// <summary>全局属性定义规则，描述默认值、聚合规则、静态范围和两阶段属性值处理器。</summary>
-    public sealed class AttributeRule
+    /// <summary>AttributeSet 中单个 Attribute 的初始化值、聚合规则、范围和两阶段后处理器。</summary>
+    public sealed class AttributeSetEntry
     {
         private readonly PFAttributeId[] requiredAttributes;
 
-        public AttributeRule(
+        public AttributeSetEntry(
             PFAttributeId id,
             float defaultValue,
             AggregationMode aggregationMode = AggregationMode.Stacking,

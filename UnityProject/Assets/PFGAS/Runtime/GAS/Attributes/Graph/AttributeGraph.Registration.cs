@@ -6,68 +6,80 @@ namespace PFGAS.Runtime
     /// <summary>处理属性注册、processor 依赖替换以及失败后的状态回滚。</summary>
     public sealed partial class AttributeGraph
     {
-        private void AddAttributeRule(AttributeRule rule, AttributeValue value)
+        private void AddAttributeSetEntries(IReadOnlyList<AttributeSetEntry> entries)
         {
-            ValidateAttributeRules(new[] { rule });
+            ValidateAttributeSetEntries(entries);
 
             using var transaction = BeginMutationTransaction();
-            nodes.Add(rule.Id, new AttributeNode(rule.Id, value));
-            transaction.RecordAddedAttribute(rule.Id);
-            MarkTopologyDirty();
-            ApplyProcessors(rule.Id, GetNode(rule.Id), rule, transaction);
-            RebuildTopology();
-            CommitAddedAttribute(transaction, rule.Id);
-        }
-
-        /// <summary>批量规则先整体校验，避免只注册一半时留下不可恢复依赖。</summary>
-        private void ValidateAttributeRules(IReadOnlyList<AttributeRule> rules)
-        {
-            var newRules = new Dictionary<PFAttributeId, AttributeRule>();
-            for (var i = 0; i < rules.Count; i++)
+            var addedIds = new List<PFAttributeId>(entries.Count);
+            for (var i = 0; i < entries.Count; i++)
             {
-                var rule = rules[i];
-                if (nodes.ContainsKey(rule.Id))
-                {
-                    GASGuard.ThrowInvalidOperation(
-                        $"Attribute '{rule.Id}' has already been added.");
-                }
-
-                if (newRules.ContainsKey(rule.Id))
-                {
-                    GASGuard.ThrowInvalidOperation(
-                        $"Attribute rule '{rule.Id}' is duplicated.");
-                }
-
-                newRules.Add(rule.Id, rule);
+                var entry = entries[i];
+                nodes.Add(entry.Id, new AttributeNode(entry.Id, entry.CreateValue()));
+                transaction.RecordAddedAttribute(entry.Id);
+                addedIds.Add(entry.Id);
             }
 
-            foreach (var pair in newRules)
+            MarkTopologyDirty();
+            for (var i = 0; i < entries.Count; i++)
+            {
+                var entry = entries[i];
+                ApplyProcessors(entry.Id, GetNode(entry.Id), entry, transaction);
+            }
+
+            RebuildTopology();
+            CommitAddedAttributes(transaction, addedIds);
+        }
+
+        /// <summary>AttributeSet 条目先整体校验，避免只注册一半时留下不可恢复依赖。</summary>
+        private void ValidateAttributeSetEntries(IReadOnlyList<AttributeSetEntry> entries)
+        {
+            var newEntries = new Dictionary<PFAttributeId, AttributeSetEntry>();
+            for (var i = 0; i < entries.Count; i++)
+            {
+                var entry = entries[i];
+                if (nodes.ContainsKey(entry.Id))
+                {
+                    GASGuard.ThrowInvalidOperation(
+                        $"Attribute '{entry.Id}' has already been added.");
+                }
+
+                if (newEntries.ContainsKey(entry.Id))
+                {
+                    GASGuard.ThrowInvalidOperation(
+                        $"AttributeSet entry '{entry.Id}' is duplicated.");
+                }
+
+                newEntries.Add(entry.Id, entry);
+            }
+
+            foreach (var pair in newEntries)
             {
                 var dependencies = pair.Value.RequiredAttributes;
                 for (var i = 0; i < dependencies.Count; i++)
                 {
                     var dependencyId = dependencies[i];
-                    if (!nodes.ContainsKey(dependencyId) && !newRules.ContainsKey(dependencyId))
+                    if (!nodes.ContainsKey(dependencyId) && !newEntries.ContainsKey(dependencyId))
                     {
                         GASGuard.ThrowInvalidOperation(
-                            $"Attribute rule '{pair.Key}' depends on missing attribute '{dependencyId}'.");
+                            $"AttributeSet entry '{pair.Key}' depends on missing attribute '{dependencyId}'.");
                     }
                 }
             }
 
             var visitStates = new Dictionary<PFAttributeId, int>();
-            foreach (var pair in newRules)
+            foreach (var pair in newEntries)
             {
-                VisitRuleDependencies(pair.Key, newRules, visitStates);
+                VisitEntryDependencies(pair.Key, newEntries, visitStates);
             }
         }
 
-        private static void VisitRuleDependencies(
+        private static void VisitEntryDependencies(
             PFAttributeId attributeId,
-            Dictionary<PFAttributeId, AttributeRule> rules,
+            Dictionary<PFAttributeId, AttributeSetEntry> entries,
             Dictionary<PFAttributeId, int> visitStates)
         {
-            if (!rules.TryGetValue(attributeId, out var rule))
+            if (!entries.TryGetValue(attributeId, out var entry))
             {
                 return;
             }
@@ -77,16 +89,16 @@ namespace PFGAS.Runtime
                 if (state == 1)
                 {
                     GASGuard.ThrowInvalidOperation(
-                        "Attribute rules contain a dependency cycle.");
+                        "AttributeSet entries contain a dependency cycle.");
                 }
 
                 return;
             }
 
             visitStates.Add(attributeId, 1);
-            for (var i = 0; i < rule.RequiredAttributes.Count; i++)
+            for (var i = 0; i < entry.RequiredAttributes.Count; i++)
             {
-                VisitRuleDependencies(rule.RequiredAttributes[i], rules, visitStates);
+                VisitEntryDependencies(entry.RequiredAttributes[i], entries, visitStates);
             }
 
             visitStates[attributeId] = 2;
@@ -124,21 +136,21 @@ namespace PFGAS.Runtime
         private void ApplyProcessors(
             PFAttributeId attributeId,
             AttributeNode node,
-            AttributeRule rule,
+            AttributeSetEntry entry,
             MutationTransaction transaction)
         {
             var baseValueDependencies = ValidateProcessorDependencies(
                 attributeId,
-                rule.BaseValueProcessor.Dependencies);
+                entry.BaseValueProcessor.Dependencies);
             var currentValueDependencies = ValidateProcessorDependencies(
                 attributeId,
-                rule.CurrentValueProcessor.Dependencies);
+                entry.CurrentValueProcessor.Dependencies);
             ApplyProcessors(
                 attributeId,
                 node,
-                rule.BaseValueProcessor,
+                entry.BaseValueProcessor,
                 baseValueDependencies,
-                rule.CurrentValueProcessor,
+                entry.CurrentValueProcessor,
                 currentValueDependencies,
                 transaction);
         }
