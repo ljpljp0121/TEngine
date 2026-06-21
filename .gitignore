@@ -18,6 +18,3 @@ UnityProject/ProjectSettings/BurstAotSettings_StandaloneWindows.json
 Tools/GameEventSourceGenerator/*/.idea
 Tools/GameEventSourceGenerator/*/bin
 Tools/GameEventSourceGenerator/*/obj
-
-#openspec
-openspec/
