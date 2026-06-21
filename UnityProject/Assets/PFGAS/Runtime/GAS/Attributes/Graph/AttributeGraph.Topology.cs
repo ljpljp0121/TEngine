@@ -35,35 +35,62 @@ namespace PFGAS.Runtime
             topologyDirty = false;
         }
 
-        /// <summary>替换 Evaluator 依赖边，保留其他来源的依赖引用计数。</summary>
-        private void ReplaceEvaluatorDependencies(
+        /// <summary>替换 BaseValue processor 依赖边，保留其他来源的依赖引用计数。</summary>
+        private void ReplaceBaseValueProcessorDependencies(
             PFAttributeId attributeId,
             AttributeNode node,
             IReadOnlyList<PFAttributeId> dependencies,
             bool skipMissingDependencies)
         {
-            foreach (var dependencyId in node.EvaluatorDependencies)
+            ReplaceProcessorDependencies(
+                attributeId,
+                node.BaseValueProcessorDependencies,
+                dependencies,
+                skipMissingDependencies);
+        }
+
+        /// <summary>替换 CurrentValue processor 依赖边，保留其他来源的依赖引用计数。</summary>
+        private void ReplaceCurrentValueProcessorDependencies(
+            PFAttributeId attributeId,
+            AttributeNode node,
+            IReadOnlyList<PFAttributeId> dependencies,
+            bool skipMissingDependencies)
+        {
+            ReplaceProcessorDependencies(
+                attributeId,
+                node.CurrentValueProcessorDependencies,
+                dependencies,
+                skipMissingDependencies);
+        }
+
+        private void ReplaceProcessorDependencies(
+            PFAttributeId attributeId,
+            HashSet<PFAttributeId> currentDependencies,
+            IReadOnlyList<PFAttributeId> nextDependencies,
+            bool skipMissingDependencies)
+        {
+            foreach (var dependencyId in currentDependencies)
             {
                 RemoveDependencyReference(attributeId, dependencyId);
             }
 
-            node.EvaluatorDependencies.Clear();
-            for (var i = 0; i < dependencies.Count; i++)
+            currentDependencies.Clear();
+            for (var i = 0; i < nextDependencies.Count; i++)
             {
-                var dependencyId = dependencies[i];
+                var dependencyId = nextDependencies[i];
                 if (skipMissingDependencies && !nodes.ContainsKey(dependencyId))
                 {
                     continue;
                 }
 
-                if (node.EvaluatorDependencies.Add(dependencyId))
+                if (currentDependencies.Add(dependencyId))
                 {
                     AddDependencyReference(attributeId, dependencyId);
                 }
             }
         }
 
-        /// <summary>增加一条依赖引用；同一依赖可由 Evaluator 和 Modifier 同时贡献。</summary>
+        /// <summary>增加一条依赖引用；同一依赖可由 processor 和 Modifier 同时贡献。</summary>
         private void AddDependencyReference(PFAttributeId attributeId, PFAttributeId dependencyId)
         {
             var node = nodes[attributeId];

@@ -482,9 +482,17 @@ namespace PFGAS.Runtime.Tests
                 RequireSuccess(target.Effects.ApplyToSelf(regen, source));
                 target.Effects.TryGetActiveEffect(firstApply.Handle, out var active);
 
+                var fullTarget = factory.CreateUnit("SampleFullRegenTarget", hp: 100f, maxHp: 100f);
+                RequireSuccess(fullTarget.Effects.ApplyToSelf(regen, source));
+                fullTarget.Effects.Tick(2f);
+
                 return "刷新型再生：HP=" + Format(hpBeforeRefresh) +
                        "，激活效果=" + target.Effects.ActiveEffectCount +
-                       "，刷新后剩余时间=" + Format(active != null ? active.RemainingTime : 0f);
+                       "，刷新后剩余时间=" + Format(active != null ? active.RemainingTime : 0f) +
+                       "，满血 HP Base/Current=" +
+                       Format(fullTarget.Attributes.GetBaseValue(PFAttributeId.HP)) +
+                       "/" +
+                       Format(fullTarget.Attributes.GetCurrentValue(PFAttributeId.HP));
             }
         }
 

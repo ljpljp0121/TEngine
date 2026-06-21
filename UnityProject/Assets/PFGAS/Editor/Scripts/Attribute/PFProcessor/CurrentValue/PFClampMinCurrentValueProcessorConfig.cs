@@ -2,17 +2,17 @@ using System;
 
 namespace PFGAS.Editor
 {
-    /// <summary>把最终值限制到指定最小属性当前值以上的 Evaluator 配置。</summary>
+    /// <summary>把最终值限制到指定最小属性当前值以上的 CurrentValue processor 配置。</summary>
     [Serializable]
-    public sealed class PFClampMinAttributeEvaluatorConfig : PFAttributeEvaluatorConfig
+    public sealed class PFClampMinCurrentValueProcessorConfig : PFAttributeCurrentValueProcessorConfig
     {
         [PFAttributeReference]
         public int MinAttributeId = -1;
 
         public override string DisplayName => "Clamp Min";
 
-        public override bool TryBuildEvaluatorExpression(
-            PFAttributeEvaluatorCodeContext context,
+        public override bool TryBuildProcessorExpression(
+            PFAttributeProcessorCodeContext context,
             out string expression,
             out string error)
         {
@@ -22,7 +22,7 @@ namespace PFGAS.Editor
                 return false;
             }
 
-            expression = $"new ClampMinAttributeEvaluator({context.GetAttributeIdExpression(minAttribute)})";
+            expression = $"new ClampMinCurrentValueProcessor({context.GetAttributeIdExpression(minAttribute)})";
             return true;
         }
     }

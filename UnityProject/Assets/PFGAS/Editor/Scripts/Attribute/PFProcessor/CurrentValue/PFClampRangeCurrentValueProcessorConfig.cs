@@ -2,9 +2,9 @@ using System;
 
 namespace PFGAS.Editor
 {
-    /// <summary>把最终值限制到指定最小和最大属性当前值之间的 Evaluator 配置。</summary>
+    /// <summary>把最终值限制到指定最小和最大属性当前值之间的 CurrentValue processor 配置。</summary>
     [Serializable]
-    public sealed class PFClampRangeAttributeEvaluatorConfig : PFAttributeEvaluatorConfig
+    public sealed class PFClampRangeCurrentValueProcessorConfig : PFAttributeCurrentValueProcessorConfig
     {
         [PFAttributeReference]
         public int MinAttributeId = -1;
@@ -13,8 +13,8 @@ namespace PFGAS.Editor
 
         public override string DisplayName => "Clamp Range";
 
-        public override bool TryBuildEvaluatorExpression(
-            PFAttributeEvaluatorCodeContext context,
+        public override bool TryBuildProcessorExpression(
+            PFAttributeProcessorCodeContext context,
             out string expression,
             out string error)
         {
@@ -33,7 +33,7 @@ namespace PFGAS.Editor
             }
 
             expression =
-                $"new ClampRangeAttributeEvaluator({context.GetAttributeIdExpression(minAttribute)}, {context.GetAttributeIdExpression(maxAttribute)})";
+                $"new ClampRangeCurrentValueProcessor({context.GetAttributeIdExpression(minAttribute)}, {context.GetAttributeIdExpression(maxAttribute)})";
             return true;
         }
     }

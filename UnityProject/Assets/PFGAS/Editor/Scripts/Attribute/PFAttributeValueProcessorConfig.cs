@@ -5,19 +5,14 @@ using UnityEngine;
 
 namespace PFGAS.Editor
 {
-    /// <summary>Attribute 编辑器中可生成运行时 IAttributeEvaluator 的配置基类。</summary>
+    /// <summary>Attribute 编辑器中可生成运行时属性值处理器的配置基类。</summary>
     [Serializable]
-    public abstract class PFAttributeEvaluatorConfig
+    public abstract class PFAttributeValueProcessorConfig
     {
         public abstract string DisplayName { get; }
 
-        public abstract bool TryBuildEvaluatorExpression(
-            PFAttributeEvaluatorCodeContext context,
-            out string expression,
-            out string error);
-
         protected static bool TryResolveDependency(
-            PFAttributeEvaluatorCodeContext context,
+            PFAttributeProcessorCodeContext context,
             int attributeId,
             out PFAttributeGenerationAttributeInfo attribute,
             out string error)
@@ -29,7 +24,7 @@ namespace PFGAS.Editor
 
             if (attribute.Id == context.Owner.Id)
             {
-                error = "Evaluator dependency cannot reference the owner attribute.";
+                error = "Processor dependency cannot reference the owner attribute.";
                 return false;
             }
 
@@ -37,12 +32,32 @@ namespace PFGAS.Editor
         }
     }
 
-    /// <summary>Evaluator 生成代码时用于解析属性名到 AttributeId 的上下文。</summary>
-    public sealed class PFAttributeEvaluatorCodeContext
+    /// <summary>可生成运行时 IAttributeBaseValueProcessor 的配置基类。</summary>
+    [Serializable]
+    public abstract class PFAttributeBaseValueProcessorConfig : PFAttributeValueProcessorConfig
+    {
+        public abstract bool TryBuildProcessorExpression(
+            PFAttributeProcessorCodeContext context,
+            out string expression,
+            out string error);
+    }
+
+    /// <summary>可生成运行时 IAttributeCurrentValueProcessor 的配置基类。</summary>
+    [Serializable]
+    public abstract class PFAttributeCurrentValueProcessorConfig : PFAttributeValueProcessorConfig
+    {
+        public abstract bool TryBuildProcessorExpression(
+            PFAttributeProcessorCodeContext context,
+            out string expression,
+            out string error);
+    }
+
+    /// <summary>处理器生成代码时用于解析属性名到 AttributeId 的上下文。</summary>
+    public sealed class PFAttributeProcessorCodeContext
     {
         private readonly IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById;
 
-        public PFAttributeEvaluatorCodeContext(
+        public PFAttributeProcessorCodeContext(
             PFAttributeGenerationAttributeInfo owner,
             IReadOnlyDictionary<int, PFAttributeGenerationAttributeInfo> attributesById)
         {
@@ -95,7 +110,7 @@ namespace PFGAS.Editor
         public string RuleName => EnumName;
     }
 
-    /// <summary>把字符串字段绘制为当前 Attribute 配置中的 Attribute 下拉框。</summary>
+    /// <summary>把整数字段绘制为当前 Attribute 配置中的 Attribute 下拉框。</summary>
     public sealed class PFAttributeReferenceAttribute : PropertyAttribute
     {
     }

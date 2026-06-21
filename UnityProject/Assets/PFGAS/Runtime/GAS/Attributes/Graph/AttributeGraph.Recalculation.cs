@@ -160,14 +160,23 @@ namespace PFGAS.Runtime
         {
             foreach (var node in orderedNodes)
             {
-                var rawValue = CalculateRawValue(node);
-                var finalValue = node.Evaluator.Evaluate(context, node.Id, rawValue);
-                if (!PFGASHelper.IsFinite(finalValue))
+                var value = node.Value;
+                var oldBaseValue = value.BaseValue;
+                value.SetBaseValue(ProcessBaseValue(node, value.BaseValue));
+                if (PFGASHelper.HasMeaningfulChange(oldBaseValue, value.BaseValue))
                 {
-                    GASGuard.ThrowInvalidOperation($"Attribute '{node.Id}' evaluated to a non-finite value.");
+                    TrackOriginalValue(node, trackChanges);
+                    node.Value = value;
                 }
 
-                var value = node.Value;
+                var rawValue = CalculateRawValue(node);
+                var finalValue = node.CurrentValueProcessor.Process(context, node.Id, rawValue);
+                if (!PFGASHelper.IsFinite(finalValue))
+                {
+                    GASGuard.ThrowInvalidOperation($"Attribute '{node.Id}' processed to a non-finite current value.");
+                }
+
+                value = node.Value;
                 var oldCurrentValue = value.CurrentValue;
                 value.SetCurrentValue(finalValue);
                 if (PFGASHelper.HasMeaningfulChange(oldCurrentValue, value.CurrentValue))
@@ -178,7 +187,18 @@ namespace PFGAS.Runtime
             }
         }
 
-        /// <summary>根据属性聚合模式计算进入 Evaluator 前的 raw value。</summary>
+        private float ProcessBaseValue(AttributeNode node, float proposedBaseValue)
+        {
+            var processedValue = node.BaseValueProcessor.Process(context, node.Id, proposedBaseValue);
+            if (!PFGASHelper.IsFinite(processedValue))
+            {
+                GASGuard.ThrowInvalidOperation($"Attribute '{node.Id}' processed to a non-finite base value.");
+            }
+
+            return processedValue;
+        }
+
+        /// <summary>根据属性聚合模式计算进入 CurrentValue processor 前的 raw value。</summary>
         private float CalculateRawValue(AttributeNode node)
         {
             switch (node.Value.CalculateMode)

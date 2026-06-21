@@ -10,14 +10,16 @@ namespace PFGAS.Editor
     public sealed class PFAttributeConfigDrawer : PropertyDrawer
     {
         private const float VerticalSpacing = 3f;
-        private static readonly GUIContent NameLabel = new GUIContent("\u5c5e\u6027\u540d");
-        private static readonly GUIContent CommentLabel = new GUIContent("\u5907\u6ce8");
-        private static readonly GUIContent DefaultValueLabel = new GUIContent("\u9ed8\u8ba4\u503c");
-        private static readonly GUIContent MinValueLabel = new GUIContent("\u6700\u5c0f\u503c");
-        private static readonly GUIContent MaxValueLabel = new GUIContent("\u6700\u5927\u503c");
-        private static readonly GUIContent AggregationModeLabel = new GUIContent("\u805a\u5408\u6a21\u5f0f");
-        private static readonly GUIContent EvaluatorLabel = new GUIContent("Evaluator");
-        private static List<EvaluatorOption> evaluatorOptions;
+        private static readonly GUIContent NameLabel = new GUIContent("属性名");
+        private static readonly GUIContent CommentLabel = new GUIContent("备注");
+        private static readonly GUIContent DefaultValueLabel = new GUIContent("默认值");
+        private static readonly GUIContent MinValueLabel = new GUIContent("最小值");
+        private static readonly GUIContent MaxValueLabel = new GUIContent("最大值");
+        private static readonly GUIContent AggregationModeLabel = new GUIContent("聚合模式");
+        private static readonly GUIContent BaseValueProcessorLabel = new GUIContent("BaseValue Processor");
+        private static readonly GUIContent CurrentValueProcessorLabel = new GUIContent("CurrentValue Processor");
+        private static List<ProcessorOption> baseValueProcessorOptions;
+        private static List<ProcessorOption> currentValueProcessorOptions;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
@@ -27,8 +29,12 @@ namespace PFGAS.Editor
                 return lineHeight + VerticalSpacing;
             }
 
-            var evaluator = property.FindPropertyRelative(nameof(PFAttributeConfig.Evaluator));
-            return lineHeight * 6f + VerticalSpacing * 6f + GetEvaluatorFieldsHeight(evaluator);
+            var baseValueProcessor = property.FindPropertyRelative(nameof(PFAttributeConfig.BaseValueProcessor));
+            var currentValueProcessor = property.FindPropertyRelative(nameof(PFAttributeConfig.CurrentValueProcessor));
+            return lineHeight * 7f +
+                   VerticalSpacing * 7f +
+                   GetProcessorFieldsHeight(baseValueProcessor) +
+                   GetProcessorFieldsHeight(currentValueProcessor);
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -44,7 +50,8 @@ namespace PFGAS.Editor
             var minValue = property.FindPropertyRelative(nameof(PFAttributeConfig.MinValue));
             var limitMaxValue = property.FindPropertyRelative(nameof(PFAttributeConfig.LimitMaxValue));
             var maxValue = property.FindPropertyRelative(nameof(PFAttributeConfig.MaxValue));
-            var evaluator = property.FindPropertyRelative(nameof(PFAttributeConfig.Evaluator));
+            var baseValueProcessor = property.FindPropertyRelative(nameof(PFAttributeConfig.BaseValueProcessor));
+            var currentValueProcessor = property.FindPropertyRelative(nameof(PFAttributeConfig.CurrentValueProcessor));
 
             var line = new Rect(position.x, position.y, position.width, EditorGUIUtility.singleLineHeight);
             property.isExpanded = EditorGUI.Foldout(line, property.isExpanded, GetTitle(name, id, comment, label), true);
@@ -66,7 +73,22 @@ namespace PFGAS.Editor
                     EditorGUI.PropertyField(line, aggregationMode, AggregationModeLabel);
 
                     line.y += line.height + VerticalSpacing;
-                    DrawEvaluator(ref line, evaluator);
+                    DrawProcessor(
+                        ref line,
+                        baseValueProcessor,
+                        BaseValueProcessorLabel,
+                        typeof(PFAttributeBaseValueProcessorConfig),
+                        typeof(PFDefaultAttributeBaseValueProcessorConfig),
+                        ref baseValueProcessorOptions);
+
+                    line.y += line.height + VerticalSpacing;
+                    DrawProcessor(
+                        ref line,
+                        currentValueProcessor,
+                        CurrentValueProcessorLabel,
+                        typeof(PFAttributeCurrentValueProcessorConfig),
+                        typeof(PFDefaultAttributeCurrentValueProcessorConfig),
+                        ref currentValueProcessorOptions);
                 }
             }
 
@@ -124,30 +146,36 @@ namespace PFGAS.Editor
             }
         }
 
-        private static void DrawEvaluator(ref Rect line, SerializedProperty evaluator)
+        private static void DrawProcessor(
+            ref Rect line,
+            SerializedProperty processor,
+            GUIContent label,
+            Type processorBaseType,
+            Type defaultProcessorType,
+            ref List<ProcessorOption> optionsCache)
         {
-            EnsureEvaluator(evaluator);
+            EnsureProcessor(processor, defaultProcessorType);
 
-            var options = GetEvaluatorOptions();
-            var selectedIndex = FindEvaluatorIndex(evaluator.managedReferenceValue?.GetType(), options);
+            var options = GetProcessorOptions(processorBaseType, defaultProcessorType, ref optionsCache);
+            var selectedIndex = FindProcessorIndex(processor.managedReferenceValue?.GetType(), options);
             var labels = new GUIContent[options.Count];
             for (var i = 0; i < options.Count; i++)
             {
                 labels[i] = options[i].Label;
             }
 
-            var nextIndex = EditorGUI.Popup(line, EvaluatorLabel, selectedIndex, labels);
+            var nextIndex = EditorGUI.Popup(line, label, selectedIndex, labels);
             if (nextIndex != selectedIndex)
             {
-                evaluator.managedReferenceValue = Activator.CreateInstance(options[nextIndex].Type);
+                processor.managedReferenceValue = Activator.CreateInstance(options[nextIndex].Type);
             }
 
-            DrawEvaluatorFields(ref line, evaluator);
+            DrawProcessorFields(ref line, processor);
         }
 
-        private static void DrawEvaluatorFields(ref Rect line, SerializedProperty evaluator)
+        private static void DrawProcessorFields(ref Rect line, SerializedProperty processor)
         {
-            var iterator = evaluator.Copy();
+            var iterator = processor.Copy();
             var end = iterator.GetEndProperty();
             var enterChildren = true;
             while (iterator.NextVisible(enterChildren) &&
@@ -163,15 +191,15 @@ namespace PFGAS.Editor
             line.height = EditorGUIUtility.singleLineHeight;
         }
 
-        private static float GetEvaluatorFieldsHeight(SerializedProperty evaluator)
+        private static float GetProcessorFieldsHeight(SerializedProperty processor)
         {
-            if (evaluator == null || evaluator.managedReferenceValue == null)
+            if (processor == null || processor.managedReferenceValue == null)
             {
                 return 0f;
             }
 
             var height = 0f;
-            var iterator = evaluator.Copy();
+            var iterator = processor.Copy();
             var end = iterator.GetEndProperty();
             var enterChildren = true;
             while (iterator.NextVisible(enterChildren) &&
@@ -184,17 +212,17 @@ namespace PFGAS.Editor
             return height;
         }
 
-        private static void EnsureEvaluator(SerializedProperty evaluator)
+        private static void EnsureProcessor(SerializedProperty processor, Type defaultProcessorType)
         {
-            if (evaluator.managedReferenceValue != null)
+            if (processor.managedReferenceValue != null)
             {
                 return;
             }
 
-            evaluator.managedReferenceValue = new PFDefaultAttributeEvaluatorConfig();
+            processor.managedReferenceValue = Activator.CreateInstance(defaultProcessorType);
         }
 
-        private static int FindEvaluatorIndex(Type type, IReadOnlyList<EvaluatorOption> options)
+        private static int FindProcessorIndex(Type type, IReadOnlyList<ProcessorOption> options)
         {
             for (var i = 0; i < options.Count; i++)
             {
@@ -207,15 +235,18 @@ namespace PFGAS.Editor
             return 0;
         }
 
-        private static List<EvaluatorOption> GetEvaluatorOptions()
+        private static List<ProcessorOption> GetProcessorOptions(
+            Type processorBaseType,
+            Type defaultProcessorType,
+            ref List<ProcessorOption> optionsCache)
         {
-            if (evaluatorOptions != null)
+            if (optionsCache != null)
             {
-                return evaluatorOptions;
+                return optionsCache;
             }
 
-            evaluatorOptions = new List<EvaluatorOption>();
-            var types = TypeCache.GetTypesDerivedFrom<PFAttributeEvaluatorConfig>();
+            optionsCache = new List<ProcessorOption>();
+            var types = TypeCache.GetTypesDerivedFrom(processorBaseType);
             foreach (var type in types)
             {
                 if (type.IsAbstract || type.GetConstructor(Type.EmptyTypes) == null)
@@ -223,24 +254,25 @@ namespace PFGAS.Editor
                     continue;
                 }
 
-                var instance = (PFAttributeEvaluatorConfig)Activator.CreateInstance(type);
-                evaluatorOptions.Add(new EvaluatorOption(
-                    type,
-                    new GUIContent(instance.DisplayName)));
+                var instance = (PFAttributeValueProcessorConfig)Activator.CreateInstance(type);
+                optionsCache.Add(new ProcessorOption(type, new GUIContent(instance.DisplayName)));
             }
 
-            evaluatorOptions.Sort(CompareEvaluatorOptions);
-            return evaluatorOptions;
+            optionsCache.Sort((a, b) => CompareProcessorOptions(a, b, defaultProcessorType));
+            return optionsCache;
         }
 
-        private static int CompareEvaluatorOptions(EvaluatorOption a, EvaluatorOption b)
+        private static int CompareProcessorOptions(
+            ProcessorOption a,
+            ProcessorOption b,
+            Type defaultProcessorType)
         {
-            if (a.Type == typeof(PFDefaultAttributeEvaluatorConfig))
+            if (a.Type == defaultProcessorType)
             {
-                return b.Type == typeof(PFDefaultAttributeEvaluatorConfig) ? 0 : -1;
+                return b.Type == defaultProcessorType ? 0 : -1;
             }
 
-            if (b.Type == typeof(PFDefaultAttributeEvaluatorConfig))
+            if (b.Type == defaultProcessorType)
             {
                 return 1;
             }
@@ -248,9 +280,9 @@ namespace PFGAS.Editor
             return string.Compare(a.Label.text, b.Label.text, StringComparison.Ordinal);
         }
 
-        private readonly struct EvaluatorOption
+        private readonly struct ProcessorOption
         {
-            public EvaluatorOption(Type type, GUIContent label)
+            public ProcessorOption(Type type, GUIContent label)
             {
                 Type = type;
                 Label = label;

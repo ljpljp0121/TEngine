@@ -1,6 +1,6 @@
 namespace PFGAS.Runtime
 {
-    /// <summary>Evaluator 和 Magnitude 读取 AttributeGraph 值的只读上下文。</summary>
+    /// <summary>processor 和 Magnitude 读取 AttributeGraph 值的只读上下文。</summary>
     public sealed class AttributeGraphContext
     {
         private readonly AttributeGraph graph;

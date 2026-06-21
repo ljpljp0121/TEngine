@@ -2,15 +2,20 @@
     "name": "com.peifeng.pfgas.Tests",
     "rootNamespace": "",
     "references": [
-        "com.peifeng.pfgas.Runtime"
+        "com.peifeng.pfgas.Runtime",
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
-    "precompiledReferences": [],
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
     "autoReferenced": false,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

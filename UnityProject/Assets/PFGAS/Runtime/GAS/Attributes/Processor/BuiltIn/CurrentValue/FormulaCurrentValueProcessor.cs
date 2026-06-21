@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PFGAS.Runtime
 {
-    /// <summary>用委托公式计算最终 CurrentValue 的 Evaluator。</summary>
-    public sealed class FormulaAttributeEvaluator : IAttributeEvaluator
+    /// <summary>用委托公式计算最终 CurrentValue 的 processor。</summary>
+    public sealed class FormulaCurrentValueProcessor : IAttributeCurrentValueProcessor
     {
         private readonly Func<AttributeGraphContext, PFAttributeId, float, float> formula;
 
-        public FormulaAttributeEvaluator(
+        public FormulaCurrentValueProcessor(
             IEnumerable<PFAttributeId> dependencies,
             Func<AttributeGraphContext, PFAttributeId, float, float> formula)
         {
@@ -18,9 +18,9 @@ namespace PFGAS.Runtime
 
         public IReadOnlyList<PFAttributeId> Dependencies { get; }
 
-        public float Evaluate(AttributeGraphContext context, PFAttributeId attributeId, float rawValue)
+        public float Process(AttributeGraphContext context, PFAttributeId attributeId, float rawCurrentValue)
         {
-            return formula(context, attributeId, rawValue);
+            return formula(context, attributeId, rawCurrentValue);
         }
     }
 }

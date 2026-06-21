@@ -11,7 +11,7 @@ GameProto	Assets/GameScripts/HotFix/GameProto/GameProto.asmdef
 PFGASGenerated	Assets/GameScripts/HotFix/PFGASGenerated/PFGASGenerated.asmdef				
 com.peifeng.pfgas.Editor	Assets/PFGAS/Editor/Scripts/com.peifeng.pfgas.Editor.asmdef	Editor			
 com.peifeng.pfgas.Editor.Tests	Assets/PFGAS/Tests/Editor/com.peifeng.pfgas.Editor.Tests.asmdef	Editor		UNITY_INCLUDE_TESTS	
-com.peifeng.pfgas.Tests	Assets/PFGAS/Tests/Runtime/com.peifeng.pfgas.Tests.asmdef				
+com.peifeng.pfgas.Tests	Assets/PFGAS/Tests/Runtime/com.peifeng.pfgas.Tests.asmdef			UNITY_INCLUDE_TESTS	
 com.peifeng.pfgraph.Editor	Assets/PFGraph/Editor/Scripts/com.peifeng.pfgraph.Editor.asmdef	Editor			
 ToolbarExtender	Assets/PFPackage/EditorEnhance/ToolbarExtender/ToolbarExtender.asmdef	Editor			
 VFolders	Assets/PFPackage/EditorEnhance/vFolders/VFolders.asmdef	Editor			

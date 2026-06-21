@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PFGAS.Runtime
 {
-    /// <summary>处理属性注册、Evaluator 依赖替换以及失败后的状态回滚。</summary>
+    /// <summary>处理属性注册、processor 依赖替换以及失败后的状态回滚。</summary>
     public sealed partial class AttributeGraph
     {
         private void AddAttributeRule(AttributeRule rule, AttributeValue value)
@@ -14,7 +14,7 @@ namespace PFGAS.Runtime
             nodes.Add(rule.Id, new AttributeNode(rule.Id, value));
             transaction.RecordAddedAttribute(rule.Id);
             MarkTopologyDirty();
-            ApplyEvaluator(rule.Id, GetNode(rule.Id), rule.Evaluator, rule.RequiredAttributes, transaction);
+            ApplyProcessors(rule.Id, GetNode(rule.Id), rule, transaction);
             RebuildTopology();
             CommitAddedAttribute(transaction, rule.Id);
         }
@@ -92,9 +92,10 @@ namespace PFGAS.Runtime
             visitStates[attributeId] = 2;
         }
 
-        private PFAttributeId[] ValidateEvaluatorDependencies(PFAttributeId attributeId, IAttributeEvaluator evaluator)
+        private PFAttributeId[] ValidateProcessorDependencies(
+            PFAttributeId attributeId,
+            IReadOnlyList<PFAttributeId> dependencies)
         {
-            var dependencies = evaluator.Dependencies;
             if (dependencies.Count == 0)
             {
                 return Array.Empty<PFAttributeId>();
@@ -120,35 +121,104 @@ namespace PFGAS.Runtime
             return result.ToArray();
         }
 
-        private void ApplyEvaluator(
+        private void ApplyProcessors(
             PFAttributeId attributeId,
             AttributeNode node,
-            IAttributeEvaluator evaluator,
-            IReadOnlyList<PFAttributeId> dependencies)
+            AttributeRule rule,
+            MutationTransaction transaction)
         {
-            ReplaceEvaluatorDependencies(attributeId, node, dependencies, skipMissingDependencies: false);
-            node.Evaluator = evaluator;
+            var baseValueDependencies = ValidateProcessorDependencies(
+                attributeId,
+                rule.BaseValueProcessor.Dependencies);
+            var currentValueDependencies = ValidateProcessorDependencies(
+                attributeId,
+                rule.CurrentValueProcessor.Dependencies);
+            ApplyProcessors(
+                attributeId,
+                node,
+                rule.BaseValueProcessor,
+                baseValueDependencies,
+                rule.CurrentValueProcessor,
+                currentValueDependencies,
+                transaction);
         }
 
-        private void ApplyEvaluator(
+        private void ApplyProcessors(
             PFAttributeId attributeId,
             AttributeNode node,
-            IAttributeEvaluator evaluator,
+            IAttributeBaseValueProcessor baseValueProcessor,
+            IReadOnlyList<PFAttributeId> baseValueDependencies,
+            IAttributeCurrentValueProcessor currentValueProcessor,
+            IReadOnlyList<PFAttributeId> currentValueDependencies,
+            MutationTransaction transaction)
+        {
+            transaction.RecordProcessors(attributeId, node);
+            ApplyBaseValueProcessor(attributeId, node, baseValueProcessor, baseValueDependencies);
+            ApplyCurrentValueProcessor(attributeId, node, currentValueProcessor, currentValueDependencies);
+        }
+
+        private void ApplyBaseValueProcessor(
+            PFAttributeId attributeId,
+            AttributeNode node,
+            IAttributeBaseValueProcessor processor,
+            IReadOnlyList<PFAttributeId> dependencies)
+        {
+            ReplaceBaseValueProcessorDependencies(attributeId, node, dependencies, skipMissingDependencies: false);
+            node.BaseValueProcessor = processor;
+        }
+
+        private void ApplyBaseValueProcessor(
+            PFAttributeId attributeId,
+            AttributeNode node,
+            IAttributeBaseValueProcessor processor,
             IReadOnlyList<PFAttributeId> dependencies,
             MutationTransaction transaction)
         {
-            transaction.RecordEvaluator(attributeId, node);
-            ApplyEvaluator(attributeId, node, evaluator, dependencies);
+            transaction.RecordProcessors(attributeId, node);
+            ApplyBaseValueProcessor(attributeId, node, processor, dependencies);
         }
 
-        private void RestoreEvaluator(
+        private void ApplyCurrentValueProcessor(
             PFAttributeId attributeId,
             AttributeNode node,
-            IAttributeEvaluator evaluator,
+            IAttributeCurrentValueProcessor processor,
             IReadOnlyList<PFAttributeId> dependencies)
         {
-            ReplaceEvaluatorDependencies(attributeId, node, dependencies, skipMissingDependencies: true);
-            node.Evaluator = evaluator;
+            ReplaceCurrentValueProcessorDependencies(attributeId, node, dependencies, skipMissingDependencies: false);
+            node.CurrentValueProcessor = processor;
+        }
+
+        private void ApplyCurrentValueProcessor(
+            PFAttributeId attributeId,
+            AttributeNode node,
+            IAttributeCurrentValueProcessor processor,
+            IReadOnlyList<PFAttributeId> dependencies,
+            MutationTransaction transaction)
+        {
+            transaction.RecordProcessors(attributeId, node);
+            ApplyCurrentValueProcessor(attributeId, node, processor, dependencies);
+        }
+
+        private void RestoreProcessors(
+            PFAttributeId attributeId,
+            AttributeNode node,
+            IAttributeBaseValueProcessor baseValueProcessor,
+            IReadOnlyList<PFAttributeId> baseValueDependencies,
+            IAttributeCurrentValueProcessor currentValueProcessor,
+            IReadOnlyList<PFAttributeId> currentValueDependencies)
+        {
+            ReplaceBaseValueProcessorDependencies(
+                attributeId,
+                node,
+                baseValueDependencies,
+                skipMissingDependencies: true);
+            ReplaceCurrentValueProcessorDependencies(
+                attributeId,
+                node,
+                currentValueDependencies,
+                skipMissingDependencies: true);
+            node.BaseValueProcessor = baseValueProcessor;
+            node.CurrentValueProcessor = currentValueProcessor;
         }
     }
 }

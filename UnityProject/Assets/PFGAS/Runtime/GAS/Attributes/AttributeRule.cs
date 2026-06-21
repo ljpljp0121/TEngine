@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PFGAS.Runtime
 {
-    /// <summary>全局属性定义规则，描述属性默认值、聚合规则、静态范围和最终 Evaluator。</summary>
+    /// <summary>全局属性定义规则，描述默认值、聚合规则、静态范围和两阶段属性值处理器。</summary>
     public sealed class AttributeRule
     {
         private readonly PFAttributeId[] requiredAttributes;
@@ -14,15 +14,19 @@ namespace PFGAS.Runtime
             AggregationMode aggregationMode = AggregationMode.Stacking,
             float minValue = float.MinValue,
             float maxValue = float.MaxValue,
-            IAttributeEvaluator evaluator = null)
+            IAttributeBaseValueProcessor baseValueProcessor = null,
+            IAttributeCurrentValueProcessor currentValueProcessor = null)
         {
             Id = id;
             DefaultValue = defaultValue;
             AggregationMode = aggregationMode;
             MinValue = minValue;
             MaxValue = maxValue;
-            Evaluator = evaluator ?? DefaultAttributeEvaluator.Instance;
-            requiredAttributes = CopyUniqueDependencies(Evaluator.Dependencies);
+            BaseValueProcessor = baseValueProcessor ?? DefaultAttributeBaseValueProcessor.Instance;
+            CurrentValueProcessor = currentValueProcessor ?? DefaultAttributeCurrentValueProcessor.Instance;
+            requiredAttributes = CopyUniqueDependencies(
+                BaseValueProcessor.Dependencies,
+                CurrentValueProcessor.Dependencies);
         }
 
         public PFAttributeId Id { get; }
@@ -30,7 +34,8 @@ namespace PFGAS.Runtime
         public AggregationMode AggregationMode { get; }
         public float MinValue { get; }
         public float MaxValue { get; }
-        public IAttributeEvaluator Evaluator { get; }
+        public IAttributeBaseValueProcessor BaseValueProcessor { get; }
+        public IAttributeCurrentValueProcessor CurrentValueProcessor { get; }
         public IReadOnlyList<PFAttributeId> RequiredAttributes => requiredAttributes;
 
         public AttributeValue CreateValue()
@@ -43,15 +48,19 @@ namespace PFGAS.Runtime
             return new AttributeValue(baseValue, AggregationMode, MinValue, MaxValue);
         }
 
-        private static PFAttributeId[] CopyUniqueDependencies(IReadOnlyList<PFAttributeId> dependencies)
+        private static PFAttributeId[] CopyUniqueDependencies(
+            IReadOnlyList<PFAttributeId> baseValueDependencies,
+            IReadOnlyList<PFAttributeId> currentValueDependencies)
         {
-            if (dependencies.Count == 0)
+            if (baseValueDependencies.Count == 0 && currentValueDependencies.Count == 0)
             {
                 return Array.Empty<PFAttributeId>();
             }
 
-            var result = new List<PFAttributeId>(dependencies.Count);
-            PFGASHelper.AddRangeUnique(result, dependencies);
+            var result = new List<PFAttributeId>(
+                baseValueDependencies.Count + currentValueDependencies.Count);
+            PFGASHelper.AddRangeUnique(result, baseValueDependencies);
+            PFGASHelper.AddRangeUnique(result, currentValueDependencies);
             return result.ToArray();
         }
     }

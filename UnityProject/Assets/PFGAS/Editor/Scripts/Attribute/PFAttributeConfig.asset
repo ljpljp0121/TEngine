@@ -23,7 +23,9 @@ MonoBehaviour:
     MinValue: 0
     LimitMaxValue: 0
     MaxValue: 999999
-    Evaluator:
+    BaseValueProcessor:
+      rid: 6536707732479934499
+    CurrentValueProcessor:
       rid: 6536707732479934498
   - Id: 1
     Name: MaxHP
@@ -34,15 +36,25 @@ MonoBehaviour:
     MinValue: 1
     LimitMaxValue: 0
     MaxValue: 999999
-    Evaluator:
+    BaseValueProcessor:
+      rid: 6536707732479934500
+    CurrentValueProcessor:
       rid: 6536707732479934496
   references:
     version: 2
     RefIds:
     - rid: 6536707732479934496
-      type: {class: PFDefaultAttributeEvaluatorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
+      type: {class: PFDefaultAttributeCurrentValueProcessorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
       data: 
     - rid: 6536707732479934498
-      type: {class: PFClampMaxAttributeEvaluatorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
+      type: {class: PFClampMaxCurrentValueProcessorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
       data:
         MaxAttributeId: 1
+    - rid: 6536707732479934499
+      type: {class: PFClampBaseValueProcessorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
+      data:
+        MinValue: 0
+        MaxAttributeId: 1
+    - rid: 6536707732479934500
+      type: {class: PFDefaultAttributeBaseValueProcessorConfig, ns: PFGAS.Editor, asm: com.peifeng.pfgas.Editor}
+      data: 

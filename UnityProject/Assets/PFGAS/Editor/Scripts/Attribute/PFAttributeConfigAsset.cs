@@ -37,7 +37,9 @@ namespace PFGAS.Editor
         public bool LimitMaxValue;
         public float MaxValue;
         [SerializeReference]
-        public PFAttributeEvaluatorConfig Evaluator;
+        public PFAttributeBaseValueProcessorConfig BaseValueProcessor;
+        [SerializeReference]
+        public PFAttributeCurrentValueProcessorConfig CurrentValueProcessor;
 
         public PFAttributeConfig()
         {
@@ -49,7 +51,8 @@ namespace PFGAS.Editor
             MinValue = 0;
             LimitMaxValue = false;
             MaxValue = 999999;
-            Evaluator = new PFDefaultAttributeEvaluatorConfig();
+            BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
+            CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
         }
     }
 }

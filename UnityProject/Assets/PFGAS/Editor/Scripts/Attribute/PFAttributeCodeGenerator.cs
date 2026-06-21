@@ -178,7 +178,8 @@ namespace PFGAS.Editor
             sb.AppendLine($"                AggregationMode.{attribute.Config.AggregationMode},");
             sb.AppendLine($"                {FormatMinValue(attribute.Config)},");
             sb.AppendLine($"                {FormatMaxValue(attribute.Config)},");
-            sb.AppendLine($"                {attribute.EvaluatorExpression});");
+            sb.AppendLine($"                {attribute.BaseValueProcessorExpression},");
+            sb.AppendLine($"                {attribute.CurrentValueProcessorExpression});");
         }
 
         private static bool TryBuildModel(
@@ -249,18 +250,28 @@ namespace PFGAS.Editor
             for (var i = 0; i < attributes.Count; i++)
             {
                 var attribute = attributes[i];
-                EnsureEvaluatorConfig(attribute.Config);
-                var context = new PFAttributeEvaluatorCodeContext(attribute.Info, attributesById);
-                if (!attribute.Config.Evaluator.TryBuildEvaluatorExpression(
+                EnsureProcessorConfigs(attribute.Config);
+                var context = new PFAttributeProcessorCodeContext(attribute.Info, attributesById);
+                if (!attribute.Config.BaseValueProcessor.TryBuildProcessorExpression(
                         context,
-                        out var evaluatorExpression,
+                        out var baseValueProcessorExpression,
                         out error))
                 {
                     error = $"Attribute '{attribute.Name}' is invalid: {error}";
                     return false;
                 }
 
-                attribute.EvaluatorExpression = evaluatorExpression;
+                if (!attribute.Config.CurrentValueProcessor.TryBuildProcessorExpression(
+                        context,
+                        out var currentValueProcessorExpression,
+                        out error))
+                {
+                    error = $"Attribute '{attribute.Name}' is invalid: {error}";
+                    return false;
+                }
+
+                attribute.BaseValueProcessorExpression = baseValueProcessorExpression;
+                attribute.CurrentValueProcessorExpression = currentValueProcessorExpression;
             }
 
             return true;
@@ -294,9 +305,15 @@ namespace PFGAS.Editor
                     continue;
                 }
 
-                if (attributeConfig.Evaluator == null)
+                if (attributeConfig.BaseValueProcessor == null)
                 {
-                    attributeConfig.Evaluator = new PFDefaultAttributeEvaluatorConfig();
+                    attributeConfig.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
+                    changed = true;
+                }
+
+                if (attributeConfig.CurrentValueProcessor == null)
+                {
+                    attributeConfig.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
                     changed = true;
                 }
 
@@ -379,11 +396,16 @@ namespace PFGAS.Editor
             return true;
         }
 
-        private static void EnsureEvaluatorConfig(PFAttributeConfig attribute)
+        private static void EnsureProcessorConfigs(PFAttributeConfig attribute)
         {
-            if (attribute.Evaluator == null)
+            if (attribute.BaseValueProcessor == null)
             {
-                attribute.Evaluator = new PFDefaultAttributeEvaluatorConfig();
+                attribute.BaseValueProcessor = new PFDefaultAttributeBaseValueProcessorConfig();
+            }
+
+            if (attribute.CurrentValueProcessor == null)
+            {
+                attribute.CurrentValueProcessor = new PFDefaultAttributeCurrentValueProcessorConfig();
             }
         }
 
@@ -502,7 +524,8 @@ namespace PFGAS.Editor
 
             public readonly PFAttributeGenerationAttributeInfo Info;
             public readonly PFAttributeConfig Config;
-            public string EvaluatorExpression;
+            public string BaseValueProcessorExpression;
+            public string CurrentValueProcessorExpression;
             public string Name => Info.Name;
             public int Id => Info.Id;
             public string EnumName => Info.EnumName;

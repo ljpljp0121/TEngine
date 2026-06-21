@@ -97,13 +97,22 @@ namespace PFGAS.Runtime
                 });
             }
 
-            public void RecordEvaluator(PFAttributeId attributeId, AttributeNode node)
+            public void RecordProcessors(PFAttributeId attributeId, AttributeNode node)
             {
-                var evaluator = node.Evaluator;
-                var dependencies = new PFAttributeId[node.EvaluatorDependencies.Count];
-                node.EvaluatorDependencies.CopyTo(dependencies);
+                var baseValueProcessor = node.BaseValueProcessor;
+                var baseValueDependencies = new PFAttributeId[node.BaseValueProcessorDependencies.Count];
+                node.BaseValueProcessorDependencies.CopyTo(baseValueDependencies);
+                var currentValueProcessor = node.CurrentValueProcessor;
+                var currentValueDependencies = new PFAttributeId[node.CurrentValueProcessorDependencies.Count];
+                node.CurrentValueProcessorDependencies.CopyTo(currentValueDependencies);
                 rollbackActions.Add(() =>
-                    graph.RestoreEvaluator(attributeId, node, evaluator, dependencies));
+                    graph.RestoreProcessors(
+                        attributeId,
+                        node,
+                        baseValueProcessor,
+                        baseValueDependencies,
+                        currentValueProcessor,
+                        currentValueDependencies));
             }
 
             public void RecordAddedModifierSource(ModifierSourceHandle handle, ModifierSource source)

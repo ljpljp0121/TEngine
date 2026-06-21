@@ -30,11 +30,12 @@ namespace PFGAS.Runtime
             }
         }
 
-        /// <summary>注册单个属性，并立即绑定 Evaluator 和依赖边。</summary>
+        /// <summary>注册单个属性，并立即绑定 BaseValue/CurrentValue processor 和依赖边。</summary>
         public void AddAttribute(
             PFAttributeId attributeId,
             AttributeValue value,
-            IAttributeEvaluator evaluator = null)
+            IAttributeBaseValueProcessor baseValueProcessor = null,
+            IAttributeCurrentValueProcessor currentValueProcessor = null)
         {
             EnsureCanMutate();
             if (nodes.ContainsKey(attributeId))
@@ -46,10 +47,19 @@ namespace PFGAS.Runtime
             nodes.Add(attributeId, new AttributeNode(attributeId, value));
             transaction.RecordAddedAttribute(attributeId);
             MarkTopologyDirty();
-            evaluator ??= DefaultAttributeEvaluator.Instance;
-            var dependencies = ValidateEvaluatorDependencies(attributeId, evaluator);
+            baseValueProcessor ??= DefaultAttributeBaseValueProcessor.Instance;
+            currentValueProcessor ??= DefaultAttributeCurrentValueProcessor.Instance;
+            var baseValueDependencies = ValidateProcessorDependencies(attributeId, baseValueProcessor.Dependencies);
+            var currentValueDependencies = ValidateProcessorDependencies(attributeId, currentValueProcessor.Dependencies);
             var node = GetNode(attributeId);
-            ApplyEvaluator(attributeId, node, evaluator, dependencies, transaction);
+            ApplyProcessors(
+                attributeId,
+                node,
+                baseValueProcessor,
+                baseValueDependencies,
+                currentValueProcessor,
+                currentValueDependencies,
+                transaction);
             RebuildTopology();
             CommitPartialMutation(transaction, attributeId);
         }
@@ -98,7 +108,7 @@ namespace PFGAS.Runtime
             for (var i = 0; i < ruleList.Count; i++)
             {
                 var rule = ruleList[i];
-                ApplyEvaluator(rule.Id, GetNode(rule.Id), rule.Evaluator, rule.RequiredAttributes, transaction);
+                ApplyProcessors(rule.Id, GetNode(rule.Id), rule, transaction);
             }
 
             RebuildTopology();
@@ -177,6 +187,7 @@ namespace PFGAS.Runtime
             var attributeValue = node.Value;
             var oldBaseValue = attributeValue.BaseValue;
             attributeValue.SetBaseValue(value);
+            attributeValue.SetBaseValue(ProcessBaseValue(node, attributeValue.BaseValue));
 
             if (PFGASHelper.IsNearlyEqual(oldBaseValue, attributeValue.BaseValue))
             {
@@ -212,7 +223,7 @@ namespace PFGAS.Runtime
             return SetBaseValue(attributeId, GetBaseValue(attributeId) + delta);
         }
 
-        /// <summary>替换属性 Evaluator，并同步更新 Evaluator 依赖边。</summary>
+        /// <summary>批量应用会落到 BaseValue 的 Modifier，并执行 BaseValue processor。</summary>
         public AttributeChange[] ApplyBaseModifiers(IEnumerable<AttributeModifier> modifiers)
         {
             EnsureCanMutate();
@@ -258,6 +269,7 @@ namespace PFGAS.Runtime
                 var attributeValue = node.Value;
                 var newBaseValue = ApplySingleModifier(attributeValue.BaseValue, modifier, context);
                 attributeValue.SetBaseValue(newBaseValue);
+                attributeValue.SetBaseValue(ProcessBaseValue(node, attributeValue.BaseValue));
                 node.Value = attributeValue;
             }
 
@@ -269,15 +281,28 @@ namespace PFGAS.Runtime
             return changes;
         }
 
-        public void SetEvaluator(PFAttributeId attributeId, IAttributeEvaluator evaluator)
+        public void SetBaseValueProcessor(PFAttributeId attributeId, IAttributeBaseValueProcessor processor)
         {
             EnsureCanMutate();
-            evaluator = evaluator ?? DefaultAttributeEvaluator.Instance;
-            var dependencies = ValidateEvaluatorDependencies(attributeId, evaluator);
+            processor ??= DefaultAttributeBaseValueProcessor.Instance;
+            var dependencies = ValidateProcessorDependencies(attributeId, processor.Dependencies);
 
             var node = GetNode(attributeId);
             using var transaction = BeginMutationTransaction();
-            ApplyEvaluator(attributeId, node, evaluator, dependencies, transaction);
+            ApplyBaseValueProcessor(attributeId, node, processor, dependencies, transaction);
+            RebuildTopology();
+            CommitPartialMutation(transaction, attributeId);
+        }
+
+        public void SetCurrentValueProcessor(PFAttributeId attributeId, IAttributeCurrentValueProcessor processor)
+        {
+            EnsureCanMutate();
+            processor ??= DefaultAttributeCurrentValueProcessor.Instance;
+            var dependencies = ValidateProcessorDependencies(attributeId, processor.Dependencies);
+
+            var node = GetNode(attributeId);
+            using var transaction = BeginMutationTransaction();
+            ApplyCurrentValueProcessor(attributeId, node, processor, dependencies, transaction);
             RebuildTopology();
             CommitPartialMutation(transaction, attributeId);
         }

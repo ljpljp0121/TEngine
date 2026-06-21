@@ -99,13 +99,17 @@ namespace PFGAS.Editor
 
         private static int GetOwnerAttributeId(SerializedProperty property)
         {
-            var evaluatorIndex = property.propertyPath.IndexOf(".Evaluator", System.StringComparison.Ordinal);
-            if (evaluatorIndex < 0)
+            var processorIndex = property.propertyPath.IndexOf(".BaseValueProcessor", System.StringComparison.Ordinal);
+            if (processorIndex < 0)
             {
-                return -1;
+                processorIndex = property.propertyPath.IndexOf(".CurrentValueProcessor", System.StringComparison.Ordinal);
+                if (processorIndex < 0)
+                {
+                    return -1;
+                }
             }
 
-            var ownerPath = property.propertyPath.Substring(0, evaluatorIndex);
+            var ownerPath = property.propertyPath.Substring(0, processorIndex);
             var owner = property.serializedObject.FindProperty(ownerPath);
             return owner == null
                 ? -1

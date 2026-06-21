@@ -20,7 +20,8 @@ namespace PFGAS.Runtime
                 AggregationMode.Stacking,
                 0f,
                 float.MaxValue,
-                new ClampMaxAttributeEvaluator(PFAttributeId.MaxHP));
+                new ClampBaseValueProcessor(0f, PFAttributeId.MaxHP),
+                new ClampMaxCurrentValueProcessor(PFAttributeId.MaxHP));
 
         public static readonly AttributeRule MaxHP =
             new AttributeRule(
@@ -29,7 +30,8 @@ namespace PFGAS.Runtime
                 AggregationMode.Stacking,
                 1f,
                 float.MaxValue,
-                DefaultAttributeEvaluator.Instance);
+                DefaultAttributeBaseValueProcessor.Instance,
+                DefaultAttributeCurrentValueProcessor.Instance);
 
         private static readonly AttributeRule[] AllRules =
         {
