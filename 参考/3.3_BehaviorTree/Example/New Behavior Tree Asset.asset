@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d5fd334e30ba047b2e4ab52e51f858, type: 3}
+  m_Name: New Behavior Tree Asset
+  m_EditorClassIdentifier: 
+  data:
+    zoom: 1
+    pan:
+      x: 635
+      y: 198
+    nodes:
+    - rid: 1085762376050409936
+    - rid: 1085762376050409937
+    - rid: 1085762376050409938
+    - rid: 1085762376050409939
+    - rid: 1085762376050409940
+    connections:
+    - rid: 1085762376050409941
+    - rid: 1085762376050409942
+    - rid: 1085762376050409943
+    - rid: 1085762376050409944
+    groups: []
+    notes: []
+    entryID: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 1085762376050409936
+      type: {class: Entry, ns: Atom.BehaviorTree, asm: Atom.BehaviorTree}
+      data:
+        id: 1
+        position:
+          x: 0
+          y: 0
+    - rid: 1085762376050409937
+      type: {class: Repeater, ns: Atom.BehaviorTree, asm: Atom.BehaviorTree}
+      data:
+        id: 2
+        position:
+          x: 0
+          y: 99
+        ignoreFaild: 1
+        loopCount: -1
+    - rid: 1085762376050409938
+      type: {class: Sequence, ns: Atom.BehaviorTree, asm: Atom.BehaviorTree}
+      data:
+        id: 4
+        position:
+          x: 0
+          y: 212
+    - rid: 1085762376050409939
+      type: {class: Wait, ns: Atom.BehaviorTree, asm: Atom.BehaviorTree}
+      data:
+        id: 5
+        position:
+          x: -76
+          y: 336
+        interval: 1.38
+    - rid: 1085762376050409940
+      type: {class: LogTask, ns: Atom.BehaviorTree, asm: Atom.BehaviorTree}
+      data:
+        id: 6
+        position:
+          x: 106
+          y: 336
+        text: 1123
+    - rid: 1085762376050409941
+      type: {class: BaseConnection, ns: Atom.GraphProcessor, asm: Atom.GraphProcessor}
+      data:
+        fromNode: 1
+        fromPort: Children
+        toNode: 2
+        toPort: Parent
+    - rid: 1085762376050409942
+      type: {class: BaseConnection, ns: Atom.GraphProcessor, asm: Atom.GraphProcessor}
+      data:
+        fromNode: 2
+        fromPort: Children
+        toNode: 4
+        toPort: Parent
+    - rid: 1085762376050409943
+      type: {class: BaseConnection, ns: Atom.GraphProcessor, asm: Atom.GraphProcessor}
+      data:
+        fromNode: 4
+        fromPort: Children
+        toNode: 5
+        toPort: Parent
+    - rid: 1085762376050409944
+      type: {class: BaseConnection, ns: Atom.GraphProcessor, asm: Atom.GraphProcessor}
+      data:
+        fromNode: 4
+        fromPort: Children
+        toNode: 6
+        toPort: Parent

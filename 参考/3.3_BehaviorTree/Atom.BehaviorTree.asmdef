@@ -1,0 +1,18 @@
+{
+    "name": "Atom.BehaviorTree",
+    "rootNamespace": "",
+    "references": [
+        "Atom.Lib",
+        "Atom.GraphProcessor",
+        "Atom.ECS"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

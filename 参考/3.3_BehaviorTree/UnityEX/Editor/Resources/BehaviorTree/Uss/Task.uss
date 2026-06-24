@@ -1,0 +1,67 @@
+﻿#node-border {
+    border-width: 0;
+    border-radius: 3px;
+    min-width: 100px;
+}
+
+#node-border > #title {
+    height: 30px;
+    min-height: 30px;
+}
+
+#node-border > #title > #title-label {
+    -unity-text-align: middle-center;
+    font-size: 16px;
+    color: rgb(40, 40, 40);
+}
+
+.Entry > #node-border {
+    background-color: rgba(0, 178, 0, 1);
+}
+
+.action-task > #node-border {
+    background-color: rgba(10, 157, 0, 0.4);
+}
+
+.composite-task > #node-border {
+    background-color: rgba(255, 143, 0, 0.4);
+}
+
+.decorator-task > #node-border {
+    background-color: rgba(0, 214, 255, 0.4);
+}
+
+#node-border > #contents {
+    display: none;
+}
+
+#node-border > #contents > #controls > #icon {
+    max-height: 40px;
+    height: 40px;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    -unity-background-image-tint-color: rgba(1, 1, 1, 0.7);
+}
+
+#state-border {
+    border-width: 2px;
+    border-radius: 4px;
+}
+
+.success {
+    border-color: rgba(0, 255, 0, 0.5);
+    background-color: rgba(0, 255, 0, 0.5);
+}
+
+.failure {
+    border-color: rgba(255, 0, 0, 0.5);
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.running {
+    border-color: rgba(255, 255, 0, 0.5);
+    background-color: rgba(255, 255, 0, 0.5);
+}
