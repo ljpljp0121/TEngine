@@ -204,12 +204,6 @@ namespace PFGraph
                 graphViewChanged = OnGraphViewChangedCallback;
                 viewTransformChanged = OnViewTransformChanged;
 
-                yield return Context.graphWindow.StartCoroutine(GenerateNodeViews());
-                yield return Context.graphWindow.StartCoroutine(GenerateConnectionViews());
-                yield return Context.graphWindow.StartCoroutine(GenerateGroupViews());
-                yield return Context.graphWindow.StartCoroutine(GenerateNoteViews());
-                yield return Context.graphWindow.StartCoroutine(GeneratePlacematViews());
-
                 ViewModel.PropertyChanged += OnViewModelChanged;
 
                 ViewModel.GraphEvents.Subscribe<AddNodeEventArgs>(OnNodeAdded);
@@ -227,6 +221,12 @@ namespace PFGraph
                 ViewModel.GraphEvents.Subscribe<RemoveNoteEventArgs>(OnNoteRemoved);
                 ViewModel.GraphEvents.Subscribe<AddPlacematEventArgs>(OnPlacematAdded);
                 ViewModel.GraphEvents.Subscribe<RemovePlacematEventArgs>(OnPlacematRemoved);
+
+                yield return Context.graphWindow.StartCoroutine(GenerateNodeViews());
+                yield return Context.graphWindow.StartCoroutine(GenerateConnectionViews());
+                yield return Context.graphWindow.StartCoroutine(GenerateGroupViews());
+                yield return Context.graphWindow.StartCoroutine(GenerateNoteViews());
+                yield return Context.graphWindow.StartCoroutine(GeneratePlacematViews());
 
                 // Bug 修复：协程结束时节点 worldBound 尚未经过一帧布局，延一帧后再刷新可见性
                 // 否则所有节点 controls 因 worldBound == Rect.zero 而被错误隐藏
@@ -273,6 +273,7 @@ namespace PFGraph
             {
                 var node = ViewModel.Model.nodes[index];
                 if (node == null) continue;
+                if (NodeViews.ContainsKey(node.id)) continue;
                 var nodeProcessor = ViewModel.Nodes[node.id];
                 AddNodeView(nodeProcessor);
                 if (index > 0 && index % 10 == 0)
@@ -287,6 +288,7 @@ namespace PFGraph
             {
                 var connection = ViewModel.Connections[index];
                 if (connection == null) continue;
+                if (ConnectionViews.ContainsKey(connection)) continue;
                 if (!NodeViews.TryGetValue(connection.FromNodeID, out var fromNodeView))
                     throw new InvalidOperationException($"找不到From节点View: {connection.FromNodeID}");
                 if (!NodeViews.TryGetValue(connection.ToNodeID, out var toNodeView))
@@ -305,6 +307,7 @@ namespace PFGraph
             foreach (var group in ViewModel.Groups.GroupMap.Values)
             {
                 if (group == null) continue;
+                if (GroupViews.ContainsKey(group.ID)) continue;
                 AddGroupView(group);
                 step++;
                 if (step % 10 == 0)
@@ -318,6 +321,7 @@ namespace PFGraph
             {
                 var note = ViewModel.Model.notes[index];
                 if (note == null) continue;
+                if (NoteViews.ContainsKey(note.id)) continue;
                 var noteProcessor = ViewModel.Notes[note.id];
                 if (noteProcessor == null) continue;
                 AddNoteView(noteProcessor);
@@ -331,6 +335,7 @@ namespace PFGraph
             var index = 0;
             foreach (var placemat in ViewModel.Placemats.Values)
             {
+                if (PlacematViews.ContainsKey(placemat.ID)) continue;
                 AddPlacematView(placemat);
                 if (index > 0 && index % 10 == 0)
                     yield return null;
