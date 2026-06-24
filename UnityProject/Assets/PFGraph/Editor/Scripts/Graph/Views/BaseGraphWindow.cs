@@ -202,6 +202,7 @@ namespace PFGraph
             {
                 graphView.graphViewChanged -= OnGraphViewChangedRefreshInspector;
                 graphView.UnregisterCallback<MouseUpEvent>(OnGraphMouseUpRefreshInspector);
+                graphView.Uninit();
             }
 
             ToolbarLeft.Clear();

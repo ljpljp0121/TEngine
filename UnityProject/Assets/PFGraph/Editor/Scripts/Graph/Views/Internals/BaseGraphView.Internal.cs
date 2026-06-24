@@ -15,6 +15,7 @@ namespace PFGraph
         private BaseGraphProcessor viewModel;
         private GraphViewContext context;
         private MiniMap miniMap;
+        private EditorCoroutine initCoroutine;
 
         #endregion
 
@@ -186,12 +187,7 @@ namespace PFGraph
 
         public void Init()
         {
-            var coroutine = Context.graphWindow.StartCoroutine(InitCoroutine());
-            this.RegisterCallback<DetachFromPanelEvent>(evt =>
-            {
-                Context.graphWindow.StopCoroutine(coroutine);
-                Uninit();
-            });
+            initCoroutine = Context.graphWindow.StartCoroutine(InitCoroutine());
 
             IEnumerator InitCoroutine()
             {
@@ -235,8 +231,14 @@ namespace PFGraph
             }
         }
 
-        private void Uninit()
+        internal void Uninit()
         {
+            if (initCoroutine != null)
+            {
+                Context.graphWindow.StopCoroutine(initCoroutine);
+                initCoroutine = null;
+            }
+
             this.Query<GraphElement>().ForEach(element =>
             {
                 if (element is IGraphElementView bindableView)
