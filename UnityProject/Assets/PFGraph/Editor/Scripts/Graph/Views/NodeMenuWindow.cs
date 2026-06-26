@@ -71,11 +71,30 @@ namespace PFGraph
 
             public int Compare(INodeEntry x, INodeEntry y)
             {
+                var groupCompare = CompareGroups(x.Menu, y.Menu);
+                if (groupCompare != 0)
+                    return groupCompare;
+
                 usage.TryGetValue(x.Path, out var ux);
                 usage.TryGetValue(y.Path, out var uy);
                 if (ux != uy)
                     return uy.CompareTo(ux);
                 return string.Compare(x.Path, y.Path, StringComparison.Ordinal);
+            }
+
+            private static int CompareGroups(string[] x, string[] y)
+            {
+                var xGroupLength = Math.Max(0, x.Length - 1);
+                var yGroupLength = Math.Max(0, y.Length - 1);
+                var count = Math.Min(xGroupLength, yGroupLength);
+                for (var i = 0; i < count; i++)
+                {
+                    var segmentCompare = string.Compare(x[i], y[i], StringComparison.Ordinal);
+                    if (segmentCompare != 0)
+                        return segmentCompare;
+                }
+
+                return xGroupLength.CompareTo(yGroupLength);
             }
         }
 
