@@ -89,10 +89,10 @@ namespace TEngine
 #endif
             }
         }
-        
+
         [SerializeField]
         private EncryptionType encryptionType = EncryptionType.None;
-        
+
         /// <summary>
         /// 资源模块的加密类型。
         /// </summary>
@@ -257,7 +257,7 @@ namespace TEngine
             _resourceModule.AutoUnloadBundleWhenUnused = autoUnloadBundleWhenUnused;
             _resourceModule.HostServerURL = Settings.UpdateSetting.GetResDownLoadPath();
             _resourceModule.FallbackHostServerURL = Settings.UpdateSetting.GetFallbackResDownLoadPath();
-            _resourceModule.LoadResWayWebGL=Settings.UpdateSetting.GetLoadResWayWebGL();
+            _resourceModule.LoadResWayWebGL = Settings.UpdateSetting.GetLoadResWayWebGL();
             _resourceModule.DownloadingMaxNum = DownloadingMaxNum;
             _resourceModule.FailedTryAgain = FailedTryAgain;
             _resourceModule.UpdatableWhilePlaying = UpdatableWhilePlaying;
@@ -289,8 +289,12 @@ namespace TEngine
         private void Update()
         {
             _lastUnloadUnusedAssetsOperationElapseSeconds += Time.unscaledDeltaTime;
-            if (_asyncOperation == null && (_forceUnloadUnusedAssets || _lastUnloadUnusedAssetsOperationElapseSeconds >= maxUnloadUnusedAssetsInterval ||
-                                            _preorderUnloadUnusedAssets && _lastUnloadUnusedAssetsOperationElapseSeconds >= minUnloadUnusedAssetsInterval))
+            if (_asyncOperation == null &&
+                (_forceUnloadUnusedAssets || useSystemUnloadUnusedAssets && (_lastUnloadUnusedAssetsOperationElapseSeconds >= maxUnloadUnusedAssetsInterval
+                                                                             || _preorderUnloadUnusedAssets && _lastUnloadUnusedAssetsOperationElapseSeconds >=
+                                                                             minUnloadUnusedAssetsInterval)
+                )
+               )
             {
                 Log.Info("Unload unused assets...");
                 _forceUnloadUnusedAssets = false;
